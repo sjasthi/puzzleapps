@@ -1,7 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/functions.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/Puzzle.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/PuzzleInformation.php';
+require_once __DIR__.'/bootstrap.php';
+require_once ROOT_DIR . '/bin/functions.php';
+require_once ROOT_DIR . '/bin/Puzzle.php';
+require_once ROOT_DIR . '/bin/PuzzleInformation.php';
 
 session_start();
 $puzzleId = null;

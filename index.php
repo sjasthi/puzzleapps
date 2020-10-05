@@ -1,6 +1,7 @@
 <?php
-require 'db_configuration.php';
-require_once 'bin/functions.php';
+require_once __DIR__.'/bootstrap.php';
+require_once ROOT_DIR . '/db_configuration.php';
+require_once ROOT_DIR . '/bin/functions.php';
 session_start();
 ?>
 <!DOCTYPE html>

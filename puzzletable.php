@@ -1,6 +1,7 @@
 <?php
-   require 'bin/functions.php';
-   require 'db_configuration.php';
+  require_once __DIR__.'/bootstrap.php';
+   require ROOT_DIR . '/bin/functions.php';
+   require ROOT_DIR . '/db_configuration.php';
    session_start();
 
    $query = "SELECT *

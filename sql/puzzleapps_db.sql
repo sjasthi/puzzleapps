@@ -44,13 +44,13 @@ INSERT INTO `params` (`id`, `name`, `value`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `puzzlecreator`
+-- Table structure for table `applications`
 --
 
-CREATE TABLE `puzzlecreator` (
+CREATE TABLE `applications` (
   `id` int(11) NOT NULL,
   `name` varchar(4000) NOT NULL,
-  `puzzleCreatorDescription` varchar(5000) DEFAULT NULL,
+  `description` varchar(5000) DEFAULT NULL,
   `notes` varchar(1000) DEFAULT NULL,
   `inputFromDB` tinyint(1) NOT NULL,
   `inputFromUI` tinyint(1) NOT NULL,
@@ -64,10 +64,10 @@ CREATE TABLE `puzzlecreator` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `puzzlecreator`
+-- Dumping data for table `applications`
 --
 
-INSERT INTO `puzzlecreator` (`id`, `name`, `puzzleCreatorDescription`, `notes`, `inputFromDB`, `inputFromUI`, `outputToDB`, `outputToUI`, `developer`, `status`, `token`, `playable`, `icon`) VALUES
+INSERT INTO `applications` (`id`, `name`, `description`, `notes`, `inputFromDB`, `inputFromUI`, `outputToDB`, `outputToUI`, `developer`, `status`, `token`, `playable`, `icon`) VALUES
 (1, 'Dabble (Pyramids)', 'Pyramids Dabble Puzzle', 'This is Dabble game.', 0, 0, 0, 0, 'Babatunde', 1, 'Dabble/index.php', 1, 'images/icons/dabble.png'),
 (2, 'Scrambler', 'Scrambler Puzzle', 'This is Scrambler game', 0, 0, 0, 0, 'Babatunde', 1, 'Scrambler/index.php', 1, 'images/icons/scrambler.jpeg'),
 (3, 'Rebus', 'Rebus Puzzle', 'This is Rebus game', 0, 0, 0, 0, 'Babatunde', 1, 'Rebus/index.php', 1, 'images/icons/rebus.png'),
@@ -129,9 +129,9 @@ ALTER TABLE `params`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `puzzlecreator`
+-- Indexes for table `applications`
 --
-ALTER TABLE `puzzlecreator`
+ALTER TABLE `applications`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -152,9 +152,9 @@ ALTER TABLE `params`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `puzzlecreator`
+-- AUTO_INCREMENT for table `applications`
 --
-ALTER TABLE `puzzlecreator`
+ALTER TABLE `applications`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
