@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__.'/../bootstrap.php';
-require_once ROOT_DIR . '/bin/Tokens.php';
-require_once ROOT_DIR . '/bin/user.php';
-require_once ROOT_DIR . '/bin/Connection.php';
+require_once __DIR__.'/../../bootstrap.php';
+require_once ROOT_DIR . '/Tokens.php';
+require_once ROOT_DIR . '/src/models/user.php';
+require_once ROOT_DIR . '/src/lib/Connection.php';
 
-function displayPuzzleCreatorInformation($puzzleCreator)
+function displayAppInformation($puzzleCreator)
 {
 	
 	if(!$puzzleCreator == null)
@@ -41,7 +41,7 @@ function displayPuzzleCreatorInformation($puzzleCreator)
 	}
 	else
 	{
-		echo "  <form name=\"puzzleCreateedit\" id=\"puzzleedit\"   action='createPuzzleCreator.php' method='post' enctype=\"multipart/form-data\" novalidate>";
+		echo "  <form name=\"puzzleCreateedit\" id=\"puzzleedit\"   action='createApp.php' method='post' enctype=\"multipart/form-data\" novalidate>";
 		echo "<input hidden='true' type='text' name='id' value='-1'/>";
 	}
 	
@@ -189,6 +189,7 @@ function displayPuzzleCreatorInformation($puzzleCreator)
         echo "                </form>";
     }
 }
+
 function displayPuzzleView($puzzle)
 {
 	 

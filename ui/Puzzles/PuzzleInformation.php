@@ -20,6 +20,7 @@ function getPuzzles($page, $chunk)
 			$puzzle->image = $row["puzzleImage"];
 			$puzzle->description = $row["puzzleDescription"];
 			$puzzle->puzzleName = $row["puzzleName"];
+			$puzzle->path = $row["path"];
 			$puzzle->puzzleCreatorName = $row["puzzleCreatorName"];
 			$puzzle->puzzleKeywords = $row["puzzleKeywords"];
 			$puzzle->puzzleInstructions = $row["puzzleInstructions"];
@@ -62,6 +63,7 @@ function getSearchedPuzzles($searchterm)
 			$puzzle->image = $row["puzzleImage"];
 			$puzzle->description = $row["puzzleDescription"];
 			$puzzle->puzzleName = $row["puzzleName"];
+			$puzzle->path = $row["path"];
 			$puzzle->puzzleCreatorName = $row["puzzleCreatorName"];
 			$puzzle->puzzleKeywords = $row["puzzleKeywords"];
 			$puzzle->puzzleInstructions = $row["puzzleInstructions"];
@@ -105,6 +107,7 @@ function getPuzzlesByToken($token)
 			$puzzle->description = $row["puzzleDescription"];
 			$puzzle->puzzleName = $row["puzzleName"];
 			$puzzle->puzzleCreatorName = $row["puzzleCreatorName"];
+			$puzzle->path = $row["path"];
 			$puzzle->puzzleKeywords = $row["puzzleKeywords"];
 			$puzzle->puzzleInstructions = $row["puzzleInstructions"];
 			$puzzle->puzzleProject = $row["puzzleProject"];
@@ -146,6 +149,7 @@ function getpuzzleById($id)
 			$puzzle->image = $row["puzzleImage"];
 			$puzzle->description = $row["puzzleDescription"];
 			$puzzle->puzzleName = $row["puzzleName"];
+			$puzzle->path = $row["path"];
 			$puzzle->puzzleCreatorName = $row["puzzleCreatorName"];
 			$puzzle->puzzleKeywords = $row["puzzleKeywords"];
 			$puzzle->puzzleInstructions = $row["puzzleInstructions"];

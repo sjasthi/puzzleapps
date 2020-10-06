@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__.'/bootstrap.php';
-require_once ROOT_DIR . '/bin/functions.php';
+require_once __DIR__ . '/bootstrap.php';
+require_once ROOT_DIR . '/src/lib/functions.php';
 require_once ROOT_DIR . '/db_configuration.php';
-require_once ROOT_DIR . '/bin/PuzzleCreator.php';
+require_once ROOT_DIR . '/src/models/App.php';
 
  printHeader();  
  
@@ -14,22 +14,17 @@ require_once ROOT_DIR . '/bin/PuzzleCreator.php';
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-<!--      <link rel="stylesheet" href="styles/main_style.css" type="text/css">-->
       <!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <!-- jQuery library -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
       <!-- Latest compiled JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--      <link rel="stylesheet" href="styles/custom_nav.css" type="text/css">-->
-      
       <!-- Bootstrap core CSS -->
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
       <!-- Custom styles for this template -->
       <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
-
-      <title>Create Application</title>
-
+      <title>Create App</title>
    </head>
 
 <body class="body_background">
@@ -48,76 +43,61 @@ require_once ROOT_DIR . '/bin/PuzzleCreator.php';
         <br><br> <br><br><br><br>
         <h3>Create New Application: </h3> <br>
         <div class="form-row">
-            <div class="form-group col-md-12">
-                <label for="id"><B>Id:</label><br>
-                <input type="text" class="form-control" name="id"   maxlength="5" required><br><br>
-            </div>
             <div class="control-group form-group col-md-12">
                 <label for="name">Name:</label><br>
                 <input class="form-control" name="name" required data-validation-required-message="Please enter the name."  
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
                     <p class="help-block"></p><br><br>
             </div>
+
             <div class="form-group col-md-12">
                 <label for="path">Path:</label><br>
                 <input class="form-control" name="path" required data-validation-required-message="Path is required."
                        maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"><br><br>
             </div>
-        </div>
 
-        <div class="form-row">
             <div class="control-group form-group col-lg-12">
-                <label for="category">Application Description:</label><br>
-                <textarea rows="5" class="form-control" name="puzzleCreatorDescription"   maxlength="500"
-                    data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></textarea>
+                <label for="description">Description:</label><br>
+                <input rows="5" class="form-control" name="description" maxlength="500"
+                    data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
              <p class="help-block"></p><br><br>
-
             </div>
 
             <div class="form-group col-md-12">
-                <label for="level">Notes:</label><br>
-                <textarea rows="5" class="form-control" name="notes"   maxlength="500"
-                    data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></textarea>
+                <label for="notes">Notes:</label><br>
+                <input rows="5" class="form-control" name="notes"   maxlength="500"
+                    data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
              <p class="help-block"></p><br><br>
-
-            </div>
-
-            <div class="form-group col-md-3">
-                <label for="facilitator">input From DB:</label><br>
-                <input type="checkbox" class="form-control checkbox-inline" name="inputFromDB"  maxlength="5">
-                
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                <label for="description">Input From UI:</label><br>
-                <input type="checkbox" class="form-control" name="inputFromUI"  maxlength="5">
-                
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-3">
-                <label for="required">output To DB:</label><br>
-                <input type="checkbox" class="form-control" name="outputToDB"   maxlength="5">
-                
-            </div>
-
-            <div class="form-group col-md-3">
-                <label for="outputToUI">Output To UI:</label><br>
-                <input type="checkbox" class="form-control" name="outputToUI"  maxlength="5">
-                
-            </div>
-        </div>
-
-        <div class="form-row">
-            <div class="form-group col-md-12">
-                <label for="developer">Developer:</label><br>
-                <input type="text" class="form-control" name="developer"  maxlength="50"><br><br>
             </div>
 
             <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="inputFromDB">input From DB:</label><br>
+                    <input type="checkbox" class="form-control checkbox-inline" name="inputFromDB"  maxlength="5">
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="inputFromUI">Input From UI:</label><br>
+                    <input type="checkbox" class="form-control" name="inputFromUI"  maxlength="5">
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="outputToDB">output To DB:</label><br>
+                    <input type="checkbox" class="form-control" name="outputToDB"   maxlength="5">
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="outputToUI">Output To UI:</label><br>
+                    <input type="checkbox" class="form-control" name="outputToUI"  maxlength="5">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="developer">Developer:</label><br>
+                    <input type="text" class="form-control" name="developer"  maxlength="50"><br><br>
+                </div>
+
             <div class="form-group col-md-12">
                 <label for="status">Status:</label><br>
                 <input type="text" class="form-control" name="status"  maxlength="20"><br><br>
@@ -135,8 +115,8 @@ require_once ROOT_DIR . '/bin/PuzzleCreator.php';
         </div>
 
         <div class="controls">
-                <label>Application Image:</label><br>
-                <input type="file" name="fileToUpload"  id="fileToUpload" >
+                <label for="icon">Application Image:</label><br>
+                <input type="file" name="icon"  id="fileToUpload" >
                 <p class="help-block"></p>
 
         </div>

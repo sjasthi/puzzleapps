@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__.'/../bootstrap.php';
-require_once ROOT_DIR . '/bin/PuzzleCreator.php';
-require_once ROOT_DIR . '/bin/Connection.php';
+require_once __DIR__.'/bootstrap.php';
+require_once ROOT_DIR . '/src/models/App.php';
+require_once ROOT_DIR . '/src/lib/Connection.php';
 function getTokens()
 {
 	try {
@@ -39,10 +39,11 @@ function getPuzzleCreatorsInformation()
 		$i = 0;
 		$creators = array();
 		while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-			$puzzleCreator = new PuzzleCreator();
+			$puzzleCreator = new App();
 			$puzzleCreator->puzzleCreatorId = $row["puzzleCreatorId"];
 			$puzzleCreator->token = $row["token"];
 			$puzzleCreator->puzzleCreatorName = $row["puzzleCreatorName"];
+			$puzzleCreator->path = $row["path"];
 			$puzzleCreator->puzzleCreatorDescription = $row["description"];
 			$puzzleCreator->notes = $row["notes"];
 			$puzzleCreator->inputFromDB = $row["inputFromDB"];
@@ -97,7 +98,7 @@ function getPuzzleCreatorIDFromToken($token)
 function getpuzzleCreatorById($id)
 {
 	try {
-		$puzzleCreator = new PuzzleCreator();
+		$puzzleCreator = new App();
 		$connection = new Connection();
 		$db = $connection->getConnection();
 		$sqlExecSP = "call getPuzzleCreatorById(\"" . $id . "\")";
@@ -115,6 +116,7 @@ function getpuzzleCreatorById($id)
 			$puzzleCreator->status = $row["status"];
 			$puzzleCreator->token = $row["token"];
 			$puzzleCreator->puzzleCreatorName = $row["puzzleCreatorName"];
+			$puzzleCreator->path = $row["path"];
 			$puzzleCreator->playable = $row["playable"];
 			$puzzleCreator->icon = $row["icon"];
 			$puzzleCreator->numPuzzles = $row["numPuzzles"];

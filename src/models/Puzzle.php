@@ -1,11 +1,12 @@
 <?php
 require_once __DIR__.'/../bootstrap.php';
-require_once ROOT_DIR . '/bin/Connection.php';
+require_once ROOT_DIR . '/src/lib/Connection.php';
 class Puzzle
 {
 	public $id;
     public $puzzleCreatorId;
-	public $puzzleCreatorName;// extra add on
+	public $puzzleCreatorName;
+	public $path;
     public $image;
     public $description;
 	public $puzzleName;
@@ -25,6 +26,7 @@ class Puzzle
 		filter_var($this->image, FILTER_SANITIZE_STRING);
 		filter_var($this->description, FILTER_SANITIZE_STRING);
 		filter_var($this->puzzleName, FILTER_SANITIZE_STRING);
+		filter_var($this->path, FILTER_SANITIZE_STRING);
 		filter_var($this->puzzleKeywords, FILTER_SANITIZE_STRING);
 		filter_var($this->puzzleProject, FILTER_SANITIZE_STRING);
 		filter_var($this->solutionImage, FILTER_SANITIZE_STRING);
@@ -45,6 +47,7 @@ class Puzzle
 			\"" . $this->image . "\",
 			\"" . $this->description . "\",
 			\"" . $this->puzzleName . "\",
+			\"" . $this->path . "\",
 			\"" . $this->puzzleKeywords . "\",
 			\"" . $this->puzzleProject . "\",
 			\"" . $this->solutionImage . "\",
@@ -70,6 +73,7 @@ class Puzzle
 		filter_var($this->image, FILTER_SANITIZE_STRING);
 		filter_var($this->description, FILTER_SANITIZE_STRING);
 		filter_var($this->puzzleName, FILTER_SANITIZE_STRING);
+		filter_var($this->path, FILTER_SANITIZE_STRING);
 		filter_var($this->puzzleKeywords, FILTER_SANITIZE_STRING);
 		filter_var($this->puzzleProject, FILTER_SANITIZE_STRING);
 		filter_var($this->solutionImage, FILTER_SANITIZE_STRING);
@@ -91,6 +95,7 @@ class Puzzle
 			\"" . $this->image . "\",
 			\"" . $this->description . "\",
 			\"" . $this->puzzleName . "\",
+			\"" . $this->path . "\",
 			\"" . $this->puzzleKeywords . "\",
 			\"" . $this->puzzleProject . "\",
 			\"" . $this->solutionImage . "\",

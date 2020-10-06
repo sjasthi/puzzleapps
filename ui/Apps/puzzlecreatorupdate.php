@@ -16,7 +16,7 @@
   <body>
 
 <?php
-  require_once __DIR__.'/bootstrap.php';
+  require_once __DIR__ . '/bootstrap.php';
   include_once ROOT_DIR . '/db_configuration.php';
   require_once ROOT_DIR . '/applications.php';
   require_once ROOT_DIR . '/bin/functions.php';
@@ -40,7 +40,7 @@
       // output data of each row
       while($row = $result->fetch_assoc()) {
             echo '<form class="form" action="update.php" method="POST">
-              Name: <br> <input type="text" name="name" value="'.$row["name"].'" maxlength="65" readonly> <br>
+              Name: <br> <input type="text" name="name" value="' .$row["name"].'" maxlength="65" readonly> <br>
               Puzzle Creator Description: <br> <textarea type="text" name="puzzleCreatorDescription" value="'.$row["puzzleCreatorDescription"].'" maxlength="255" required> <br>
               Notes: <br> <textarea type="text" name="notes" value="'.$row["notes"].'"  maxlength="255" required> <br>
               Input From DB: <br> <input type="checkbox" name="inputFromDB" value="'.$row["inputFromDB"].'"  maxlength="4" required> <br>

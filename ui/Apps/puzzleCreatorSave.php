@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 require_once ROOT_DIR . '/bin/functions.php';
 require_once ROOT_DIR . '/bin/PuzzleCreator.php';
 error_reporting(E_ALL);
@@ -32,6 +32,9 @@ if (isset($_POST['id']) && $_POST['id'] > -1) {
 
 */
 $puzzleCreatorName = $_POST['name'];
+if(isset($_POST['path'])) {
+    $path = $_POST['path'];
+}
 if(isset($_POST['playable']))
 {
 	$puzzleCreatorPlayable = 1;
@@ -97,6 +100,7 @@ $puzzleCreator->notes = $notes;
 $puzzleCreator->developedBy = $developer;
 $puzzleCreator->status = $status;
 $puzzleCreator->puzzleCreatorName = $puzzleCreatorName;
+$puzzleCreator->path = $path;
 $puzzleCreator->playable = $puzzleCreatorPlayable;
 
 

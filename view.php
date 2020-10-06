@@ -1,11 +1,12 @@
 <?php
-require_once __DIR__.'/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 require_once ROOT_DIR . '/db_configuration.php';
 if (isset($_POST['id'])){
 
   echo "test if";
 
-  $Name = mysqli_real_escape_string($db, $_POST['name']);
+  $name = mysqli_real_escape_string($db, $_POST['name']);
+  $path = mysqli_real_escape_string($db, $_POST['path']);
   $description = mysqli_real_escape_string($db, $_POST['description']);
   $notes = mysqli_real_escape_string($db, $_POST['notes']);
   $inputFromDB = mysqli_real_escape_string($db, $_POST['inputFromDB']);
@@ -24,6 +25,7 @@ if (isset($_POST['id'])){
 
 $sql = "UPDATE applications
         SET name = '$name',
+            path = '$path',
             description = '$description',
             notes = '$notes',
             inputFromDB = '$inputFromDB',

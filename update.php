@@ -1,8 +1,10 @@
 <?php
-require_once __DIR__.'/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 include_once ROOT_DIR . '/db_configuration.php';
+
 if (isset($_POST['id'])){
   $name = mysqli_real_escape_string($db, $_POST['name']);
+  $path = mysqli_real_escape_string($db, $_POST['path']);
   $description = mysqli_real_escape_string($db, $_POST['description']);
   $notes = mysqli_real_escape_string($db, $_POST['notes']);
   $inputFromDB = mysqli_real_escape_string($db, $_POST['inputFromDB']);
@@ -14,13 +16,11 @@ if (isset($_POST['id'])){
   $token = mysqli_real_escape_string($db, $_POST['token']);
   $playable = mysqli_real_escape_string($db, $_POST['playable']);
   $icon = mysqli_real_escape_string($db, $_POST['icon']);
-  
-
-
 
 
 $sql = "UPDATE applications
         SET name = '$name',
+            path = '$path',
             description = '$description',
             notes = '$notes',
             inputFromDB = '$inputFromDB',

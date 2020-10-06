@@ -1,18 +1,19 @@
 <?php
-require_once __DIR__.'/../bootstrap.php';
-require_once ROOT_DIR . '/bin/Connection.php';
-require_once ROOT_DIR . '/bin/PuzzleCreator.php';
-class PuzzleCreator
+require_once __DIR__.'/../../bootstrap.php';
+require_once ROOT_DIR . '/src/lib/Connection.php';
+require_once ROOT_DIR . '/src/models/App.php';
+class App
 {
-    public $puzzleCreatorId;
-	public $puzzleCreatorName;
-	public $puzzleCreatorDescription;
+    public $id;
+	public $name;
+	public $path;
+	public $description;
 	public $notes;
-	public $inputFromDatabase;
+	public $inputFromDB;
 	public $inputFromUI;
-	public $outputToDatabase;
+	public $outputToDB;
 	public $outputToUI;
-	public $developedBy;
+	public $developer;
 	public $status;
     public $token;
 	public $playable;
@@ -23,17 +24,18 @@ class PuzzleCreator
 	public function updatePuzzleCreator()
 	{
 
-		filter_var($this->puzzleCreatorName, FILTER_SANITIZE_STRING);
+		filter_var($this->name, FILTER_SANITIZE_STRING);
+		filter_var($this->path, FILTER_SANITIZE_STRING);
 		filter_var($this->token, FILTER_SANITIZE_STRING);
 		filter_var($this->icon, FILTER_SANITIZE_STRING);
-		filter_var($this->puzzleCreatorDescription, FILTER_SANITIZE_STRING);
+		filter_var($this->description, FILTER_SANITIZE_STRING);
 		filter_var($this->notes, FILTER_SANITIZE_STRING);
-		filter_var($this->inputFromDatabase, FILTER_SANITIZE_STRING);
+		filter_var($this->inputFromDB, FILTER_SANITIZE_STRING);
 		filter_var($this->inputFromUI, FILTER_SANITIZE_STRING);
-		filter_var($this->outputToDatabase, FILTER_SANITIZE_STRING);
+		filter_var($this->outputToDB, FILTER_SANITIZE_STRING);
 		filter_var($this->outputToUI, FILTER_SANITIZE_STRING);
 		filter_var($this->status, FILTER_SANITIZE_STRING);
-		filter_var($this->developedBy, FILTER_SANITIZE_STRING);
+		filter_var($this->developer, FILTER_SANITIZE_STRING);
 		filter_var($this->status, FILTER_SANITIZE_STRING);
 		
 		//print_r($this);
@@ -43,15 +45,16 @@ class PuzzleCreator
 			$db = $connection->getConnection();
 			
 			$sqlExecSP = "call updatePuzzleCreator(
-			\"" . $this->puzzleCreatorId . "\",
-			\"" . $this->puzzleCreatorName . "\",
-			\"" . $this->puzzleCreatorDescription . "\",
+			\"" . $this->id . "\",
+			\"" . $this->name . "\",
+			\"" . $this->path . "\",
+			\"" . $this->description . "\",
 			\"" . $this->notes . "\",
-			\"" . $this->inputFromDatabase . "\",
+			\"" . $this->inputFromDB . "\",
 			\"" . $this->inputFromUI . "\",
-			\"" . $this->outputToDatabase . "\",
+			\"" . $this->outputToDB . "\",
 			\"" . $this->outputToUI . "\",
-			\"" . $this->developedBy . "\",
+			\"" . $this->developer . "\",
 			\"" . $this->status . "\",
 			\"" . $this->token . "\",
 			\"" . $this->playable . "\",
@@ -76,17 +79,18 @@ class PuzzleCreator
 	}
 	public function persistNewPuzzleCreator()
 	{
-		filter_var($this->puzzleCreatorName, FILTER_SANITIZE_STRING);
+		filter_var($this->name, FILTER_SANITIZE_STRING);
+		filter_var($this->path, FILTER_SANITIZE_STRING);
 		filter_var($this->token, FILTER_SANITIZE_STRING);
 		filter_var($this->icon, FILTER_SANITIZE_STRING);
-		filter_var($this->puzzleCreatorDescription, FILTER_SANITIZE_STRING);
+		filter_var($this->description, FILTER_SANITIZE_STRING);
 		filter_var($this->notes, FILTER_SANITIZE_STRING);
-		filter_var($this->inputFromDatabase, FILTER_SANITIZE_STRING);
+		filter_var($this->inputFromDB, FILTER_SANITIZE_STRING);
 		filter_var($this->inputFromUI, FILTER_SANITIZE_STRING);
-		filter_var($this->outputToDatabase, FILTER_SANITIZE_STRING);
+		filter_var($this->outputToDB, FILTER_SANITIZE_STRING);
 		filter_var($this->status, FILTER_SANITIZE_STRING);
 		filter_var($this->outputToUI, FILTER_SANITIZE_STRING);
-		filter_var($this->developedBy, FILTER_SANITIZE_STRING);
+		filter_var($this->developer, FILTER_SANITIZE_STRING);
 		filter_var($this->status, FILTER_SANITIZE_STRING);
 		$returnID = -1;
 		try {
@@ -94,14 +98,15 @@ class PuzzleCreator
 			$db = $connection->getConnection();
 			$sqlExecSP = "call createNewPuzzleCreator
 			(
-			\"" . $this->puzzleCreatorName . "\",
-			\"" . $this->puzzleCreatorDescription . "\",
+			\"" . $this->name . "\",
+			\"" . $this->path . "\",
+			\"" . $this->description . "\",
 			\"" . $this->notes . "\",
-			\"" . $this->inputFromDatabase . "\",
+			\"" . $this->inputFromDB . "\",
 			\"" . $this->inputFromUI . "\",
-			\"" . $this->outputToDatabase . "\",
+			\"" . $this->outputToDB . "\",
 			\"" . $this->outputToUI . "\",
-			\"" . $this->developedBy . "\",
+			\"" . $this->developer . "\",
 			\"" . $this->status . "\",
 			\"" . $this->token . "\",
 			\"" . $this->playable . "\",
@@ -147,7 +152,7 @@ class PuzzleCreator
 	}
 	function cmpc($a, $b) 
 	{
-		return strcmp(strtolower($a->puzzleCreatorName), strtolower($b->puzzleCreatorName));
+		return strcmp(strtolower($a->name), strtolower($b->name));
 	}
 
 	
