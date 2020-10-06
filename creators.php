@@ -5,7 +5,7 @@
  * Date: 9/28/2018
  * Time: 11:33 PM
  */
-require_once __DIR__.'/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 include_once ROOT_DIR . '/db_configuration.php';
 require_once ROOT_DIR . '/bin/PuzzleCreator.php';
 require_once ROOT_DIR . '/bin/functions.php';
@@ -18,10 +18,10 @@ session_start();
 
 $target_file = null;
 $success = true;
-if (isset($_FILES["fileToUpload"]) && is_uploaded_file($_FILES["fileToUpload"]['tmp_name'])) {
+if (isset($_FILES["icon"]) && is_uploaded_file($_FILES["icon"]['tmp_name'])) {
   $success = false;
     $target_dir = "images/icons/";
-  $path_parts = pathinfo($_FILES["fileToUpload"]["name"]);
+  $path_parts = pathinfo($_FILES["icon"]["name"]);
   $extension = $path_parts['extension'];
   $target_file = $target_dir . getToken(16) . "." . $extension;
   $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
@@ -32,7 +32,7 @@ if (isset($_FILES["fileToUpload"]) && is_uploaded_file($_FILES["fileToUpload"]['
 
   $uploadOk = 1;
   //echo $target_file;
-  $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+  $check = getimagesize($_FILES["icon"]["tmp_name"]);
   if ($check == false) {
     $uploadOk = 0;
     $errorReason = "not an image.";
@@ -40,7 +40,7 @@ if (isset($_FILES["fileToUpload"]) && is_uploaded_file($_FILES["fileToUpload"]['
   if (file_exists($target_file)) {
     unlink($target_file);
   }
-  if ($_FILES["fileToUpload"]["size"] > 5000000) {
+  if ($_FILES["icon"]["size"] > 5000000) {
     $uploadOk = 0;
     $errorReason = "image was too large.";
   }
@@ -52,7 +52,7 @@ if (isset($_FILES["fileToUpload"]) && is_uploaded_file($_FILES["fileToUpload"]['
   if ($uploadOk == 0) {
     $success = false;
   } else {
-    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+    if (move_uploaded_file($_FILES["icon"]["tmp_name"], $target_file)) {
       $success = true;
     } else {
       $success = false;
@@ -65,6 +65,7 @@ if (isset($_POST['id'])){
 
     $update_id = mysqli_real_escape_string($db, $_POST['id']);
     $name = mysqli_real_escape_string($db, $_POST['name']);
+    $path = mysqli_real_escape_string($db, $_POST['path']);
     $description = mysqli_real_escape_string($db, $_POST['description']);
     $notes = mysqli_real_escape_string($db, $_POST['notes']);
     $inputFromDB = mysqli_real_escape_string($db, $_POST['inputFromDB']);
@@ -80,10 +81,10 @@ if (isset($_POST['id'])){
     $result = $db->query("SELECT * FROM applications WHERE name='$name'");
 
     if ( $result->num_rows == 0 ) {
-        $sql = "INSERT INTO applications(id, name, description, notes, 
+        $sql = "INSERT INTO applications(id, name, description, path, notes, 
                             inputFromDB, inputFromUI, outputToDB, outputToUI, developer, 
                             status, token, playable, icon)
-                   VALUES ('$update_id', '$name', '$description', '$notes', 
+                   VALUES ('$update_id', '$name', '$description', '$path', ''$notes', 
                           '$inputFromDB', '$inputFromUI', '$outputToDB', '$outputToUI', 
                           '$developer', '$status', '$token', '$playable', '$icon')";
 

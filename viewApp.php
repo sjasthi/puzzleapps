@@ -23,9 +23,9 @@
   <body>
 
 <?php
-  require_once __DIR__.'/bootstrap.php';
+  require_once __DIR__ . '/bootstrap.php';
   require_once ROOT_DIR . '/db_configuration.php';
-  require_once ROOT_DIR . '/bin/functions.php';
+  require_once ROOT_DIR . '/src/lib/functions.php';
 
   printHeader();
   
@@ -33,7 +33,7 @@
 
     $update_id = $_GET['id'];
 
-    $sql = "SELECT * FROM puzzlecreator
+    $sql = "SELECT * FROM applications
             WHERE id = '$update_id'";
 
     if (!$result = $db->query($sql)) {
@@ -44,10 +44,11 @@
   if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
-            echo '<form class="form" action="view.php" method="POST">
+            echo '<div class="container"><form class="form" action="applications.php" method="POST">
               Name: <br> <input type="text" name="name" value="'.$row["name"].'" maxlength="65" readonly> <br>
-              Puzzle Creator Description: <br> <textarea rows="5" name="puzzleCreatorDescription" value="'.$row["puzzleCreatorDescription"].'" maxlength="255" readonly> <br>
-              Notes: <br> <textarea rows="5" name="notes" value="'.$row["notes"].'"  maxlength="255" readonly> <br>
+              Path: <br> <input type="text" name="path" value="'.$row["path"].'" maxlength="65" readonly> <br>
+              Puzzle Creator Description: <br> <input type="textarea" rows="5" name="puzzleCreatorDescription" value="'.$row["description"].'" maxlength="255" readonly> <br>
+              Notes: <br> <input type=""textarea" rows="5" name="notes" value="'.$row["notes"].'"  maxlength="255" readonly> <br>
               Input From DB: <br> <input type="checkbox" name="inputFromDB" value="'.$row["inputFromDB"].'"  maxlength="4" readonly> <br>
               Input From UI: <br> <input type="checkbox" name="inputFromUI" value="'.$row["inputFromUI"].'"  maxlength="4" readonly> <br>
               Output To DB: <br> <input type="checkbox" name="outputToDB" value="'.$row["outputToDB"].'"  maxlength="4" readonly> <br>
@@ -59,7 +60,7 @@
               Icon: <br> <input type="file" name="icon" value="'.$row["icon"].'" maxlength="6" readonly> <br>
               <br>
               <button type="submit" name="submit" class="btn btn-success btn-sm">  Back  </button>
-            </form>';
+            </form></div>';
 
       }//end while
   }//end if

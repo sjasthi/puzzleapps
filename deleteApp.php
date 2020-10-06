@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__.'/bootstrap.php';
+require_once __DIR__ . '/bootstrap.php';
 require_once ROOT_DIR . '/db_configuration.php';
 
 if (isset($_GET['id'])){

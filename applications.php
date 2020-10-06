@@ -1,6 +1,6 @@
 <?php
-   require_once __DIR__.'/bootstrap.php';
-   require_once ROOT_DIR . '/bin/functions.php';
+   require_once __DIR__ . '/bootstrap.php';
+   require_once ROOT_DIR . '/src/lib/functions.php';
    require_once ROOT_DIR . '/db_configuration.php';
    session_start();
 
@@ -41,7 +41,7 @@
       <h1>Apps</h1>
 
         <div id="puzzleFields">
-               <form class="form" action="createPuzzleCreator.php" method="POST">
+               <form class="form" action="createApp.php" method="POST">
                   
                   <button type="submit" name="submit" class="btn btn-success btn-sm">Add An App</button>
                   <br>
@@ -75,9 +75,9 @@
                                           <td> '.$row["description"].'</td>
                                           <td> '.$row["notes"].'</td>
                                           <td> '.$row["developer"].'</td>
-                                          <td><br> <a class="btn btn-success btn-sm" href="viewPuzzleCreator.php?id=' .$row["id"]. '"> View </a>
-                                               <a class="btn btn-warning btn-sm" href="updatePuzzleCreator.php?id=' .$row["id"]. '"> Update </a>
-                                               <a class="btn btn-danger btn-sm" href="deletePuzzleCreator.php?id=' .$row["id"]. '"> Delete </a>
+                                          <td><br> <a class="btn btn-success btn-sm" href="viewApp.php?id=' .$row["id"]. '"> View </a>
+                                               <a class="btn btn-warning btn-sm" href="updateApp.php?id=' .$row["id"]. '"> Update </a>
+                                               <a class="btn btn-danger btn-sm" href="deleteApp.php?id=' .$row["id"]. '"> Delete </a>
                                                </td>
                                           
 
