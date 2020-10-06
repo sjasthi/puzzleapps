@@ -1,7 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/Tokens.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/user.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/Connection.php';
+require_once __DIR__.'/../bootstrap.php';
+require_once ROOT_DIR . '/bin/Tokens.php';
+require_once ROOT_DIR . '/bin/user.php';
+require_once ROOT_DIR . '/bin/Connection.php';
 
 function displayPuzzleCreatorInformation($puzzleCreator)
 {
@@ -437,9 +438,9 @@ function displayPuzzleInformation($puzzle)
     echo " <button class='btn btn-primary' type='submit' value='Save'>Save</button>\t";
 
     if (!$puzzle == null) {
-        echo printNormalButton("Cancel", ("puzzlecreator.php"), false);
+        echo printNormalButton("Cancel", ("applications.php"), false);
     } else {
-        echo printNormalButton("Cancel", ("puzzlecreator.php"), false);
+        echo printNormalButton("Cancel", ("applications.php"), false);
     }
     echo "                </form>";
 
@@ -467,7 +468,7 @@ function printSearchForm()
 function printHeader()
 {
 	echo "<!-- Navigation -->\n";
-	echo "    <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n";
+	echo "    <nav class=\"navbar navbar-fixed-top\" role=\"navigation\">\n";
 	
 	echo "        <div class=\"container\">\n";
 	echo " 			<div class=\"col-md-12\">\n";
@@ -484,40 +485,37 @@ function printHeader()
 	echo "                    <span class=\"icon-bar\"></span>\n";
 	echo "                    <span class=\"icon-bar\"></span>\n";
 	echo "                </button>\n";
-	
-	echo "                <a class=\"navbar-brand\" href=\"puzzlecreator.php\">Home</a>\n";
-	echo "                <a class=\"navbar-brand\" href=\"createPuzzleCreator.php\">Creator</a>\n";
 	echo "            </div>\n";
 	echo "            <!-- Collect the nav links, forms, and other content for toggling -->\n";
 	echo "            <div class=\"collapse navbar-collapse\" id=\"bs-example-navbar-collapse-1\">\n";
 	echo "                <ul class=\"nav navbar-nav navbar-right\">\n";
-	if (isset($_SESSION['admin']) && $_SESSION['admin'] == true) 
-	{
+//	if (isset($_SESSION['admin']) && $_SESSION['admin'] == true)
+//	{
 		echo "                    <li>\n";
-		echo "                        <a href=\"index.php\">Grid</a>\n";
+		echo "                        <a href=\"puzzles.php\">Puzzles</a>\n";
 		echo "                    </li>\n";
 		echo "                    <li>\n";
-		echo "                        <a href=\"puzzlecreator.php\">List</a>\n";
+		echo "                        <a href=\"books.php\">Books</a>\n";
 		echo "                    </li>\n";
+//	}
+//	else{
 		echo "                    <li>\n";
-		echo "                        <a href=\"index.php?logout=true&message=logged out\"\"></a>\n";
-		echo "                    </li>\n";
-	}
-	else{
-		echo "                    <li>\n";
-		echo "                        <a href=\"index.php\">Grid</a>\n";
+		echo "                        <a href=\"sponsor.php\">Sponsor</a>\n";
 		echo "                    </li>\n";
 
 		echo "                    <li>\n";
-		echo "                        <a href=\"puzzlecreator.php\">List</a>\n";
+		echo "                        <a href=\"applications.php\">Apps</a>\n";
 		echo "                    </li>\n";
 
-	}
+//	}
+    echo "                    <li>\n";
+    echo "                        <a href=\"applications.php\">Admin</a>\n";
+    echo "                    </li>\n";
 	echo "                    <li>\n";
 	echo "                        <a href=\"about.php\">About</a>\n";
 	echo "                    </li>\n";
 	echo "                    <li>\n";
-	echo "                        <a href=\"help.php\">Help</a>\n";
+	echo "                        <a href=\"login.php\">Login</a>\n";
 	echo "                    </li>\n";
 	echo "                </ul>\n";
 	echo "            </div>\n";

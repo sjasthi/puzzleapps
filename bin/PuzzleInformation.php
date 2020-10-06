@@ -1,7 +1,8 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/Puzzle.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/Connection.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/CreatorsConfig.php';
+require_once __DIR__.'/../bootstrap.php';
+require_once ROOT_DIR . '/bin/Puzzle.php';
+require_once ROOT_DIR . '/bin/Connection.php';
+require_once ROOT_DIR . '/bin/CreatorsConfig.php';
 function getPuzzles($page, $chunk)
 {
 	try {

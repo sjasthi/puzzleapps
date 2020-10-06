@@ -12,14 +12,14 @@
     <!-- Custom styles for this template -->
     <link href="../ccs/publishersdb.css" rel="stylesheet">
 
-      <link rel="stylesheet" href="styles/main_style.css" type="text/css">
+<!--      <link rel="stylesheet" href="styles/main_style.css" type="text/css">-->
       <!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <!-- jQuery library -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
       <!-- Latest compiled JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="styles/custom_nav.css" type="text/css">
+<!--      <link rel="stylesheet" href="styles/custom_nav.css" type="text/css">-->
       
       <!-- Bootstrap core CSS -->
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
@@ -31,8 +31,9 @@
   <body>
 
 <?php
-  include_once 'db_configuration.php';
-  require_once 'bin/functions.php';
+  require_once __DIR__.'/bootstrap.php';
+  require_once ROOT_DIR . '/db_configuration.php';
+  require_once ROOT_DIR . '/bin/functions.php';
  
   printHeader();
 

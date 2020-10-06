@@ -5,10 +5,10 @@
  * Date: 9/28/2018
  * Time: 11:33 PM
  */
-
-include_once 'db_configuration.php';
-require_once 'bin/PuzzleCreator.php';
-require_once '/bin/functions.php';
+require_once __DIR__.'/bootstrap.php';
+include_once ROOT_DIR . '/db_configuration.php';
+require_once ROOT_DIR . '/bin/PuzzleCreator.php';
+require_once ROOT_DIR . '/bin/functions.php';
 
 printHeader();
 
@@ -65,7 +65,7 @@ if (isset($_POST['id'])){
 
     $update_id = mysqli_real_escape_string($db, $_POST['id']);
     $name = mysqli_real_escape_string($db, $_POST['name']);
-    $puzzleCreatorDescription = mysqli_real_escape_string($db, $_POST['puzzleCreatorDescription']);
+    $description = mysqli_real_escape_string($db, $_POST['description']);
     $notes = mysqli_real_escape_string($db, $_POST['notes']);
     $inputFromDB = mysqli_real_escape_string($db, $_POST['inputFromDB']);
     $inputFromUI = mysqli_real_escape_string($db, $_POST['inputFromUI']);
@@ -77,20 +77,20 @@ if (isset($_POST['id'])){
     $playable = mysqli_real_escape_string($db, $_POST['playable']);
     $icon = mysqli_real_escape_string($db, $_POST['target_file']);
 
-    $result = $db->query("SELECT * FROM puzzlecreator WHERE name='$name'");
+    $result = $db->query("SELECT * FROM applications WHERE name='$name'");
 
     if ( $result->num_rows == 0 ) {
-        $sql = "INSERT INTO puzzlecreator(id, name, puzzleCreatorDescription, notes, 
+        $sql = "INSERT INTO applications(id, name, description, notes, 
                             inputFromDB, inputFromUI, outputToDB, outputToUI, developer, 
                             status, token, playable, icon)
-                   VALUES ('$update_id', '$name', '$puzzleCreatorDescription', '$notes', 
+                   VALUES ('$update_id', '$name', '$description', '$notes', 
                           '$inputFromDB', '$inputFromUI', '$outputToDB', '$outputToUI', 
                           '$developer', '$status', '$token', '$playable', '$icon')";
 
         mysqli_query($db, $sql);
-        header('location: puzzlecreator.php?PuzzleCreatorCreated=Success');
+        header('location: applications.php?PuzzleCreatorCreated=Success');
     } else{
-        header('location: createPuzzleCreator.php?PuzzleCreatorCreated=Failed');
+        header('location: applications.php?PuzzleCreatorCreated=Failed');
     }
     printFooter();
 }//end if

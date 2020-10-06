@@ -16,9 +16,10 @@
   <body>
 
 <?php
-  include_once 'db_configuration.php';
-  require_once 'PuzzleCreator.php';
-  require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/functions.php';
+  require_once __DIR__.'/bootstrap.php';
+  include_once ROOT_DIR . '/db_configuration.php';
+  require_once ROOT_DIR . '/applications.php';
+  require_once ROOT_DIR . '/bin/functions.php';
 
   printHeader();
 

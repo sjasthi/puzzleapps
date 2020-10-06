@@ -1,8 +1,9 @@
 <?php
-include_once 'db_configuration.php';
+require_once __DIR__.'/bootstrap.php';
+include_once ROOT_DIR . '/db_configuration.php';
 if (isset($_POST['id'])){
   $name = mysqli_real_escape_string($db, $_POST['name']);
-  $puzzleCreatorDescription = mysqli_real_escape_string($db, $_POST['puzzleCreatorDescription']);
+  $description = mysqli_real_escape_string($db, $_POST['description']);
   $notes = mysqli_real_escape_string($db, $_POST['notes']);
   $inputFromDB = mysqli_real_escape_string($db, $_POST['inputFromDB']);
   $inputFromUI = mysqli_real_escape_string($db, $_POST['inputFromUI']);
@@ -18,9 +19,9 @@ if (isset($_POST['id'])){
 
 
 
-$sql = "UPDATE puzzlecreator
+$sql = "UPDATE applications
         SET name = '$name',
-            puzzleCreatorDescription = '$puzzleCreatorDescription',
+            description = '$description',
             notes = '$notes',
             inputFromDB = '$inputFromDB',
             inputFromUI = '$inputFromUI',
@@ -35,7 +36,7 @@ $sql = "UPDATE puzzlecreator
           WHERE id = '$id'";
 
        mysqli_query($db, $sql);
-      header('location: puzzlecreator.php?PuzzleCreatorUpdated=Success');
+      header('location: applications.php?PuzzleCreatorUpdated=Success');
      // echo $sql; 
 }//end if
 ?>

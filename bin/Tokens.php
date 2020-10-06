@@ -1,6 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/PuzzleCreator.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/Connection.php';
+require_once __DIR__.'/../bootstrap.php';
+require_once ROOT_DIR . '/bin/PuzzleCreator.php';
+require_once ROOT_DIR . '/bin/Connection.php';
 function getTokens()
 {
 	try {

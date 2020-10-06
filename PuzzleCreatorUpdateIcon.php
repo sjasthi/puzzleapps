@@ -1,6 +1,7 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/PuzzleCreator.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzlemaster/bin/functions.php';
+require_once __DIR__.'/bootstrap.php';
+require_once ROOT_DIR . '/bin/PuzzleCreator.php';
+require_once ROOT_DIR . '/bin/functions.php';
 
 if (isset($_POST['id'])) {
 

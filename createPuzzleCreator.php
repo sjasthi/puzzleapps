@@ -1,7 +1,8 @@
 <?php
-require 'bin/functions.php';
-require 'db_configuration.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/PuzzleCreator.php';
+require_once __DIR__.'/bootstrap.php';
+require_once ROOT_DIR . '/bin/functions.php';
+require_once ROOT_DIR . '/db_configuration.php';
+require_once ROOT_DIR . '/bin/PuzzleCreator.php';
 
  printHeader();  
  
@@ -13,21 +14,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/PuzzleCreator.php';
       <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="styles/main_style.css" type="text/css">
+<!--      <link rel="stylesheet" href="styles/main_style.css" type="text/css">-->
       <!-- Latest compiled and minified CSS -->
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <!-- jQuery library -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
       <!-- Latest compiled JavaScript -->
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="styles/custom_nav.css" type="text/css">
+<!--      <link rel="stylesheet" href="styles/custom_nav.css" type="text/css">-->
       
       <!-- Bootstrap core CSS -->
       <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
       <!-- Custom styles for this template -->
       <link href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.12/css/dataTables.bootstrap.min.css" rel="stylesheet"/>
 
-      <title>Create Puzzle Creator</title>
+      <title>Create Application</title>
 
    </head>
 
@@ -38,14 +39,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/PuzzleCreator.php';
     <?php
     if(isset($_GET['PuzzleCreatorCreated'])){
         if($_GET["PuzzleCreatorCreated"] == "Failed"){
-            echo '<br><h3 class="bg-danger">A Puzzle Creator with the NAME already exists. Please try again with a new NAME! </h3>';
+            echo '<br><h3 class="bg-danger">An Application with the NAME already exists. Please try again with a new NAME! </h3>';
         }
     }
 
     ?>
     <form action="creators.php" method="POST">
         <br><br> <br><br><br><br>
-        <h3>Create New Puzzle Creator: </h3> <br>
+        <h3>Create New Application: </h3> <br>
         <div class="form-row">
             <div class="form-group col-md-12">
                 <label for="id"><B>Id:</label><br>
@@ -57,11 +58,16 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/PuzzleCreator.php';
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
                     <p class="help-block"></p><br><br>
             </div>
+            <div class="form-group col-md-12">
+                <label for="path">Path:</label><br>
+                <input class="form-control" name="path" required data-validation-required-message="Path is required."
+                       maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"><br><br>
+            </div>
         </div>
 
         <div class="form-row">
             <div class="control-group form-group col-lg-12">
-                <label for="category">Puzzle Creator Description:</label><br>
+                <label for="category">Application Description:</label><br>
                 <textarea rows="5" class="form-control" name="puzzleCreatorDescription"   maxlength="500"
                     data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></textarea>
              <p class="help-block"></p><br><br>
@@ -121,24 +127,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/puzzleapps/bin/PuzzleCreator.php';
                 <label for="token">Token:</label><br>
                 <input type="text" class="form-control" name="token"  maxlength="50"><br><br>
             </div>
-        </div>
 
-        <div class="form-row">
-        <div class="control-group form-group col-md-3"> 
-            <label for="playable">Playable:</label><br>
-            <input type="checkbox" class="form-control" name="playable"   maxlength="1">
-        
+            <div class="control-group form-group col-md-3">
+                <label for="playable">Playable:</label><br>
+                <input type="checkbox" class="form-control" name="playable"   maxlength="1">
+            </div>
         </div>
 
         <div class="controls">
-                <label>Puzzle Creator Image:</label><br>
+                <label>Application Image:</label><br>
                 <input type="file" name="fileToUpload"  id="fileToUpload" >
                 <p class="help-block"></p>
 
         </div>
-        <br><br><br></B>
+        <br><br><br>
         <div class="text-left">
-            <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add Puzzle Creator</button>
+            <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add Application</button>
         </div>
         <br> <br>
 
