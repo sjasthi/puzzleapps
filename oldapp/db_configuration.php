@@ -33,4 +33,3 @@ function run_sql($sql_script)
     }
 }
 ?>
-
