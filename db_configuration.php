@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/bootstrap.php';
 DEFINE('DATABASE_HOST', 'localhost');
 DEFINE('DATABASE_DATABASE', 'puzzleapps_db');
 DEFINE('DATABASE_USER', 'root');
@@ -32,3 +33,4 @@ function run_sql($sql_script)
     }
 }
 ?>
+

@@ -1,81 +1,30 @@
 <?php
-require_once 'bin/functions.php';
-session_start();
+$nav_selected = "ABOUT";
+$left_buttons = "NO";
+$left_selected = "";
+
+require_once __DIR__ . '/bootstrap.php';
+include(ROOT_DIR . '/nav.php');
 
 ?>
 
+<div class="right-content">
+    <div class="container">
 
-<!DOCTYPE html>
-<html lang="en">
-<link rel="icon"
-      type="image/png"
-      href="favicon.ico">
-<head>
+        <h3>Hello Puzzler!</h3>
+        <h4>Welcome to Indic Puzzles!</h4>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+        <p>
+            Children learn best when the learning experiences include puzzles.
+            There are numerous tools and web sites available to generate and play English puzzles.
+            However, the resources to generate and play puzzles in Indian languages are not available.
+        </p>
+        <p>
+            The goal of Indic Puzzles is to support the community of teachers, schools, and children
+            interested in learning Indic Languages through puzzles.
+        </p>
 
-    <link rel="stylesheet" href="styles/main_style.css" type="text/css">
-      <!-- Latest compiled and minified CSS -->
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <!-- jQuery library -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-      <!-- Latest compiled JavaScript -->
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="styles/custom_nav.css" type="text/css">
+    </div>
+</div>
 
-    <title>About</title>
-
-    <!-- Bootstrap Core CSS -->
-    <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-	
-    <!-- Custom CSS -->
-    <link href="css/custom.css" rel="stylesheet">
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body>
-<?php
-printHeader();
-?>
- <div class="container">
-
-        <!-- Page Header -->
-		
-		
-        <div class="row">
-            <div class="col-lg-12">
-				<h4>About:</h4>
-				
-				<h5>
-					PuzzleCreator V1.0 (November 2018) is created by Babatunde Rotimi and Alieu Swaray under the guidance of Dr. Siva R Jasthi for Metropolitan State University(MSU).
-
-				</h5>
-				
-			</div>
-	 </div>
-<?php
-printFooter();
-
-?>
-      <!-- jQuery -->
-<script src="js/jquery.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
-
-</body>
-
-</html>
+<?php include("footer.php"); ?>
