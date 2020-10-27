@@ -138,7 +138,6 @@ h4 {
     position:relative;
     top: 0;
     left: -3px;
-    background-color: none;
     padding:0px;
     width: 200px;
     text-align: left;
@@ -214,7 +213,6 @@ h4 {
 }
 .menu-left-current-page{
     width: 200px;
-    background-image: url('images/left_selected.png');
     background-repeat: no-repeat;
     background-position: 70% 50%;
     background-size: 20%;
@@ -470,7 +468,6 @@ h4 {
     height: 20px;
     /* border-radius: 50%;
     background: white; */
-    background: url('images/radio.png');
 
 }
 
@@ -490,7 +487,6 @@ h4 {
     color: #1B5BA0;
 }
 #searchInput {
-    background-image: url('./images/Search3.png');
     background-position: right;
     background-size: 30%;
     background-repeat: no-repeat;
