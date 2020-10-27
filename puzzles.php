@@ -1,11 +1,7 @@
 <?php
-$nav_selected = "PUZZLES";
-$left_buttons = "NO";
-$left_selected = "";
-
-require_once __DIR__ . '/bootstrap.php';
-include(ROOT_DIR . '/nav.php');
-require ROOT_DIR . '/db_configuration.php';
+require 'bin/functions.php';
+require 'db_configuration.php';
+include('nav.php');
 
 ?>
 
