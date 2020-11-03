@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `users` (
-     `id` int(11) NOT NULL AUTO_INCREMENT,
+     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
      `email` varchar(128) NOT NULL UNIQUE,
      `password` varchar(200) NOT NULL,
      `role` enum('SUPER_ADMIN', 'ADMIN', 'USER') NOT NULL DEFAULT 'USER',
@@ -41,7 +41,7 @@ INSERT INTO `users` (`id`, `email`, `password`, `role`, `first_name`, `last_name
 (6, 'ics499@metrostate.edu', '$2y$10$zFAG5GBNtf.5BpowMqZSputSLeG8OzfKACpjAMsePjZhu.TnvU/Bu', 'ADMIN', 'ICS', '499', true);
 
 CREATE TABLE `preferences` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `preference_name` varchar(500) NOT NULL,
   `preference_value` varchar(500) NOT NULL,
   `comments` varchar(1000),
@@ -53,7 +53,7 @@ INSERT INTO `preferences` (`id`, `preference_name`, `preference_value`) VALUES
 
 
 CREATE TABLE `apps` (
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(4000) NOT NULL,
   `path` varchar(4000) NOT NULL,
   `description` varchar(5000) DEFAULT NULL,
@@ -101,9 +101,9 @@ INSERT INTO `apps` (`id`, `name`, `description`, `path`, `notes`, `inputFromDB`,
 (28, 'Dabble Old', 'Old Dabble', 'http://llocalhost/Dabble/index.php', 'This is Old Dabble game', 0, 0, 0, 0, 'Babatunde', 1, 'Dabble/index.php', 1, 'dabble.png');
 
 CREATE TABLE `puzzles` (
-    `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `app_id` int(11) UNSIGNED,
-    `author_id` int(11) NOT NULL,
+    `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `app_id` int(12) UNSIGNED NOT NULL,
+    `author_id` int(12) UNSIGNED NOT NULL,
     `title` varchar(50) NOT NULL,
     `sub_title` varchar(100) DEFAULT NULL,
     `directions` mediumblob DEFAULT NULL,
@@ -423,10 +423,11 @@ INSERT INTO `puzzles` (`id`, `app_id`, `title`, `author_id`, `puzzle_image`, `so
 (300, 3, 'cross_word_100', 2, 'cross_word_100.jpg', 'cross_word_100_sol.jpg', 'this is the 100th puzzle', NULL);
 
 CREATE TABLE `books` (
-    `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `author_id` int(11) NOT NULL,
-    `name` varchar(100) NOT NULL,
-    `description` varchar(1000),
+    `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `author_id` int(12) UNSIGNED NOT NULL,
+    `sponsor_id` int(12) UNSIGNED,
+    `title` varchar(100) NOT NULL,
+    `description` varchar(150),
     `front_cover` varchar(500),
     `back_cover` varchar(500),
     `notes` varchar(1000) DEFAULT NULL,
@@ -437,49 +438,44 @@ CREATE TABLE `books` (
         ON DELETE RESTRICT
 ) AUTO_INCREMENT=5 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `books` (`id`, `author_id`, `name`, `description`, `front_cover`, `back_cover`, `notes`, `keywords`) VALUES
-(1, 2, 'Book Name', 'Such a good puzzle book', 'dabble.png', 'dabble.png', 'Book notes', 'book'),
-(2, 2, 'Easy Crosswords V1', 'Easy crosswords you can finish in minutes!', 'crosswords.png', 'crosswords.png', '', NULL),
-(3, 2, 'English Vowel Changes', 'Those crazy vowels!', 'vowels.png', 'vowels.png', '', NULL),
-(4, 2, 'Word Find Book 10', 'Find them all!', 'wordfind.gif', 'wordfind.gif', '', NULL);
+INSERT INTO `books` (`id`, `author_id`, `sponsor_id`, `title`, `description`, `front_cover`, `back_cover`, `notes`, `keywords`) VALUES
+(1, 2, 5, 'Book Name', 'Such a good puzzle book', 'dabble.png', 'dabble.png', 'Book notes', 'book'),
+(2, 2, 5, 'Easy Crosswords V1', 'Easy crosswords you can finish in minutes!', 'crosswords.png', 'crosswords.png', '', NULL),
+(3, 2, 5, 'English Vowel Changes', 'Those crazy vowels!', 'vowels.png', 'vowels.png', '', NULL),
+(4, 2, 5, 'Word Find Book 10', 'Find them all!', 'wordfind.gif', 'wordfind.gif', '', NULL);
 
 
 CREATE TABLE `books_puzzles` (
-    `book_id` int(20) UNSIGNED NOT NULL,
-    `puzzle_id` int(20) UNSIGNED NOT NULL,
+    `book_id` int(12) UNSIGNED NOT NULL,
+    `puzzle_id` int(12) UNSIGNED NOT NULL,
      FOREIGN KEY (book_id) REFERENCES books (id),
      FOREIGN KEY (puzzle_id) REFERENCES puzzles (id),
      PRIMARY KEY (book_id, puzzle_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `books_puzzles` (`book_id`, `puzzle_id`) VALUES
-(2, 201),
-(2, 202),
-(2, 203),
-(2, 204),
-(2, 205),
-(2, 206),
-(2, 207),
-(2, 208),
-(2, 209),
-(2, 210),
-(3, 1),
-(3, 2),
-(3, 3),
-(3, 4),
-(3, 5),
-(3, 6),
-(3, 7),
-(3, 8),
-(3, 9),
-(3, 10),
-(4, 101),
-(4, 102),
-(4, 103),
-(4, 104),
-(4, 105),
-(4, 106),
-(4, 107),
-(4, 108),
-(4, 109),
-(4, 110);
+(2, 201),(2, 202),(2, 203),(2, 204),(2, 205),(2, 206),(2, 207),(2, 208),(2, 209),(2, 210),
+(3, 1),(3, 2),(3, 3),(3, 4),(3, 5),(3, 6),(3, 7),(3, 8),(3, 9),(3, 10),
+(4, 101),(4, 102),(4, 103),(4, 104),(4, 105),(4, 106),(4, 107),(4, 108),(4, 109),(4, 110);
+
+CREATE TABLE `users_books` (
+    `user_id` int(12) UNSIGNED NOT NULL,
+    `book_id` int(12) UNSIGNED NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (book_id) REFERENCES books (id),
+    PRIMARY KEY (user_id, book_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `users_books` (`user_id`, `book_id`) VALUES
+(1, 1), (2, 2), (3, 3);
+
+CREATE TABLE `users_apps` (
+    `user_id` int(12) UNSIGNED NOT NULL,
+    `app_id` int(12) UNSIGNED NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (app_id) REFERENCES books (id),
+    PRIMARY KEY (user_id, app_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `users_apps` (`user_id`, `app_id`) VALUES
+(1, 1), (1, 2), (1, 3), (2, 4), (2, 5), (2, 6), (3, 7), (3, 8);

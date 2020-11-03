@@ -19,23 +19,6 @@ if($result->num_rows > 0) {
     echo '<div class="container">';
 
         echo '<h1>Update App</h1>';
-//        echo '<form class="form" action="apps_modify_an_app.php?id='.$row["id"].'" method="POST">
-//        Name: <br> <input type="text" name="name" value="' .$row["name"].'" maxlength="65" required> <br>
-//        Puzzle Creator Description: <br> <input type="textarea" name="description" value="'.$row["description"].'" maxlength="255" required> <br>
-//        Path: <br> <input type="text" name="path" value="' .$row["path"].'" maxlength="250" required> <br>
-//        Notes: <br> <input type="textarea" name="notes" value="'.$row["notes"].'"  maxlength="255" required> <br>
-//        Input From DB: <br> <input type="text" name="inputFromDB" value="'.$row["inputFromDB"].'"  maxlength="4"> <br>
-//        Input From UI: <br> <input type="text" name="inputFromUI" value="'.$row["inputFromUI"].'"  maxlength="255"> <br>
-//        Output To DB: <br> <input type="text" name="outputToDB" value="'.$row["outputToDB"].'"  maxlength="4"> <br>
-//        Output To UI: <br> <input type="text" name="outputToUI" value="'.$row["outputToUI"].'"  maxlength="255"> <br>
-//        Developer: <br> <input type="text" name="developer" value="'.$row["developer"].'"  maxlength="50"> <br>
-//        Status: <br> <input type="text" name="status" value="'.$row["status"].'"  maxlength="14"> <br>
-//        Token: <br> <input type="text" name="token" value="'.$row["token"].'"  maxlength="255"> <br>
-//        Playable: <br> <input type="text" name="playable" value="'.$row["playable"].'" maxlength="6"> <br>
-//        Icon: <br> <input type="text" name="icon" value="'.$row["icon"].'" maxlength="6"> <br>
-//
-//        <button type="submit" name="submit" class="btn btn-success btn-sm">Update App</button>
-//        </form>'
             echo '<form action="apps_modify_an_app.php?id='.$row["id"].'" method="POST">
         <div class="form-row">
             <div class="control-group form-group col-md-12">

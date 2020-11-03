@@ -7,17 +7,95 @@ require_once __DIR__ . '/bootstrap.php';
 include(ROOT_DIR . '/nav.php');
 require ROOT_DIR . '/db_configuration.php';
 
-?>
+echo '<div class="right-content">';
+echo '<div class="container">';
 
-<div class="right-content">
-    <div class="container">
+echo '<h1>Create A Book</h1>';
+echo '<form action="books_create_a_book.php" method="POST">
+        <div class="form-row">
+            <div class="control-group form-group col-md-12">
+                <label for="title">Title:</label><br>
+                <input class="form-control" name="title" required data-validation-required-message="Please enter the book title."  
+                maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
+            </div>
 
-        <h1>Create A Book</h1>
-        <form class="form" action="books_create_a_book.php" method="POST">
-            <button type="submit" name="submit" class="btn btn-success btn-sm">Create</button>
-        </form>
+            <div class="form-group col-md-12 search-box">
+                <label for="author">Author:</label><br>
+                <input type="text" name="author" id="author" required autocomplete="off" placeholder="Search users..." class="form-control" data-validation-required-message="Author is required."
+                maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
+                <input type="hidden" value="" name="author_id" id="author_id">
+                <div class="result"></div>
+            </div>
+            
+            <div class="form-group col-md-12 search-box">                                                                                                                             
+                 <label for="sponsor">Sponsor:</label><br>                                                                                                                                 
+                 <input type="text" name="sponsor" id="sponsor" autocomplete="off" placeholder="Search users..."  class="form-control" aria-invalid="false">                                                                     
+                 <input type="hidden" value="" name="sponsor_id" id="sponsor_id">                                                                                                                         
+                 <div class="result"></div>                                                                                                                                            
+             </div> 
 
+            <div class="control-group form-group col-lg-12">
+                <label for="description">Description:</label><br>
+                <input rows="5" class="form-control" name="description" required data-validation-required-message="Description is required."
+                maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
+            </div>
+
+            <div class="control-group form-group col-md-12">
+                <label for="notes">Notes:</label><br>
+                <input rows="5" class="form-control" name="notes"   maxlength="500"
+                    data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
+            </div>
+
+            <div class="form-row">
+                <div class="control-group form-group col-md-12">
+                    <label for="front_cover">Front Cover Image:</label><br>
+                    <input type="file" name="front_cover"  id="fileToUpload" required>
+                </div>
+            
+                <div class="control-group form-group col-md-12">
+                    <label for="front_cover">Back Cover Image:</label><br>
+                    <input type="file" name="back_cover"  id="fileToUpload" required>
+                </div>
+            </div>
+        <br>
+        <div class="control-group text-left" id="wrap">
+            <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add Book</button>
+        </div>
+    </form>
     </div>
-</div>
+</div>';
 
-<?php include("footer.php"); ?>
+include("footer.php");
+
+?>
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var users = '';
+        $('.search-box input[type="text"]').on("keyup input", function(){
+            /* Get input value on change */
+            var inputVal = $(this).val();
+            var resultDropdown = $(this).siblings(".result");
+            if(inputVal.length){
+                $.get("user_search.php", {term: inputVal}).done(function(data){
+                    users = JSON.parse(data);
+                    let usersHTML = '';
+                    // Display the returned data in browser
+                    for (var i = 0; i < users.length; i++) {
+                        usersHTML += "<p>" + users[i].first_name + " " + users[i].last_name + "</p>";
+                    }
+                    resultDropdown.html(usersHTML);
+                });
+            } else{
+                resultDropdown.empty();
+            }
+        });
+
+        // Set search input value on click of result item
+        $(document).on("click", ".result p", function(event){
+            $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
+            $(this).parents(".search-box").find('input[type="hidden"]').val(users[0].id);
+            $(this).parent(".result").empty();
+        });
+    });
+</script>
