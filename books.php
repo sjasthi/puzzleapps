@@ -1,7 +1,11 @@
 <?php
-require 'bin/functions.php';
-require 'db_configuration.php';
-include('nav.php');
+$nav_selected = "BOOKS";
+$left_buttons = "NO";
+$left_selected = "";
+
+require_once __DIR__ . '/bootstrap.php';
+include(ROOT_DIR . '/nav.php');
+require ROOT_DIR . '/db_configuration.php';
 
 ?>
 
@@ -12,8 +16,6 @@ include('nav.php');
 	</head>
 	<style>
 		.image {
-		width: 100px;
-		height: 100px;
 		padding: 20px 20px 20px 20px;
 		transition: transform .2s;
 		}
@@ -44,9 +46,8 @@ include('nav.php');
 		}
 
 		#title {
-		color: black;
+        color: darkgoldenrod;
 		text-align: center;
-        font-size:20px;
 		}
 
 		a:visited,
@@ -59,45 +60,15 @@ include('nav.php');
 		text-align: center;
 		color: darkgoldenrod;
 		}
-        .flip-card {
-  background-color: transparent;
-  width: 100px;
-  height: 100px;
- 
-}
 
-.flip-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-}
+        #box{
+		/* background-color: pink;
+		grid-gap: 10px;
+		padding: 10px;
+		border: 1px solid darkgoldenrod; */
+		text-align: center;
+        }
 
-.flip-card:hover .flip-card-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-card-front, .flip-card-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-}
-
-.flip-card-front {
-  background-color: #bbb;
-  color: black;
-}
-
-.flip-card-back {
-  background-color: #2980b9;
-  color: white;
-  transform: rotateY(180deg);
-}
 	</style>
 
 	<body>
@@ -108,31 +79,38 @@ include('nav.php');
         }
     }
     ?>
-		<h1 id="title2">Books List</h1>
+		<h1 id="title2">Books List </h1>
         
         </br>
-        <form method="post">
+        <form class="form" method="post">
         <div style="font-size:20px;" id="title2">Show:   
         <div style="font-size:20px; display: inline-block"><input type="submit" name="front" value="Front Cover" />   </div>
         <div style="font-size:20px; display: inline-block"><input type="submit" name="back" value="Back Cover" />  </div>
 		</div>
     
         </form>
-
+        
     <?php
 
 
-    $sql1 = "SELECT `value` FROM `preferences` WHERE `name`= 'NO_OF_PUZZLES_PER_ROW'";
+    $sql1 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'books_per_row'";
     $sql2 = "SELECT `book_name` FROM `books`";
     $sql3 = "SELECT `book_frontCover` FROM `books`";
-    $sql4 = "SELECT `value` FROM `preferences` WHERE `name`= 'NO_OF_PUZZLES_TO_SHOW'";
+    $sql4 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'books_to_show'";
     $sql5 = "SELECT `book_backCover` FROM `books`";
+    $sql6 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_height'";
+    $sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_width'";
+
+
 
     $results1 = mysqli_query($db, $sql1);
     $results2 = mysqli_query($db, $sql2);
     $results3 = mysqli_query($db, $sql3);
     $results4 = mysqli_query($db, $sql4);
     $results5 = mysqli_query($db, $sql5);
+    $results6 = mysqli_query($db, $sql6);
+    $results7 = mysqli_query($db, $sql7);
+
 
     if (mysqli_num_rows($results1) > 0) {
         while ($row = mysqli_fetch_assoc($results1)) {
@@ -160,10 +138,22 @@ include('nav.php');
             $manyItem[] = $row;
         }
     }
+    if (mysqli_num_rows($results6) > 0) {
+        while ($row = mysqli_fetch_assoc($results6)) {
+            $height[] = $row;
+        }
+	}
+	if (mysqli_num_rows($results7) > 0) {
+        while ($row = mysqli_fetch_assoc($results7)) {
+            $width[] = $row;
+        }
+	}
 
 
-    $columns = $column[0]['value'];
-    $manyItems = $manyItem[0]['value'];
+    $columns = $column[0]['preference_value'];
+    $manyItems = $manyItem[0]['preference_value'];
+    $book_height = $height[0]['preference_value'];
+	$book_width = $width[0]['preference_value'];
 
     echo "<table id = 'table_2'>";
     echo "<tr>";
@@ -178,13 +168,14 @@ include('nav.php');
                 $topic = $topics[$randIndex]['book_name'];
                 $pic = $pics[$randIndex]['book_frontCover'];
                 $pic2 = $pics2[$randIndex]['book_backCover'];
+                //unset($topics[$randIndex]);
 
                 if(!isset($_POST['front']) && !isset($_POST['back'])){
 
                     echo "
                     
-                    <td> 
-                    <img class = 'image' src = 'books/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
+                    <td id= 'box'> 
+                    <img class='image' height='$book_height' width='$book_width' src = 'books/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
                     <div id = 'title'>$topic</div>
                     </td>";
     
@@ -193,8 +184,8 @@ include('nav.php');
 
                 echo "
                 
-                <td> 
-                <img class = 'image' src = 'books/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
+                <td id= 'box'> 
+                <img class='image' height='$book_height' width='$book_width' src = 'books/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
                 <div id = 'title'>$topic</div>
                 </td>";
 
@@ -203,8 +194,8 @@ include('nav.php');
 
                     echo "
                     
-                    <td> 
-                    <img class = 'image' src = 'books/$pic2' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
+                    <td id= 'box'> 
+                    <img class='image' height='$book_height' width='$book_width' src = 'books/$pic2' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
                     <div id = 'title'>$topic</div>
                     </td>";
     
