@@ -1,5 +1,8 @@
 <?php
-require 'bin/functions.php';
+//require 'bin/functions.php';
+$nav_selected = "APPS";
+$left_buttons = "NO";
+$left_selected = "";
 require 'db_configuration.php';
 include('nav.php');
 
@@ -61,87 +64,31 @@ include('nav.php');
 	</style>
 
 	<body>
+	<?php
+	if(isset($_POST['done'])){ //Check Completion
+		session_destroy();
+		header('location: index.php');
+	  }
+		if(isset($_SESSION['logged_in'])){
+			
+			echo "<h1>Successful logged in as ";
+			echo $_SESSION['role'];
+			echo "</h1>";
+			?>
+			<form method="post" action="index.php">
+    		<input type="submit" name="done" value="Logout" />
+			</form>
 		<?php
-    if (isset($_GET['preferencesUpdated'])) {
-        if ($_GET["preferencesUpdated"] == "Success") {
-            echo "<br><h3 align=center style='color:green'>Success! The Preferences have been updated!</h3>";
-        }
-    }
-    ?>
 
 
-		<h1 id="title2">Welcome to Indic Puzzles</h1>
-		<h2 id="directions">Explore 1000s of Puzzles in Indic Language!</h2><br>
-        <h2 id="directions">Here is a puzzle for you to play!</h2><br>
 
-			<?php
+		}
 
-    $sql1 = "SELECT `value` FROM `preferences` WHERE `name`= 'NO_OF_PUZZLES_PER_ROW'";
-    $sql2 = "SELECT `puzzle_name` FROM `gpuzzles`";
-    $sql3 = "SELECT `puzzle_image` FROM `gpuzzles`";
-    $sql4 = "SELECT `value` FROM `preferences` WHERE `name`= 'NO_OF_PUZZLES_TO_SHOW'";
+	?>
 
-    $results1 = mysqli_query($db, $sql1);
-    $results2 = mysqli_query($db, $sql2);
-    $results3 = mysqli_query($db, $sql3);
-    $results4 = mysqli_query($db, $sql4);
 
-    if (mysqli_num_rows($results1) > 0) {
-        while ($row = mysqli_fetch_assoc($results1)) {
-            $column[] = $row;
-        }
-    }
 
-    if (mysqli_num_rows($results2) > 0) {
-        while ($row = mysqli_fetch_assoc($results2)) {
-            $topics[] = $row;
-        }
-    }
 
-    if (mysqli_num_rows($results3) > 0) {
-        while ($row = mysqli_fetch_assoc($results3)) {
-            $pics[] = $row;
-        }
-    }
-
-    if (mysqli_num_rows($results4) > 0) {
-        while ($row = mysqli_fetch_assoc($results4)) {
-            $manyItem[] = $row;
-        }
-    }
-
-    $columns = $column[0]['value'];
-    //$manyItems = $manyItem[0]['value'];
-
-    // hard coding $manyItems to 1; Need to figure out a way to show only featured puzzles
-    // not a random puzzle
-    $manyItems = 1;
-
-    echo "<table id = 'table_2'>";
-    echo "<tr>";
-    for ($a = 0; $a < $manyItems; $a) {
-        for ($b = 0; $b < $columns; $b++) {
-            if ($a >= $manyItems) {
-                break;
-            } else {
-
-                // get random index from array $topics
-                $randIndex = array_rand($topics);
-                $topic = $topics[$randIndex]['puzzle_name'];
-                $pic = $pics[$randIndex]['puzzle_image'];
-                echo "
-        <td>
-                <img class = 'image' src = 'Images/puzzle_images/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                <div id = 'title'>$topic</div>
-        </td>";
-                $a++;
-            }
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-    ?>
-
-		</body>
+	</body>
 
 	</html>
