@@ -90,6 +90,7 @@ require ROOT_DIR . '/db_configuration.php';
 	$sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'app_height'";
 	$sql8 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'app_width'";
 	
+	
     $results1 = mysqli_query($db, $sql1);
 	$results2 = mysqli_query($db, $sql2);
     $results3 = mysqli_query($db, $sql3);
