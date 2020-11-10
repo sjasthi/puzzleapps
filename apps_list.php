@@ -63,7 +63,7 @@ $GLOBALS['appTableResults'] = mysqli_query($db, $query);
                                 <td><div contenteditable="true" onBlur="updateValue(this, 'description', '<?php echo $id; ?>')"><?php echo $description; ?></div></td>
                                 <td><div contenteditable="true" onBlur="updateValue(this, 'developer', '<?php echo $id; ?>')"><?php echo $developer; ?></div></td>
                                 <td><div contenteditable="true" onBlur="updateValue(this, 'notes', '<?php echo $id; ?>')"><?php echo $notes; ?></div></td>
-                                <?php echo '<td><img src="images/apps/thumbnails/'.$row["icon"].'" style="width:80px;">' ?>
+                                <?php echo '<td><img src="images/apps/'.$row["icon"].'" style="width:80px;">' ?>
                                 <?php echo '<td><a class="btn btn-info btn-sm" href="'.$row["path"].'" target="_blank">Open</a></td>' ?>
                                 <?php echo '<td><a class="btn btn-warning btn-sm" href="apps_modify.php?id='.$row["id"].'">Modify</a></td>' ?>
                                 <?php echo '<td><a class="btn btn-danger btn-sm" href="apps_delete.php?id='.$row["id"].'">Delete</a></td>' ?>

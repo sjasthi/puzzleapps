@@ -8,11 +8,20 @@ include(ROOT_DIR . '/nav.php');
 require ROOT_DIR . '/db_configuration.php';
 
 ?>
-
 <div class="right-content">
     <div class="container">
+        <?php
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $sql = "DELETE FROM books WHERE id = '$id'";
+            $result = $db->query($sql);
 
-        <h1>Delete Book</h1>
+        } else {
+            header("HTTP/1.1 500 Failed to delete");
+            exit;
+        }
+        ?>
+        <h1>Book Deleted!</h1>
 
     </div>
 </div>
