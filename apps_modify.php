@@ -19,7 +19,7 @@ if($result->num_rows > 0) {
     echo '<div class="container">';
 
         echo '<h1>Update App</h1>';
-            echo '<form action="apps_modify_an_app.php?id='.$row["id"].'" method="POST">
+            echo '<form action="apps_modify_an_app.php?id='.$row["id"].'" method="POST" enctype="multipart/form-data">
         <div class="form-row">
             <div class="control-group form-group col-md-12">
                 <label for="name">Name:</label><br>
@@ -108,9 +108,10 @@ if($result->num_rows > 0) {
             </div>
         </div>
 
-        <div class="controls">
+        <div class="form-group col-md-6">
                 <label for="icon">Application Image:</label><br>
-                <input type="file" name="icon" value="'.$row["icon"].'" id="fileToUpload" >
+                <input type="file" name="icon" id="icon" value="'.$row["icon"].'" >
+                <img id="preview" src="images/apps/'.$row["icon"].'"/>
         </div>
         <br><br><br>
         <div class="text-left">
@@ -126,3 +127,24 @@ if($result->num_rows > 0) {
 }
 
 include("footer.php"); ?>
+<script>
+(function() {
+    var URL = window.URL || window.webkitURL;
+    var input = document.getElementById('icon');
+    var preview = document.querySelector('#preview');
+    var previewSource = preview.src
+
+    // When the file input changes, create a object URL around the file.
+    input.addEventListener('change', function () {
+        if (input.value.length) {
+            preview.src = URL.createObjectURL(this.files[0]);
+        } else {
+            preview.src = previewSource
+        }
+    });
+    // When the image loads, release object URL
+    preview.addEventListener('load', function () {
+        URL.revokeObjectURL(this.src);
+    });
+})();
+</script>

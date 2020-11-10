@@ -14,6 +14,13 @@ if (isset($_GET['id'])) {
     $result = $db->query($sql);
 }
 
+$currentPuzzlesQuery = "SELECT puzzles.* FROM books_puzzles JOIN puzzles ON books_puzzles.puzzle_id = puzzles.id WHERE books_puzzles.book_id = '$id'";
+$currentPuzzleResults = $db->query($currentPuzzlesQuery);
+
+$addPuzzlesQuery = "SELECT * FROM puzzles WHERE puzzles.id NOT IN (SELECT puzzle_id FROM books_puzzles WHERE books_puzzles.book_id = '$id')";
+$addPuzzleResults = $db->query($addPuzzlesQuery);
+
+
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $authorId = $row['author_id'];
@@ -32,58 +39,144 @@ if($result->num_rows > 0) {
         echo '<div class="container">';
 
         echo '<h1>Update Book</h1>';
-        echo '<form action="books_modify_a_book.php?id='.$row["id"].'" method="POST">
-                <div class="form-row">
+        echo '<form id="modifyBookForm" action="books_modify_a_book.php?id='.$row["id"].'" method="POST" enctype="multipart/form-data">
             <div class="control-group form-group col-md-12">
                 <label for="name">Title:</label><br>
                 <input class="form-control" name="title" value="' .$row["title"].'" required data-validation-required-message="Please enter the title."  
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
-             <div class="form-group col-md-12 search-box">                                                                                                                             
+            <div class="form-group col-md-12 search-box">                                                                                                                             
                  <label for="path">Author:</label><br>                                                                                                                                 
                  <input type="text" name="author_name" required autocomplete="off" placeholder="'.$authorName.'" value="'.$authorName.'" class="form-control" data-validation-required-message="Author is required."
                  aria-invalid="false">                                                                     
                  <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">                                                                                                                         
                  <div class="result"></div>                                                                                                                                            
-             </div>  
+            </div>  
             <div class="form-group col-md-12 search-box">                                                                                                                             
                  <label for="path">Sponsor:</label><br>                                                                                                                                 
                  <input type="text" name="sponsor_name" autocomplete="off" placeholder="'.$sponsorName.'" value="'.$sponsorName.'" class="form-control" aria-invalid="false">                                                                     
                  <input type="hidden" value="'.$sponsorId.'" name="sponsor_id" id="sponsor_id">                                                                                                                         
                  <div class="result"></div>                                                                                                                                            
-             </div>                                                                                                                                                                   
-
+            </div>                                                                                                                                                                   
             <div class="control-group form-group col-lg-12">
                 <label for="description">Description:</label><br>
                 <input rows="5" class="form-control" name="description" value="'.$row["description"].'" required data-validation-required-message="Description is required."
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
             </div>
-
             <div class="form-group col-md-12">
                 <label for="notes">Notes:</label><br>
                 <input rows="5" class="form-control" name="notes" value="'.$row["notes"].'" maxlength="500"
                     data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
-            </div>
-            
+            </div>           
             <div class="form-group col-md-6">
                 <label for="front_cover">Front Cover Image:</label><br>
-                <input type="file"  name="front_cover" value="'.$row["front_cover"].'" id="fileToUpload" required>
-                <img src="images/books/'.$row["front_cover"].'">
-            </div>
-            
+                <input type="file"  name="front_cover" id="front_cover">
+                <img id="frontPreview" src="images/books/'.$row["front_cover"].'">
+            </div>            
             <div class="form-group col-md-6">
                 <label for="front_cover">Back Cover Image:</label><br>
-                <input type="file" name="back_cover"  value="'.$row["back_cover"].'"id="fileToUpload" required>
-                <img src="images/books/'.$row["back_cover"].'">
+                <input type="file" name="back_cover" id="back_cover">
+                <img id="backPreview" src="images/books/'.$row["back_cover"].'">
             </div>
-            <br>
             <div class="control-group text-left" id="wrap">
-                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Update Book</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Update Book Metadata</button>
             </div>
-            </form>
+        </form>
+        <hr>
+        <h2>Manage Book Puzzles</h2>
+        <h3 style="text-align:left">Remove Puzzles</h3>
+        <p>These puzzles are in this book.</p>
+        <p>Select puzzles and click the "Remove Puzzles" button to remove puzzles from this book.</p>
+        <form id="removePuzzlesForm" action="books_remove_puzzles.php" method="POST">
+            <div id="tableView">
+                <table id="currentPuzzlesTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                    <div>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Title</th>
+                                <th>Sub-Title</th>
+                                <th>Directions</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                    if ($currentPuzzleResults->num_rows > 0) {
+                        while($row = $currentPuzzleResults->fetch_assoc()) {
+                            $id = $row["id"];
+                            $title = $row["title"];
+                            $subtitle = $row["sub_title"];
+                            $directions = $row["directions"];
+                            $notes = $row["notes"];
+                            ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><div><?php echo $title; ?></div></td>
+                                <td><div><?php echo $subtitle; ?></div></td>
+                                <td><div><?php echo $directions; ?></div></td>
+                                <td><div><?php echo $notes; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <div class="control-group text-left" id="wrap">
+                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Remove Puzzles</button>
+            </div>
+        </form>
+        <hr/>
+        <h3 style="text-align:left">Add Puzzles To Book</h3>
+        <p>These puzzles are not in this book.</p>
+        <p>Select puzzles and click the "Add Puzzles" button to add puzzles to this book.</p>
+        <form id="addPuzzlesForm" action="books_add_puzzles.php" method="POST">
+            <div id="tableView">
+                <table id="addPuzzlesTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                    <div>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Title</th>
+                                <th>Sub-Title</th>
+                                <th>Directions</th>
+                                <th>Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                    if ($addPuzzleResults->num_rows > 0) {
+                        while($row = $addPuzzleResults->fetch_assoc()) {
+                            $id = $row["id"];
+                            $title = $row["title"];
+                            $subtitle = $row["sub_title"];
+                            $directions = $row["directions"];
+                            $notes = $row["notes"];
+                            ?>
+                            <tr>
+                                <td><?php echo $id; ?></td>
+                                <td><div><?php echo $title; ?></div></td>
+                                <td><div><?php echo $subtitle; ?></div></td>
+                                <td><div><?php echo $directions; ?></div></td>
+                                <td><div><?php echo $notes; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <div class="control-group text-left" id="wrap">
+                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add Puzzles</button>
+            </div>
+        </form>
     </div>
 </div>';
-    }} else {
+    }
+} else {
     echo 'No record found.';
 }
 
@@ -95,6 +188,8 @@ include("footer.php"); ?>
 <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <!--Data Table-->
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/sl-1.3.1/datatables.min.css"/>-->
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/sl-1.3.1/datatables.min.js"></script>
 <script type="text/javascript" charset="utf8"
         src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
 <script type="text/javascript" charset="utf8"
@@ -123,57 +218,104 @@ include("footer.php"); ?>
         src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
 <script type="text/javascript" charset="utf8"
         src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js"></script>
 
 <script type="text/javascript" language="javascript">
-    $(document).ready( function () {
-        $('#booksTable').DataTable( {
-            dom: 'lfrtBip',
-            buttons: [
-                'copy', 'excel', 'csv', 'pdf'
-            ] }
-        );
-        var table = $('#booksTable').DataTable( {
+    $(document).ready(function() {
+        var currentPuzzlesTable = $('#currentPuzzlesTable').DataTable( {
             orderCellsTop: true,
             fixedHeader: true,
-            retrieve: true
-        } );
-    } );
-
-    $(document).ready(function() {
-        var table = $('#booksTable').DataTable( {
             retrieve: true,
-            "scrollY": "200px",
-            "paging": false
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
         } );
-        $('a.toggle-vis').on( 'click', function (e) {
-            e.preventDefault();
-            // Get the column API object
-            var column = table.column( $(this).attr('data-column') );
-            // Toggle the visibility
-            column.visible( ! column.visible() );
+        $('#addPuzzlesTable').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
         } );
-    } );
 
+        // Handle form submission event
+        $('#removePuzzlesForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = table.column(0).checkboxes.selected();
 
-    function updateValue(element,column,id){
-        var value = element.innerText
-        $.ajax({
-            url:'editable_list.php',
-            type: 'post',
-            data:{
-                table: 'books',
-                value: value,
-                column: column,
-                id: id
-            },
-            success:function(php_result){
-                console.log(php_result);
-            }
-        })
-    }
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', this.name)
+                        .val(this.value)
+                );
+            });
+            console.log(form);
+        });
+        // Handle form submission event
+        $('#addPuzzlesForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = table.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'id[]')
+                        .val(rowId)
+                );
+            });
+        });
+    });
 </script>
 <script type="text/javascript">
-    $(document).onfocus() ready(function(){
+    $(document).ready(function(){
+        var URL = window.URL || window.webkitURL;
+        var frontCoverInput = document.getElementById('front_cover');
+        var backCoverInput = document.getElementById('back_cover');
+        var frontCoverPreview = document.querySelector('#frontPreview');
+        var backCoverPreview = document.querySelector('#backPreview');
+        var frontCoverPreviewSource = frontCoverPreview.src;
+        var backCoverPreviewSource = backCoverPreview.src;
+
+        // When the file input changes, create a object URL around the file.
+        frontCoverInput.addEventListener('change', function () {
+            if (frontCoverInput.value.length) {
+                frontCoverPreview.src = URL.createObjectURL(this.files[0]);
+            } else { frontCoverPreview = frontCoverPreviewSource }
+        });
+        // When the image loads, release object URL
+        frontCoverPreview.addEventListener('load', function () {
+            URL.revokeObjectURL(this.src);
+        });
+
+        backCoverInput.addEventListener('change', function () {
+            if (backCoverInput.value.length) {
+                backCoverPreview.src = URL.createObjectURL(this.files[0]);
+            } else { backCoverPreview = backCoverPreviewSource }
+        });
+        // When the image loads, release object URL
+        backCoverPreview.addEventListener('load', function () {
+            URL.revokeObjectURL(this.src);
+        });
+
         var users = '';
         $('.search-box input[type="text"]').on("keyup input", function(){
             /* Get input value on change */
