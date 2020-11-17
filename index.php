@@ -64,23 +64,13 @@ include('nav.php');
 	</style>
 
 	<body>
+	<h1 id="title2">HomePage</h1>
 	<?php
-	if(isset($_POST['done'])){ //Check Completion
-		session_destroy();
-		header('location: index.php');
-	  }
 		if(isset($_SESSION['logged_in'])){
 			
 			echo "<h1>Successful logged in as ";
 			echo $_SESSION['role'];
 			echo "</h1>";
-			?>
-			<form method="post" action="index.php">
-    		<input type="submit" name="done" value="Logout" />
-			</form>
-		<?php
-
-
 
 		}
 

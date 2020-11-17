@@ -9,7 +9,7 @@ require ROOT_DIR . '/db_configuration.php';
 //require 'bin/functions.php';
 //require 'db_configuration.php';
 //include(ROOT_DIR . '/nav.php');
-
+error_reporting(0);
 ?>
 
 <html>
@@ -89,8 +89,8 @@ require ROOT_DIR . '/db_configuration.php';
 	$sql6 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'apps_to_show'";
 	$sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'app_height'";
 	$sql8 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'app_width'";
-	
-	
+
+
     $results1 = mysqli_query($db, $sql1);
 	$results2 = mysqli_query($db, $sql2);
     $results3 = mysqli_query($db, $sql3);
@@ -153,6 +153,75 @@ require ROOT_DIR . '/db_configuration.php';
 	$app_height = $height[0]['preference_value'];
 	$app_width = $height[0]['preference_value'];
 
+//....................................	
+	if(isset($_SESSION['logged_in'])){
+		$email = $_SESSION['email'];
+		$user1 = "SELECT `id` FROM `users` WHERE `email`= '$email'";
+		$sql2 = "SELECT `name` FROM `apps`";
+
+		$run1 = mysqli_query($db, $user1);
+
+		if (mysqli_num_rows($run1) > 0) {
+			while ($row = mysqli_fetch_assoc($run1)) {
+				$ID[] = $row;
+			}
+		}
+		$userID = $ID[0]['id'];
+		//echo $userID;
+		$app1 = "SELECT `app_id` FROM `users_app` WHERE `user_id`= '$userID'";
+		$run2 = mysqli_query($db, $app1);
+
+		if (mysqli_num_rows($run2) > 0) {
+			while ($row = mysqli_fetch_assoc($run2)) {
+				$appID[] = $row;
+			}
+		}
+		
+
+	}
+//.......................................
+	if(isset($_SESSION['logged_in'])){
+		
+		echo "<table id = 'table_2'>";
+		echo "<tr>";
+		$range = count($appID);
+		//echo $range;
+		for ($a = 0; $a < $range; $a) {
+			for ($b = 0; $b < $columns; $b++) {
+				if ($a >= $range) {
+					break;
+				} else {
+
+						if($range > 0){
+						$userAppID = $appID[$a]['app_id']-1;
+
+						$topic = $topics[$userAppID]['name'];
+						$pic = $pics[$userAppID]['icon'];
+						$location = $path[$userAppID]['path'];
+						$note = $notes[$userAppID]['notes'];
+						//unset($topics[$randIndex]);
+						echo "
+						
+						<td id= 'box'> 
+						<a href='$location'><img class='image' height='$app_height' width='$app_width' src = '$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img></a>
+						<div id = 'title'><b>$topic</b></div>
+						<div><b>Description: </b>$note</div>
+						</td>";
+
+				
+					$a++;
+						}
+				}
+			}
+			echo "</tr>";
+		}
+		echo "</table>";
+
+		if($range == 0){
+			echo "You have 0 apps";
+		}
+	}
+	else{
 	echo "<table id = 'table_2'>";
 	echo "<tr>";
 
@@ -162,16 +231,13 @@ require ROOT_DIR . '/db_configuration.php';
                 break;
             } else {
 
+					$randIndex = array_rand($topics);
 				
-				$randIndex = array_rand($topics);
-				
-                $topic = $topics[$randIndex]['name'];
-				$pic = $pics[$randIndex]['icon'];
-				$location = $path[$randIndex]['path'];
-				$note = $notes[$randIndex]['notes'];
-				unset($topics[$randIndex]);
-
-			   
+					$topic = $topics[$randIndex]['name'];
+					$pic = $pics[$randIndex]['icon'];
+					$location = $path[$randIndex]['path'];
+					$note = $notes[$randIndex]['notes'];
+					//unset($topics[$randIndex]);
                     echo "
                     
                     <td id= 'box'> 
@@ -180,14 +246,15 @@ require ROOT_DIR . '/db_configuration.php';
 					<div><b>Description: </b>$note</div>
                     </td>";
     
-                    
+				
 			
                 $a++;
             }
         }
         echo "</tr>";
     }
-    echo "</table>";
+	echo "</table>";
+}
     ?>
 
 		</body>
