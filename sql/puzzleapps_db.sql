@@ -102,8 +102,8 @@ INSERT INTO `apps` (`id`, `name`, `description`, `path`, `notes`, `inputFromDB`,
 
 CREATE TABLE `puzzles` (
     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `app_id` int(12) UNSIGNED NOT NULL,
-    `author_id` int(12) UNSIGNED NOT NULL,
+    `app_id` int(12) UNSIGNED,
+    `author_id` int(12) UNSIGNED,
     `title` varchar(50) NOT NULL,
     `sub_title` varchar(100) DEFAULT NULL,
     `directions` mediumblob DEFAULT NULL,
@@ -424,7 +424,7 @@ INSERT INTO `puzzles` (`id`, `app_id`, `title`, `author_id`, `puzzle_image`, `so
 
 CREATE TABLE `books` (
     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `author_id` int(12) UNSIGNED NOT NULL,
+    `author_id` int(12) UNSIGNED,
     `sponsor_id` int(12) UNSIGNED,
     `title` varchar(100) NOT NULL,
     `description` varchar(150),
