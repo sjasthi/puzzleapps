@@ -9,15 +9,15 @@ include(ROOT_DIR . '/user_search.php');
 require ROOT_DIR . '/db_configuration.php';
 
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM books WHERE id = '$id'";
+    $bookId = $_GET['id'];
+    $sql = "SELECT * FROM books WHERE id = '$bookId'";
     $result = $db->query($sql);
 }
 
-$currentPuzzlesQuery = "SELECT puzzles.* FROM books_puzzles JOIN puzzles ON books_puzzles.puzzle_id = puzzles.id WHERE books_puzzles.book_id = '$id'";
-$currentPuzzleResults = $db->query($currentPuzzlesQuery);
+$removePuzzlesQuery = "SELECT puzzles.* FROM books_puzzles JOIN puzzles ON books_puzzles.puzzle_id = puzzles.id WHERE books_puzzles.book_id = '$bookId'";
+$removePuzzleResults = $db->query($removePuzzlesQuery);
 
-$addPuzzlesQuery = "SELECT * FROM puzzles WHERE puzzles.id NOT IN (SELECT puzzle_id FROM books_puzzles WHERE books_puzzles.book_id = '$id')";
+$addPuzzlesQuery = "SELECT * FROM puzzles WHERE puzzles.id NOT IN (SELECT puzzle_id FROM books_puzzles WHERE books_puzzles.book_id = '$bookId')";
 $addPuzzleResults = $db->query($addPuzzlesQuery);
 
 
@@ -89,7 +89,7 @@ if($result->num_rows > 0) {
         <p>Select puzzles and click the "Remove Puzzles" button to remove puzzles from this book.</p>
         <form id="removePuzzlesForm" action="books_remove_puzzles.php" method="POST">
             <div id="tableView">
-                <table id="currentPuzzlesTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                <table id="removePuzzlesTable" style="width:100%" width="100%" class="display" cellspacing="0">
                     <div>
                         <thead>
                             <tr>
@@ -101,16 +101,16 @@ if($result->num_rows > 0) {
                             </tr>
                         </thead>
                         <tbody>';
-                    if ($currentPuzzleResults->num_rows > 0) {
-                        while($row = $currentPuzzleResults->fetch_assoc()) {
-                            $id = $row["id"];
+                    if ($removePuzzleResults->num_rows > 0) {
+                        while($row = $removePuzzleResults->fetch_assoc()) {
+                            $removePuzzleId = $row["id"];
                             $title = $row["title"];
                             $subtitle = $row["sub_title"];
                             $directions = $row["directions"];
                             $notes = $row["notes"];
                             ?>
                             <tr>
-                                <td><?php echo $id; ?></td>
+                                <td><?php echo $removePuzzleId; ?></td>
                                 <td><div><?php echo $title; ?></div></td>
                                 <td><div><?php echo $subtitle; ?></div></td>
                                 <td><div><?php echo $directions; ?></div></td>
@@ -124,14 +124,15 @@ if($result->num_rows > 0) {
                     </div>
                 </table>
             </div>
+            <input type="hidden" name="book-id" value="'.$bookId.'">
             <div class="control-group text-left" id="wrap">
-                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Remove Puzzles</button>
+                <button type="submit" name="remove-puzzles-submit" class="btn btn-primary btn-md align-items-center">Remove Puzzles</button>
             </div>
         </form>
         <hr/>
         <h3 style="text-align:left">Add Puzzles To Book</h3>
-        <p>These puzzles are not in this book.</p>
-        <p>Select puzzles and click the "Add Puzzles" button to add puzzles to this book.</p>
+        <p>These puzzles are not in this book.<br>
+        Select puzzles and click the "Add Puzzles" button to add puzzles to this book.</p>
         <form id="addPuzzlesForm" action="books_add_puzzles.php" method="POST">
             <div id="tableView">
                 <table id="addPuzzlesTable" style="width:100%" width="100%" class="display" cellspacing="0">
@@ -148,14 +149,14 @@ if($result->num_rows > 0) {
                         <tbody>';
                     if ($addPuzzleResults->num_rows > 0) {
                         while($row = $addPuzzleResults->fetch_assoc()) {
-                            $id = $row["id"];
+                            $addPuzzleId = $row["id"];
                             $title = $row["title"];
                             $subtitle = $row["sub_title"];
                             $directions = $row["directions"];
                             $notes = $row["notes"];
                             ?>
                             <tr>
-                                <td><?php echo $id; ?></td>
+                                <td><?php echo $addPuzzleId; ?></td>
                                 <td><div><?php echo $title; ?></div></td>
                                 <td><div><?php echo $subtitle; ?></div></td>
                                 <td><div><?php echo $directions; ?></div></td>
@@ -169,8 +170,9 @@ if($result->num_rows > 0) {
                     </div>
                 </table>
             </div>
+            <input type="hidden" name="book-id" value="'.$bookId.'">
             <div class="control-group text-left" id="wrap">
-                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add Puzzles</button>
+                <button type="submit" name="add-puzzles-submit" class="btn btn-primary btn-md align-items-center">Add Puzzles</button>
             </div>
         </form>
     </div>
@@ -223,7 +225,7 @@ include("footer.php"); ?>
 
 <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-        var currentPuzzlesTable = $('#currentPuzzlesTable').DataTable( {
+        var removePuzzlesTable = $('#removePuzzlesTable').DataTable( {
             orderCellsTop: true,
             fixedHeader: true,
             retrieve: true,
@@ -236,7 +238,7 @@ include("footer.php"); ?>
             ],
             order: [[1, 'asc']]
         } );
-        $('#addPuzzlesTable').DataTable( {
+        var addPuzzlesTable = $('#addPuzzlesTable').DataTable( {
             orderCellsTop: true,
             fixedHeader: true,
             retrieve: true,
@@ -253,7 +255,7 @@ include("footer.php"); ?>
         // Handle form submission event
         $('#removePuzzlesForm').on('submit', function(e){
             var form = this;
-            var rows_selected = table.column(0).checkboxes.selected();
+            var rows_selected = removePuzzlesTable.column(0).checkboxes.selected();
 
             // Iterate over all selected checkboxes
             $.each(rows_selected, function(index, rowId){
@@ -261,16 +263,15 @@ include("footer.php"); ?>
                 $(form).append(
                     $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', this.name)
-                        .val(this.value)
+                        .attr('name', 'removePuzzleId[]')
+                        .val(rowId)
                 );
             });
-            console.log(form);
         });
         // Handle form submission event
         $('#addPuzzlesForm').on('submit', function(e){
             var form = this;
-            var rows_selected = table.column(0).checkboxes.selected();
+            var rows_selected = addPuzzlesTable.column(0).checkboxes.selected();
 
             // Iterate over all selected checkboxes
             $.each(rows_selected, function(index, rowId){
@@ -278,7 +279,7 @@ include("footer.php"); ?>
                 $(form).append(
                     $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'id[]')
+                        .attr('name', 'addPuzzleId[]')
                         .val(rowId)
                 );
             });
