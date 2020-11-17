@@ -8,15 +8,15 @@ include(ROOT_DIR . '/nav.php');
 require ROOT_DIR . '/db_configuration.php';
 
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM puzzles WHERE id = '$id'";
+    $puzzleId = $_GET['id'];
+    $sql = "SELECT * FROM puzzles WHERE id = '$puzzleId'";
     $result = $db->query($sql);
 }
 
-$currentBooksQuery = "SELECT books.* FROM books_puzzles JOIN books ON books_puzzles.book_id = books.id WHERE books_puzzles.puzzle_id = '$id'";
-$currentBooksResults = $db->query($currentBooksQuery);
+$removeBooksQuery = "SELECT books.* FROM books_puzzles JOIN books ON books_puzzles.book_id = books.id WHERE books_puzzles.puzzle_id = '$puzzleId'";
+$removeBooksResults = $db->query($removeBooksQuery);
 
-$addBooksQuery = "SELECT * FROM books WHERE books.id NOT IN (SELECT book_id FROM books_puzzles WHERE books_puzzles.puzzle_id = '$id')";
+$addBooksQuery = "SELECT * FROM books WHERE books.id NOT IN (SELECT book_id FROM books_puzzles WHERE books_puzzles.puzzle_id = '$puzzleId')";
 $addBooksResults = $db->query($addBooksQuery);
 
 
@@ -94,7 +94,7 @@ if($result->num_rows > 0) {
         Select books and click the "Remove From Books" button to remove this puzzle from the selected books.</p>
         <form id="removeBooksForm" action="puzzles_remove_books.php" method="POST">
             <div id="tableView">
-                <table id="currentBooksTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                <table id="removeBooksTable" style="width:100%" width="100%" class="display" cellspacing="0">
                     <div>
                         <thead>
                             <tr>
@@ -105,29 +105,30 @@ if($result->num_rows > 0) {
                             </tr>
                         </thead>
                         <tbody>';
-        if ($currentBooksResults->num_rows > 0) {
-            while($row = $currentBooksResults->fetch_assoc()) {
-                $id = $row["id"];
-                $title = $row["title"];
-                $description = $row["description"];
-                $notes = $row["notes"];
-                ?>
-                <tr>
-                    <td><?php echo $id; ?></td>
-                    <td><div><?php echo $title; ?></div></td>
-                    <td><div><?php echo $description; ?></div></td>
-                    <td><div><?php echo $notes; ?></div></td>
-                </tr>
-                <?php
-            }
-        }
-        echo'
+                    if ($removeBooksResults->num_rows > 0) {
+                        while($row = $removeBooksResults->fetch_assoc()) {
+                            $removeBookId = $row["id"];
+                            $title = $row["title"];
+                            $description = $row["description"];
+                            $notes = $row["notes"];
+                            ?>
+                            <tr>
+                                <td><?php echo $removeBookId; ?></td>
+                                <td><div><?php echo $title; ?></div></td>
+                                <td><div><?php echo $description; ?></div></td>
+                                <td><div><?php echo $notes; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
                         </tbody>
                     </div>
                 </table>
             </div>
+            <input type="hidden" name="puzzle-id" value="'.$puzzleId.'">
             <div class="control-group text-left" id="wrap">
-                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Remove From Books</button>
+                <button type="submit" name="remove-books-submit" class="btn btn-primary btn-md align-items-center">Remove From Books</button>
             </div>
         </form>
         <hr/>
@@ -147,29 +148,30 @@ if($result->num_rows > 0) {
                             </tr>
                         </thead>
                         <tbody>';
-        if ($addBooksResults->num_rows > 0) {
-            while($row = $addBooksResults->fetch_assoc()) {
-                $id = $row["id"];
-                $title = $row["title"];
-                $description = $row["description"];
-                $notes = $row["notes"];
-                ?>
-                <tr>
-                    <td><?php echo $id; ?></td>
-                    <td><div><?php echo $title; ?></div></td>
-                    <td><div><?php echo $description; ?></div></td>
-                    <td><div><?php echo $notes; ?></div></td>
-                </tr>
-                <?php
-            }
-        }
-        echo'
+                    if ($addBooksResults->num_rows > 0) {
+                        while($row = $addBooksResults->fetch_assoc()) {
+                            $bookId = $row["id"];
+                            $title = $row["title"];
+                            $description = $row["description"];
+                            $notes = $row["notes"];
+                            ?>
+                            <tr>
+                                <td><?php echo $bookId; ?></td>
+                                <td><div><?php echo $title; ?></div></td>
+                                <td><div><?php echo $description; ?></div></td>
+                                <td><div><?php echo $notes; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
                         </tbody>
                     </div>
                 </table>
             </div>
+            <input type="hidden" name="puzzle-id" value="'.$puzzleId.'">
             <div class="control-group text-left" id="wrap">
-                <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add To Books</button>
+                <button type="submit" name="add-books-submit" class="btn btn-primary btn-md align-items-center">Add To Books</button>
             </div>
         </form>
     </div>
@@ -222,7 +224,7 @@ include("footer.php");?>
 
 <script type="text/javascript" language="javascript">
     $(document).ready(function() {
-        $('#currentBooksTable').DataTable( {
+        var removeBooksTable = $('#removeBooksTable').DataTable( {
             orderCellsTop: true,
             fixedHeader: true,
             retrieve: true,
@@ -236,7 +238,7 @@ include("footer.php");?>
             order: [[1, 'asc']]
         } );
 
-        $('#addBooksTable').DataTable( {
+        var addBooksTable = $('#addBooksTable').DataTable( {
             orderCellsTop: true,
             fixedHeader: true,
             retrieve: true,
@@ -251,40 +253,38 @@ include("footer.php");?>
         } );
 
         // Handle form submission event
-        // $('#removeBookForm').on('submit', function(e){
-        //     var form = this;
-        //
-        //     var rows_selected = table.column(0).checkboxes.selected();
-        //
-        //     // Iterate over all selected checkboxes
-        //     $.each(rows_selected, function(index, rowId){
-        //         // Create a hidden element
-        //         $(form).append(
-        //             $('<input>')
-        //                 .attr('type', 'hidden')
-        //                 .attr('name', 'id[]')
-        //                 .val(rowId)
-        //         );
-        //     });
-        // });
+        $('#removeBooksForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = removeBooksTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'removeBookId[]')
+                        .val(rowId)
+                );
+            });
+        });
 
         // Handle form submission event
-        // $('#addBookForm').on('submit', function(e){
-        //     // var form = this;
-        //     //
-        //     // var rows_selected = table.column(0).checkboxes.selected();
-        //     //
-        //     // // Iterate over all selected checkboxes
-        //     // $.each(rows_selected, function(index, rowId){
-        //     //     // Create a hidden element
-        //     //     $(form).append(
-        //     //         $('<input>')
-        //     //             .attr('type', 'hidden')
-        //     //             .attr('name', 'id[]')
-        //     //             .val(rowId)
-        //     //     );
-        //     // });
-        // });
+        $('#addBooksForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = addBooksTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'addBookId[]')
+                        .val(rowId)
+                );
+            });
+        });
     });
 </script>
 <script type="text/javascript">

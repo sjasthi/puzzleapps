@@ -5,7 +5,6 @@ if (isset($_POST['import-puzzle-images'])) {
     $target_dir = "images/puzzles/main/";
     $allowableExtensions = array("jpeg", "jpg", "png", "gif");
     for($i = 0; $i < $countFiles; $i++) {
-
         $filename = $_FILES['puzzle-images-file']['name'][$i];
         $puzzleImageFile = $target_dir . $filename;
         $uploadOk = 1;
