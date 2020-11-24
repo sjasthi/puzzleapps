@@ -165,7 +165,7 @@ if ($a >= $manyItems) {
         echo "
         
         <td id= 'box'> 
-        <img class='image' height='$puzzle_height' width='$puzzle_width' src = '$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
+        <img class='image' height='$puzzle_height' width='$puzzle_width' src = 'images/puzzles/main/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
         <div id = 'title'><b>$topic</b></div>
         <div><b>Description: </b>$note</div>
         </td>";

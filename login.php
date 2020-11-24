@@ -60,14 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
           <button class="button button-block" name="login" />Log In</button>
           <br/>
 
-          <!-- <ul class="tab-group">
+          <ul class="tab-group">
             <li class= "tab active align = right"><a href="#register">Register</a></li>
-            </ul> -->
+            </ul>
           </form>
 
         </div>
 
-        <!-- <div id="register">
+        <div id="register">
         <ul class="tab-group">
             <li class= "tab active align = right"><a href="#login">Back</a></li>
             </ul>
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
               Set A Password<span class="req">*</span>
             </label>
             <input type="password"required autocomplete="off" name='password'/>
-          </div> -->
+          </div>
 
           <button class="button button-block" name="register" />Register</button> 
           
