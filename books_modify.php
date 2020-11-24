@@ -29,34 +29,22 @@ if($result->num_rows > 0) {
         $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
         $authorName = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
 
-        $sponsorId = $row['sponsor_id'];
-        $sponsorQuery = "SELECT * FROM users WHERE id = '$sponsorId'";
-        $sponsorResult = $db->query($sponsorQuery);
-        $sponsorRow = $sponsorResult->fetch_array(MYSQLI_ASSOC);
-        $sponsorName = $sponsorRow["first_name"] . ' ' . $sponsorRow["last_name"];
-
         echo '<div class="right-content">';
         echo '<div class="container">';
 
-        echo '<h1>Update Book</h1>';
+        echo '<h1>Manage Book</h1>';
         echo '<form id="modifyBookForm" action="books_modify_a_book.php?id='.$row["id"].'" method="POST" enctype="multipart/form-data">
             <div class="control-group form-group col-md-12">
                 <label for="name">Title:</label><br>
                 <input class="form-control" name="title" value="' .$row["title"].'" required data-validation-required-message="Please enter the title."  
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
-            <div class="form-group col-md-12 search-box">                                                                                                                             
+            <div class="form-group col-md-12 author-search-box">                                                                                                                             
                  <label for="path">Author:</label><br>                                                                                                                                 
-                 <input type="text" name="author_name" required autocomplete="off" placeholder="'.$authorName.'" value="'.$authorName.'" class="form-control" data-validation-required-message="Author is required."
+                 <input type="text" name="author_name" required autocomplete="off" value="'.$authorName.'" placeholder="'.$authorName.'" class="form-control" data-validation-required-message="Author is required."
                  aria-invalid="false">                                                                     
                  <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">                                                                                                                         
-                 <div class="result"></div>                                                                                                                                            
-            </div>  
-            <div class="form-group col-md-12 search-box">                                                                                                                             
-                 <label for="path">Sponsor:</label><br>                                                                                                                                 
-                 <input type="text" name="sponsor_name" autocomplete="off" placeholder="'.$sponsorName.'" value="'.$sponsorName.'" class="form-control" aria-invalid="false">                                                                     
-                 <input type="hidden" value="'.$sponsorId.'" name="sponsor_id" id="sponsor_id">                                                                                                                         
-                 <div class="result"></div>                                                                                                                                            
+                 <div class="author_result"></div>                                                                                                                                            
             </div>                                                                                                                                                                   
             <div class="control-group form-group col-lg-12">
                 <label for="description">Description:</label><br>
@@ -317,18 +305,18 @@ include("footer.php"); ?>
             URL.revokeObjectURL(this.src);
         });
 
-        var users = '';
-        $('.search-box input[type="text"]').on("keyup input", function(){
+        var authors = '';
+        $('.author-search-box input[type="text"]').on("keyup input", function(){
             /* Get input value on change */
             var inputVal = $(this).val();
-            var resultDropdown = $(this).siblings(".result");
+            var resultDropdown = $(this).siblings(".author_result");
             if(inputVal.length){
                 $.get("user_search.php", {term: inputVal}).done(function(data){
-                    users = JSON.parse(data);
+                    authors = JSON.parse(data);
                     let usersHTML = '';
                     // Display the returned data in browser
-                    for (var i = 0; i < users.length; i++) {
-                        usersHTML += "<p>" + users[i].first_name + " " + users[i].last_name + "</p>";
+                    for (var i = 0; i < authors.length; i++) {
+                        usersHTML += "<p>" + authors[i].first_name + " " + authors[i].last_name + "</p>";
                     }
                     resultDropdown.html(usersHTML);
                 });
@@ -338,10 +326,10 @@ include("footer.php"); ?>
         });
 
         // Set search input value on click of result item
-        $(document).on("click", ".result p", function(){
-            $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
-            $((this).name+"_id").val(users[0].id);
-            $(this).parent(".result").empty();
+        $(document).on("click", ".author_result p", function(){
+            $(this).parents(".author-search-box").find('input[type="text"]').val($(this).text());
+            $(this).parents(".author-search-box").find('input[type="hidden"]').val(authors[0].id);
+            $(this).parent(".author_result").empty();
         });
     });
 </script>

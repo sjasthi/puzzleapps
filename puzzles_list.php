@@ -33,7 +33,7 @@ $GLOBALS['puzzleTableResults'] = mysqli_query($db, $query);
                         <th>Solution Image</th>
                         <th>View</th>
                         <th>Play</th>
-                        <th>Modify</th>
+                        <th>Manage</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
@@ -49,7 +49,7 @@ $GLOBALS['puzzleTableResults'] = mysqli_query($db, $query);
                         <a id="toggle" class="toggle-vis" data-column="5">Solution Image</a> |
                         <a id="toggle" class="toggle-vis" data-column="6">View</a> |
                         <a id="toggle" class="toggle-vis" data-column="7">Play</a> |
-                        <a id="toggle" class="toggle-vis" data-column="8">Modify</a> |
+                        <a id="toggle" class="toggle-vis" data-column="8">Manage</a> |
                         <a id="toggle" class="toggle-vis" data-column="8">Delete</a>
                     </div><br>
                     <?php
@@ -73,7 +73,7 @@ $GLOBALS['puzzleTableResults'] = mysqli_query($db, $query);
                             <?php echo '<td><img src="images/puzzles/solution/'.$row["solution_image"].'" style="width:80px;">' ?>
                             <?php echo '<td><a class="btn btn-info btn-sm" href="puzzles_view.php?id='.$row["id"].'" target="_blank">View</a></td>' ?>
                             <?php echo '<td><a class="btn btn-primary btn-sm" href="puzzles_play.php?id='.$row["id"].'" target="_blank">Play</a></td>' ?>
-                            <?php echo '<td><a class="btn btn-warning btn-sm" href="puzzles_modify.php?id='.$row["id"].'">Modify</a></td>' ?>
+                            <?php echo '<td><a class="btn btn-warning btn-sm" href="puzzles_modify.php?id='.$row["id"].'">Manage</a></td>' ?>
                             <?php echo '<td><a class="btn btn-danger btn-sm" href="puzzles_delete.php?id='.$row["id"].'">Delete</a></td>' ?>
                             </tr><?php
                         }

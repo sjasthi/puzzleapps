@@ -18,7 +18,7 @@ if($result->num_rows > 0) {
     echo '<div class="right-content">';
     echo '<div class="container">';
 
-        echo '<h1>Update App</h1>';
+        echo '<h1>Manage App</h1>';
             echo '<form action="apps_modify_an_app.php?id='.$row["id"].'" method="POST" enctype="multipart/form-data">
         <div class="form-row">
             <div class="control-group form-group col-md-12">

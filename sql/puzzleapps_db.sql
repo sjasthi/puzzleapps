@@ -19,14 +19,14 @@ SET time_zone = "+00:00";
 CREATE TABLE `users` (
      `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
      `email` varchar(128) NOT NULL UNIQUE,
-     `password` varchar(200) NOT NULL,
+     `password` varchar(200),
      `role` enum('SUPER_ADMIN', 'ADMIN', 'USER') NOT NULL DEFAULT 'USER',
      `first_name` varchar(128),
      `last_name` varchar(128),
      `active` boolean NOT NULL DEFAULT false,
      `notes` varchar(1000) DEFAULT NULL,
-     `created_at` date NOT NULL DEFAULT current_timestamp,
-     `modified_at` date NOT NULL DEFAULT current_timestamp,
+     `created_at` datetime NOT NULL DEFAULT current_timestamp,
+     `modified_at` datetime NOT NULL DEFAULT current_timestamp,
      `last_login_at` date,
      PRIMARY KEY (id),
      UNIQUE KEY (email)
@@ -102,8 +102,8 @@ INSERT INTO `apps` (`id`, `name`, `description`, `path`, `notes`, `inputFromDB`,
 
 CREATE TABLE `puzzles` (
     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `app_id` int(12) UNSIGNED NOT NULL,
-    `author_id` int(12) UNSIGNED NOT NULL,
+    `app_id` int(12) UNSIGNED,
+    `author_id` int(12) UNSIGNED,
     `title` varchar(50) NOT NULL,
     `sub_title` varchar(100) DEFAULT NULL,
     `directions` mediumblob DEFAULT NULL,
@@ -111,13 +111,9 @@ CREATE TABLE `puzzles` (
     `solution_image` varchar(250),
     `notes` blob DEFAULT NULL,
     `keywords` varchar(300) DEFAULT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT `fk_puzzles_app_id`
-        FOREIGN KEY (app_id) REFERENCES apps (id)
-       ON DELETE RESTRICT,
-    CONSTRAINT `fk_puzzles_author_id`
-        FOREIGN KEY (author_id) REFERENCES users (id)
-       ON DELETE RESTRICT
+    FOREIGN KEY (app_id) REFERENCES apps (id),
+    FOREIGN KEY (author_id) REFERENCES users (id),
+    PRIMARY KEY (id)
 ) AUTO_INCREMENT=2 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `puzzles` (`id`, `app_id`, `title`, `author_id`, `puzzle_image`, `solution_image`, `notes`, `keywords`) VALUES
@@ -424,25 +420,22 @@ INSERT INTO `puzzles` (`id`, `app_id`, `title`, `author_id`, `puzzle_image`, `so
 
 CREATE TABLE `books` (
     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `author_id` int(12) UNSIGNED NOT NULL,
-    `sponsor_id` int(12) UNSIGNED,
+    `author_id` int(12) UNSIGNED,
     `title` varchar(100) NOT NULL,
     `description` varchar(150),
     `front_cover` varchar(500),
     `back_cover` varchar(500),
     `notes` varchar(1000) DEFAULT NULL,
     `keywords` varchar(1000) DEFAULT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT `fk_books_author_id`
-        FOREIGN KEY (author_id) REFERENCES users (id)
-        ON DELETE RESTRICT
+    FOREIGN KEY (author_id) REFERENCES users (id),
+    PRIMARY KEY (id)
 ) AUTO_INCREMENT=5 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `books` (`id`, `author_id`, `sponsor_id`, `title`, `description`, `front_cover`, `back_cover`, `notes`, `keywords`) VALUES
-(1, 2, 5, 'Book Name', 'Such a good puzzle book', 'dabble.png', 'dabble.png', 'Book notes', 'book'),
-(2, 2, 5, 'Easy Crosswords V1', 'Easy crosswords you can finish in minutes!', 'crosswords.png', 'crosswords.png', '', NULL),
-(3, 2, 5, 'English Vowel Changes', 'Those crazy vowels!', 'vowels.png', 'vowels.png', '', NULL),
-(4, 2, 5, 'Word Find Book 10', 'Find them all!', 'wordfind.gif', 'wordfind.gif', '', NULL);
+INSERT INTO `books` (`id`, `author_id`, `title`, `description`, `front_cover`, `back_cover`, `notes`, `keywords`) VALUES
+(1, 2, 'Book Name', 'Such a good puzzle book', 'dabble.png', 'dabble.png', 'Book notes', 'book'),
+(2, 2, 'Easy Crosswords V1', 'Easy crosswords you can finish in minutes!', 'crosswords.png', 'crosswords.png', '', NULL),
+(3, 2, 'English Vowel Changes', 'Those crazy vowels!', 'vowels.png', 'vowels.png', '', NULL),
+(4, 2, 'Word Find Book 10', 'Find them all!', 'wordfind.gif', 'wordfind.gif', '', NULL);
 
 
 CREATE TABLE `books_puzzles` (
@@ -458,12 +451,13 @@ INSERT INTO `books_puzzles` (`book_id`, `puzzle_id`) VALUES
 (3, 1),(3, 2),(3, 3),(3, 4),(3, 5),(3, 6),(3, 7),(3, 8),(3, 9),(3, 10),
 (4, 101),(4, 102),(4, 103),(4, 104),(4, 105),(4, 106),(4, 107),(4, 108),(4, 109),(4, 110);
 
+
 CREATE TABLE `users_books` (
-    `user_id` int(12) UNSIGNED NOT NULL,
-    `book_id` int(12) UNSIGNED NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (book_id) REFERENCES books (id),
-    PRIMARY KEY (user_id, book_id)
+   `user_id` int(12) UNSIGNED NOT NULL,
+   `book_id` int(12) UNSIGNED NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES users (id),
+   FOREIGN KEY (book_id) REFERENCES books (id),
+   PRIMARY KEY (user_id, book_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `users_books` (`user_id`, `book_id`) VALUES

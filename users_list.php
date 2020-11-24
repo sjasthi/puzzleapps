@@ -33,8 +33,7 @@ $GLOBALS['userTableResults'] = mysqli_query($db, $query);
                         <th>Modified At</th>
                         <th>Last Login At</th>
                         <th>Notes</th>
-                        <th>View</th>
-                        <th>Modify</th>
+                        <th>Manage</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
@@ -51,9 +50,8 @@ $GLOBALS['userTableResults'] = mysqli_query($db, $query);
                         <a id="toggle" class="toggle-vis" data-column="7">Modified At</a> |
                         <a id="toggle" class="toggle-vis" data-column="8">Last Login At</a> |
                         <a id="toggle" class="toggle-vis" data-column="9">Notes</a> |
-                        <a id="toggle" class="toggle-vis" data-column="10">View</a> |
-                        <a id="toggle" class="toggle-vis" data-column="10">Modify</a> |
-                        <a id="toggle" class="toggle-vis" data-column="10">Delete</a> |
+                        <a id="toggle" class="toggle-vis" data-column="10">Manage</a> |
+                        <a id="toggle" class="toggle-vis" data-column="11">Delete</a> |
                     </div><br>
                     <?php
                     if ($userTableResults->num_rows > 0) {
@@ -74,14 +72,13 @@ $GLOBALS['userTableResults'] = mysqli_query($db, $query);
                             <td><div contenteditable="true" onBlur="updateValue(this, 'first_name', '<?php echo $id; ?>')"><?php echo $first_name; ?></div></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'last_name', '<?php echo $id; ?>')"><?php echo $last_name; ?></div></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'email', '<?php echo $id; ?>')"><?php echo $email; ?></div></td>
-                            <td><div contenteditable="true" onBlur="updateValue(this, 'role', '<?php echo $id; ?>')"><?php echo $role; ?></div></td>
-                            <td><div contenteditable="true" onBlur="updateValue(this, 'active', '<?php echo $id; ?>')"><?php echo $active; ?></div></td>
-                            <td><div contenteditable="true" onBlur="updateValue(this, 'createdAt', '<?php echo $id; ?>')"><?php echo $createdAt; ?></div></td>
-                            <td><div contenteditable="true" onBlur="updateValue(this, 'modifiedAt', '<?php echo $id; ?>')"><?php echo $modifiedAt; ?></div></td>
-                            <td><div contenteditable="true" onBlur="updateValue(this, 'lastLoginAt', '<?php echo $id; ?>')"><?php echo $lastLoginAt; ?></div></td>
+                            <td><?php echo $role; ?></td>
+                            <td><?php echo $active; ?></td>
+                            <td><?php echo $createdAt; ?></td>
+                            <td><?php echo $modifiedAt; ?></td>
+                            <td><?php echo $lastLoginAt; ?></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'notes', '<?php echo $id; ?>')"><?php echo $notes; ?></div></td>
-                            <?php echo '<td><a class="btn btn-info btn-sm" href="users_view.php?id='.$row["id"].'" target="_blank">View</a></td>' ?>
-                            <?php echo '<td><a class="btn btn-warning btn-sm" href="users_modify.php?id='.$row["id"].'">Modify</a></td>' ?>
+                            <?php echo '<td><a class="btn btn-info btn-sm" href="users_modify.php?id='.$row["id"].'">Manage</a></td>' ?>
                             <?php echo '<td><a class="btn btn-danger btn-sm" href="users_delete.php?id='.$row["id"].'">Delete</a></td>' ?>
                             </tr><?php
                         }

@@ -165,8 +165,16 @@ if (isset($_GET['app_id'])) {
             $result = mysqli_query($db, $sql);
 
             if(!$result) {
-                die('Update puzzle failed: ' . mysqli_error($db));
-            } else { echo '<h1>Puzzle Updated!</h1>'; }
+                echo '<script type="text/javascript">
+                alert("Error updating puzzle.");
+                window.location = "puzzles_modify.php?id='.$id.'"
+                </script>';
+            } else {
+                echo '<script type="text/javascript">
+                alert("Puzzle updated!");
+                window.location = "puzzles_modify.php?id='.$id.'"
+                </script>';
+            }
         }
 
 echo '</div></div>';

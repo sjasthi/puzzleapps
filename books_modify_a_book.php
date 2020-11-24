@@ -14,9 +14,6 @@ if (isset($_GET['id'])) {
 if (isset($_GET['author_id'])) {
     $authorId = $_GET['author_id'];
 }
-if (isset($_GET['sponsor_id'])) {
-    $sponsorId = $_GET['sponsor_id'];
-}
 ?>
 
 <div class="right-content">
@@ -144,7 +141,6 @@ if (isset($_GET['sponsor_id'])) {
     if (isset($_GET['id'])){
         $title = mysqli_real_escape_string($db, $_POST['title']);
         $authorId = ( isset($_POST['author_id']) ) ? $_POST['author_id'] : null;
-        $sponsorId = ( isset($_POST['sponsor_id']) ) ? $_POST['sponsor_id'] : null;
         $description = mysqli_real_escape_string($db, $_POST['description']);
         $notes = mysqli_real_escape_string($db, $_POST['notes']);
         $frontCover = mysqli_real_escape_string($db, $frontCoverFileName);
@@ -153,7 +149,6 @@ if (isset($_GET['sponsor_id'])) {
         $sql = "UPDATE books
                 SET title='$title',
                     author_id='$authorId',
-                    sponsor_id='$sponsorId',
                     description='$description',
                     notes = '$notes',
                     front_cover = '$frontCover',
@@ -163,8 +158,16 @@ if (isset($_GET['sponsor_id'])) {
         $result = mysqli_query($db, $sql);
 
         if(!$result) {
-            die('Update book failed: ' . mysqli_error($db));
-        } else { echo '<h1>Book Updated!</h1>'; }
+            echo '<script type="text/javascript">
+                alert("Error updating book.");
+                window.location = "books_modify.php?id='.$id.'"
+                </script>';
+        } else {
+            echo '<script type="text/javascript">
+                alert("Book updated!");
+                window.location = "books_modify.php?id='.$id.'"
+                </script>';
+        }
     }
 
 echo '</div></div>';

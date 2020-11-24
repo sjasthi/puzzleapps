@@ -111,6 +111,18 @@ if (isset($_GET['id'])) {
         if(!$result) {
             die('Update app failed: ' . mysqli_error($db));
         } else { echo '<h1>App Updated!</h1>'; }
+
+        if(!$result) {
+            echo '<script type="text/javascript">
+                alert("Error updating app. Try again.");
+                window.location = "apps_modify.php?id='.$id.'"
+                </script>';
+        } else {
+            echo '<script type="text/javascript">
+                alert("App updated!");
+                window.location = "apps_modify.php?id='.$id.'"
+                </script>';
+        }
     }
 
 echo '</div></div>';

@@ -30,7 +30,7 @@ $GLOBALS['appTableResults'] = mysqli_query($db, $query);
                         <th>Notes</th>
                         <th>Image</th>
                         <th>Open</th>
-                        <th>Modify</th>
+                        <th>Manage</th>
                         <th>Delete</th>
                     </tr>
                     </thead>
@@ -44,7 +44,7 @@ $GLOBALS['appTableResults'] = mysqli_query($db, $query);
                         <a id="toggle" class="toggle-vis" data-column="4">Notes</a> |
                         <a id="toggle" class="toggle-vis" data-column="5">Image</a> |
                         <a id="toggle" class="toggle-vis" data-column="6">Open</a> |
-                        <a id="toggle" class="toggle-vis" data-column="7">Modify</a> |
+                        <a id="toggle" class="toggle-vis" data-column="7">Manage</a> |
                         <a id="toggle" class="toggle-vis" data-column="8">Delete</a>
                     </div><br>
                     <?php
@@ -65,7 +65,7 @@ $GLOBALS['appTableResults'] = mysqli_query($db, $query);
                                 <td><div contenteditable="true" onBlur="updateValue(this, 'notes', '<?php echo $id; ?>')"><?php echo $notes; ?></div></td>
                                 <?php echo '<td><img src="images/apps/'.$row["icon"].'" style="width:80px;">' ?>
                                 <?php echo '<td><a class="btn btn-info btn-sm" href="'.$row["path"].'" target="_blank">Open</a></td>' ?>
-                                <?php echo '<td><a class="btn btn-warning btn-sm" href="apps_modify.php?id='.$row["id"].'">Modify</a></td>' ?>
+                                <?php echo '<td><a class="btn btn-warning btn-sm" href="apps_modify.php?id='.$row["id"].'">Manage</a></td>' ?>
                                 <?php echo '<td><a class="btn btn-danger btn-sm" href="apps_delete.php?id='.$row["id"].'">Delete</a></td>' ?>
                             </tr><?php
                         }

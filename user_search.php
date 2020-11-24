@@ -31,11 +31,7 @@ if(isset($_REQUEST["term"])){
                     array_push($users, $row);
                 }
                 echo json_encode($users);
-            } else{
-                echo '[{"error":"No matches found."}]';
             }
-        } else{
-            echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
         }
     }
 
