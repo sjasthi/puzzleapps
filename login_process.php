@@ -29,3 +29,4 @@ else { // User exists
         echo '<script>alert("You have entered wrong password, try again!")</script>';
     }
 }
+?>

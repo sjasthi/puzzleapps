@@ -75,7 +75,7 @@ error_reporting(0);
 		}
 	</style>
 
-	<body>
+	<body onload="window.open(url, '_blank');">
 	
 		<h1 id="title2">What do you like to play today?</h1>
 
@@ -168,7 +168,7 @@ error_reporting(0);
 		}
 		$userID = $ID[0]['id'];
 		//echo $userID;
-		$app1 = "SELECT `app_id` FROM `users_app` WHERE `user_id`= '$userID'";
+		$app1 = "SELECT `app_id` FROM `users_apps` WHERE `user_id`= '$userID'";
 		$run2 = mysqli_query($db, $app1);
 
 		if (mysqli_num_rows($run2) > 0) {
@@ -200,13 +200,15 @@ error_reporting(0);
 						$location = $path[$userAppID]['path'];
 						$note = $notes[$userAppID]['notes'];
 						//unset($topics[$randIndex]);
-						echo "
-						
-						<td id= 'box'> 
-						<a href='$location'><img class='image' height='$app_height' width='$app_width' src = '$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img></a>
-						<div id = 'title'><b>$topic</b></div>
-						<div><b>Description: </b>$note</div>
-						</td>";
+						?>
+                    
+                    <td id= "box"> 
+                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+					<div id = "title"><b><?php echo $topic ?></b></div>
+					<div><b>Description: </b><?php echo $note ?></div>
+                    </td>
+    
+				<?php
 
 				
 					$a++;
@@ -238,15 +240,15 @@ error_reporting(0);
 					$location = $path[$randIndex]['path'];
 					$note = $notes[$randIndex]['notes'];
 					//unset($topics[$randIndex]);
-                    echo "
+                    ?>
                     
-                    <td id= 'box'> 
-                    <a href='$location'><img class='image' height='$app_height' width='$app_width' src = '$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img></a>
-					<div id = 'title'><b>$topic</b></div>
-					<div><b>Description: </b>$note</div>
-                    </td>";
+                    <td id= "box"> 
+                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+					<div id = "title"><b><?php echo $topic ?></b></div>
+					<div><b>Description: </b><?php echo $note ?></div>
+                    </td>
     
-				
+				<?php
 			
                 $a++;
             }
