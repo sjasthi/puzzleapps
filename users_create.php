@@ -11,89 +11,57 @@ echo '<div class="right-content">';
 echo '<div class="container">';
 
 echo '<h1>Create A User</h1>';
-echo '<form action="apps_create_an_app.php" method="POST" enctype="multipart/form-data">
+echo '<form action="users_create_a_user.php" method="POST">
         <div class="form-row">
             <div class="control-group form-group col-md-12">
-                <label for="name">Name:</label><br>
-                <input class="form-control" name="name" required data-validation-required-message="Please enter the name."  
+                <label for="first_name">First Name:</label><br>
+                <input class="form-control" name="first_name" required data-validation-required-message="Please enter the first name."  
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
-
+            <div class="control-group form-group col-md-12">
+                <label for="last_name">Last Name:</label><br>
+                <input class="form-control" name="last_name" required data-validation-required-message="Please enter the last name."  
+                maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
+            </div>
             <div class="form-group col-md-12">
-                <label for="path">Path:</label><br>
-                <input class="form-control" name="path" required data-validation-required-message="Path is required."
+                <label for="email">Email Address:</label><br>
+                <input class="form-control" name="email" required data-validation-required-message="Email address is required."
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
-
-            <div class="control-group form-group col-lg-12">
-                <label for="description">Description:</label><br>
-                <input rows="5" class="form-control" name="description" required data-validation-required-message="Description is required."
-                maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
+            <div class="form-group col-md-4">
+                <label for="role">Role:</label><br>
+                <select name="role" required data-validation-required-message="Select a role.">';
+                        $roleQuery = "SELECT column_type FROM information_schema.COLUMNS WHERE TABLE_NAME = 'users' AND COLUMN_NAME = 'role'";
+                        $selectedQuery = "SELECT COLUMN_DEFAULT FROM information_schema.COLUMNS WHERE TABLE_NAME = 'users' AND COLUMN_NAME = 'role'";
+                        $rolesResult = mysqli_query($db, $roleQuery);
+                        $selectedResult = mysqli_query($db, $selectedQuery);
+                        $selected = mysqli_fetch_array($selectedResult);
+                        $selectedSubstring = explode("''", substr($selected[0], 1, -1));
+                        if (mysqli_num_rows($rolesResult) > 0) {
+                            $roles = mysqli_fetch_array($rolesResult);
+                            $rolesSubstring = explode("','", substr($roles[0], 6, -2));
+                            foreach ($rolesSubstring as $option) {
+                                if ($option == $selectedSubstring[0]) {
+                                    print("<option selected='selected'>$option</option>");
+                                } else {
+                                    print("<option>$option</option>");
+                                }
+                            }
+                        }
+                echo '</select>
             </div>
-
             <div class="form-group col-md-12">
                 <label for="notes">Notes:</label><br>
                 <input rows="5" class="form-control" name="notes"   maxlength="500"
                     data-validation-maxlength-message="Enter fewer characters." aria-invalid="false"></input>
             </div>
 
-            <div class="form-row">
-                <div class="form-group col-md-3">
-                    <label for="inputFromDB">input From DB:</label><br>
-                    <input type="checkbox" class="form-control checkbox-inline" name="inputFromDB"  maxlength="5">
-                </div>
-
-                <div class="form-group col-md-3">
-                    <label for="inputFromUI">Input From UI:</label><br>
-                    <input type="checkbox" class="form-control" name="inputFromUI"  maxlength="5">
-                </div>
-
-                <div class="form-group col-md-3">
-                    <label for="outputToDB">output To DB:</label><br>
-                    <input type="checkbox" class="form-control" name="outputToDB"   maxlength="5">
-                </div>
-
-                <div class="form-group col-md-3">
-                    <label for="outputToUI">Output To UI:</label><br>
-                    <input type="checkbox" class="form-control" name="outputToUI"  maxlength="5">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group col-md-12">
-                    <label for="developer">Developer:</label><br>
-                    <input type="text" class="form-control" name="developer"  maxlength="50">
-                </div>
-
-            <div class="form-group col-md-12">
-                <label for="token">Token:</label><br>
-                <input type="text" class="form-control" name="token"  maxlength="50">
-            </div>
-            
-            <div class="form-group col-md-3">
-                <label for="status">Status:</label><br>
-                <input type="checkbox" class="form-control" name="status"  maxlength="1">
-            </div>
-
-            <div class="control-group form-group col-md-3">
-                <label for="playable">Playable:</label><br>
-                <input type="checkbox" class="form-control" name="playable"   maxlength="1">
-            </div>
-        </div>
-
-        <div class="form-group col-md-6">
-                <label for="icon">Application Image:</label><br>
-                <input type="file" name="icon" id="icon" required>
-                <img id="preview" src="about:blank"/>
-        </div>
         <br><br><br>
-        <div class="text-left">
-            <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Add Application</button>
+        <div class="control-group text-left" id="wrap">
+            <button type="submit" name="add-user-submit" class="btn btn-primary btn-md align-items-center">Add User</button>
         </div>
     </form>
     </div>
 </div>';
 
-include("footer.php"); ?>
-
-<?php include("footer.php"); ?>
+include("footer.php");

@@ -83,9 +83,20 @@ require ROOT_DIR . '/db_configuration.php';
                       '$developer', '$status', '$token', '$playable', '$icon')";
     $result = mysqli_query($db, $sql);
 
+    $app = mysqli_query($db,"SELECT LAST_INSERT_ID()")->fetch_row();
+    $appId = $app[0];
+
     if(!$result) {
-        die('Create app failed: ' . mysqli_error($db));
-    } else { echo '<h1>App Created!</h1>'; }
+        echo '<script type="text/javascript">
+                alert("Error creating app. Try again.");
+                window.location = "apps_create.php"
+                </script>';
+    } else {
+        echo '<script type="text/javascript">
+                alert("App created!");
+                window.location = "apps_modify.php?id='.$appId.'"
+                </script>';
+    }
 
 echo '</div></div>';
 include("footer.php"); ?>

@@ -123,9 +123,20 @@ $sql = "INSERT INTO puzzles (title, sub_title, app_id, author_id, directions, no
             VALUES ('$title', '$subTitle', '$appId', '$authorId', '$directions', '$notes', '$puzzleImage', '$solutionImage')";
 $result = mysqli_query($db, $sql);
 
+$puzzle = mysqli_query($db,"SELECT LAST_INSERT_ID()")->fetch_row();
+$puzzleId = $puzzle[0];
+
 if(!$result) {
-    die('Create puzzle failed: ' . mysqli_error($db));
-} else { echo '<h1>Puzzle Created!</h1>'; }
+    echo '<script type="text/javascript">
+                alert("Error creating puzzle. Try again.");
+                window.location = "puzzles_create.php"
+                </script>';
+} else {
+    echo '<script type="text/javascript">
+                alert("Puzzle created!");
+                window.location = "puzzles_modify.php?id='.$puzzleId.'"
+                </script>';
+}
 
 echo '</div></div>';
 include("footer.php");

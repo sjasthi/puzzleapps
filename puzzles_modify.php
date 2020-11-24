@@ -37,7 +37,7 @@ if($result->num_rows > 0) {
         echo '<div class="right-content">';
         echo '<div class="container">';
 
-        echo '<h1>Update Puzzle</h1>';
+        echo '<h1>Manage Puzzle</h1>';
         echo '<form id="modifyPuzzleForm" action="puzzles_modify_a_puzzle.php?id='.$row["id"].'" method="POST" enctype="multipart/form-data">
             <div class="control-group form-group col-md-12">
                 <label for="title">Title:</label><br>
@@ -51,14 +51,14 @@ if($result->num_rows > 0) {
             </div>
             <div class="form-group col-md-12 app-search-box">
                 <label for="app">App:</label><br>
-                <input type="text" name="app" id="app" autocomplete="off" placeholder="'.$appName.'" value="'.$appName.'" class="form-control"
+                <input type="text" name="app" id="app" autocomplete="off" placeholder="No app selected..." value="'.$appName.'" class="form-control"
                        maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
                 <input type="hidden" value="'.$appId.'" name="app_id" id="app_id">
                 <div class="app_result"></div>
             </div>
             <div class="form-group col-md-12 user-search-box">                                                                                                                             
                  <label for="author">Author:</label><br>                                                                                                                                 
-                 <input type="text" name="author_name" autocomplete="off" placeholder="'.$authorName.'" value="'.$authorName.'" class="form-control"
+                 <input type="text" id="author" name="author_name" autocomplete="off" placeholder="No author selected..." value="'.$authorName.'" class="form-control"
                  aria-invalid="false">                                                                     
                  <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">                                                                                                                         
                  <div class="user_result"></div>                                                                                                                                            
