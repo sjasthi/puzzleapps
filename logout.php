@@ -20,7 +20,12 @@ require ROOT_DIR . '/db_configuration.php';
     session_write_close();
     setcookie(session_name(),'',0,'/');
     session_regenerate_id(true);
-
+    unset($_SESSION['email']);
+    unset($_SESSION['first_name']);
+    unset($_SESSION['last_name']);
+    unset($_SESSION['role']);
+    unset($_SESSION['logged_in']);
+    
     header('location: index.php');
 ?>
 

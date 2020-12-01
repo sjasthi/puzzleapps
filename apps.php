@@ -146,6 +146,7 @@ error_reporting(0);
 	}
 
 
+	$numApp = count($topics);
 
     $columns = $column[0]['preference_value'];
     //$manyItems = count($topics); //tota apps number display
@@ -181,7 +182,49 @@ error_reporting(0);
 	}
 //.......................................
 	if(isset($_SESSION['logged_in'])){
-		
+		$role = $_SESSION['role'];
+
+		if($role == "ADMIN" || $role == "SUPER_ADMIN"){
+			echo "<table id = 'table_2'>";
+			echo "<tr>";
+	
+			if($numApp <= $manyItems){
+			$appRange = $numApp;
+			}else{
+			$appRange = $manyItems;
+			}
+
+    		for ($a = 0; $a < $appRange; $a) {
+        		for ($b = 0; $b < $columns; $b++) {
+            		if ($a >= $appRange) {
+                		break;
+           			 } else {
+
+					$randIndex = array_rand($topics);
+				
+					$topic = $topics[$randIndex]['name'];
+					$pic = $pics[$randIndex]['icon'];
+					$location = $path[$randIndex]['path'];
+					$note = $notes[$randIndex]['notes'];
+					unset($topics[$randIndex]);
+                    ?>
+                    
+                    <td id= "box"> 
+                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+					<div id = "title"><b><?php echo $topic ?></b></div>
+					<div><b>Description: </b><?php echo $note ?></div>
+                    </td>
+    
+				<?php
+			
+                $a++;
+            }
+        }
+        echo "</tr>";
+    }
+	echo "</table>";
+		}else{
+
 		echo "<table id = 'table_2'>";
 		echo "<tr>";
 		$range = count($appID);
@@ -199,7 +242,7 @@ error_reporting(0);
 						$pic = $pics[$userAppID]['icon'];
 						$location = $path[$userAppID]['path'];
 						$note = $notes[$userAppID]['notes'];
-						//unset($topics[$randIndex]);
+						unset($topics[$randIndex]);
 						?>
                     
                     <td id= "box"> 
@@ -223,13 +266,20 @@ error_reporting(0);
 			echo "You have 0 apps";
 		}
 	}
+	}
 	else{
 	echo "<table id = 'table_2'>";
 	echo "<tr>";
+	
+	if($numApp <= $manyItems){
+		$appRange = $numApp;
+	}else{
+		$appRange = $manyItems;
+	}
 
-    for ($a = 0; $a < $manyItems; $a) {
+    for ($a = 0; $a < $appRange; $a) {
         for ($b = 0; $b < $columns; $b++) {
-            if ($a >= $manyItems) {
+            if ($a >= $appRange) {
                 break;
             } else {
 
@@ -239,11 +289,11 @@ error_reporting(0);
 					$pic = $pics[$randIndex]['icon'];
 					$location = $path[$randIndex]['path'];
 					$note = $notes[$randIndex]['notes'];
-					//unset($topics[$randIndex]);
+					unset($topics[$randIndex]);
                     ?>
                     
                     <td id= "box"> 
-                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
