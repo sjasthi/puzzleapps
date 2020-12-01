@@ -12,11 +12,11 @@ if (isset($_POST['puzzle-id'])) {
 }
 $addBooksSuccess = false;
 if (isset($_POST['add-books-submit'])) {
-    if (isset($_POST['addBookId'])) {
+    if (isset($_POST['addBooksId'])) {
         $addBooksSuccess = true;
-        $countBooks = count($_POST['addBookId']);
+        $countBooks = count($_POST['addBooksId']);
         for ($i = 0; $i < $countBooks; $i++) {
-            $bookId = $_POST['addBookId'][$i];
+            $bookId = $_POST['addBooksId'][$i];
             $sql = "INSERT into books_puzzles (book_id, puzzle_id) VALUES ('$bookId', '$puzzleId')";
             $result = mysqli_query($db, $sql);
 

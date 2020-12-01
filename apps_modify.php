@@ -8,10 +8,16 @@ include(ROOT_DIR . '/nav.php');
 require ROOT_DIR . '/db_configuration.php';
 
 if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $sql = "SELECT * FROM apps WHERE id = '$id'";
+    $appId = $_GET['id'];
+    $sql = "SELECT * FROM apps WHERE id = '$appId'";
     $result = $db->query($sql);
 }
+
+$removeUsersQuery = "SELECT users.* FROM users_apps JOIN users ON users_apps.user_id = users.id WHERE users_apps.app_id = '$appId'";
+$removeUserResults = $db->query($removeUsersQuery);
+
+$addUsersQuery = "SELECT * FROM users WHERE users.id NOT IN (SELECT user_id FROM users_apps WHERE users_apps.app_id = '$appId')";
+$addUserResults = $db->query($addUsersQuery);
 
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -118,8 +124,81 @@ if($result->num_rows > 0) {
             <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Update App</button>
         </div>
     </form>
-        
-
+    <hr>
+    <h2>Manage App Users</h2>
+    <h3 style="text-align:left">Remove Users</h3>
+    <p>This app is associated with the following users.<br>
+    Select users and click the "Remove Users" button to disassociate users from this app.</p>
+    <form id="removeUsersForm" action="apps_remove_users.php" method="POST">
+        <div id="tableView">
+            <table id="removeUsersTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                <div>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+                if ($removeUserResults->num_rows > 0) {
+                    while($row = $removeUserResults->fetch_assoc()) {
+                        $removeUserId = $row["id"];
+                        $name = $row["first_name"] . " " . $row["last_name"];
+                        ?>
+                        <tr>
+                            <td><?php echo $removeUserId; ?></td>
+                            <td><div><?php echo $name; ?></div></td>
+                        </tr>
+                        <?php
+                    }
+                }
+                echo'
+                    </tbody>
+                </div>
+            </table>
+        </div>
+        <input type="hidden" name="app-id" value="'.$appId.'">
+        <div class="control-group text-left" id="wrap">
+            <button type="submit" name="remove-users-submit" class="btn btn-primary btn-md align-items-center">Remove Users</button>
+        </div>
+    </form>
+    <hr/>
+    <h3 style="text-align:left">Add Users</h3>
+    <p>This app is not associated with the following users.<br>
+    Select users and click the "Add Users" button to associate users to this app.</p>
+    <form id="addUsersForm" action="apps_add_users.php" method="POST">
+        <div id="tableView">
+            <table id="addUsersTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                <div>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+                if ($addUserResults->num_rows > 0) {
+                    while($row = $addUserResults->fetch_assoc()) {
+                        $addUserId = $row["id"];
+                        $name = $row["first_name"] . " " . $row["last_name"];
+                        ?>
+                        <tr>
+                            <td><?php echo $addUserId; ?></td>
+                            <td><div><?php echo $name; ?></div></td>
+                        </tr>
+                        <?php
+                    }
+                }
+                echo'
+                    </tbody>
+                </div>
+            </table>
+        </div>
+        <input type="hidden" name="app-id" value="'.$appId.'">
+        <div class="control-group text-left" id="wrap">
+            <button type="submit" name="add-users-submit" class="btn btn-primary btn-md align-items-center">Add Users</button>
+        </div>
+    </form>  
     </div>
 </div>';
 }} else {
@@ -127,6 +206,108 @@ if($result->num_rows > 0) {
 }
 
 include("footer.php"); ?>
+<!--JQuery-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<!--Data Table-->
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/sl-1.3.1/datatables.min.css"/>-->
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/sl-1.3.1/datatables.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://editor.datatables.net/extensions/Editor/js/dataTables.editor.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/1.6.1/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/fixedheader/3.1.5/js/dataTables.fixedHeader.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.flash.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://gyrocode.github.io/jquery-datatables-checkboxes/1.2.11/js/dataTables.checkboxes.min.js"></script>
+
+<script type="text/javascript" language="javascript">
+    $(document).ready(function() {
+        var removeUsersTable = $('#removeUsersTable').DataTable({
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
+        });
+        var addUsersTable = $('#addUsersTable').DataTable({
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
+        });
+
+        // Handle form submission events
+        $('#removeUsersForm').on('submit', function (e) {
+            var form = this;
+            var rows_selected = removeUsersTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function (index, rowId) {
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'removeUsersId[]')
+                        .val(rowId)
+                );
+            });
+        });
+        $('#addUsersForm').on('submit', function (e) {
+            var form = this;
+            var rows_selected = addUsersTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function (index, rowId) {
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'addUsersId[]')
+                        .val(rowId)
+                );
+            });
+        });
+    });
+</script>
 <script>
 (function() {
     var URL = window.URL || window.webkitURL;

@@ -27,7 +27,7 @@ CREATE TABLE `users` (
      `notes` varchar(1000) DEFAULT NULL,
      `created_at` datetime NOT NULL DEFAULT current_timestamp,
      `modified_at` datetime NOT NULL DEFAULT current_timestamp,
-     `last_login_at` date,
+     `last_login_at` datetime,
      PRIMARY KEY (id),
      UNIQUE KEY (email)
 ) AUTO_INCREMENT=7 ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -102,8 +102,8 @@ INSERT INTO `apps` (`id`, `name`, `description`, `path`, `notes`, `inputFromDB`,
 
 CREATE TABLE `puzzles` (
     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `app_id` int(12) UNSIGNED,
-    `author_id` int(12) UNSIGNED,
+    `app_id` int(12) UNSIGNED DEFAULT NULL,
+    `author_id` int(12) UNSIGNED DEFAULT NULL,
     `title` varchar(50) NOT NULL,
     `sub_title` varchar(100) DEFAULT NULL,
     `directions` mediumblob DEFAULT NULL,
@@ -111,8 +111,8 @@ CREATE TABLE `puzzles` (
     `solution_image` varchar(250),
     `notes` blob DEFAULT NULL,
     `keywords` varchar(300) DEFAULT NULL,
-    FOREIGN KEY (app_id) REFERENCES apps (id),
-    FOREIGN KEY (author_id) REFERENCES users (id),
+    FOREIGN KEY (app_id) REFERENCES apps (id) ON DELETE SET NULL,
+    FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE SET NULL,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT=2 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -420,14 +420,14 @@ INSERT INTO `puzzles` (`id`, `app_id`, `title`, `author_id`, `puzzle_image`, `so
 
 CREATE TABLE `books` (
     `id` int(12) UNSIGNED NOT NULL AUTO_INCREMENT,
-    `author_id` int(12) UNSIGNED,
+    `author_id` int(12) UNSIGNED DEFAULT NULL,
     `title` varchar(100) NOT NULL,
     `description` varchar(150),
     `front_cover` varchar(500),
     `back_cover` varchar(500),
     `notes` varchar(1000) DEFAULT NULL,
     `keywords` varchar(1000) DEFAULT NULL,
-    FOREIGN KEY (author_id) REFERENCES users (id),
+    FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE SET NULL,
     PRIMARY KEY (id)
 ) AUTO_INCREMENT=5 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -441,8 +441,8 @@ INSERT INTO `books` (`id`, `author_id`, `title`, `description`, `front_cover`, `
 CREATE TABLE `books_puzzles` (
     `book_id` int(12) UNSIGNED NOT NULL,
     `puzzle_id` int(12) UNSIGNED NOT NULL,
-     FOREIGN KEY (book_id) REFERENCES books (id),
-     FOREIGN KEY (puzzle_id) REFERENCES puzzles (id),
+     FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
+     FOREIGN KEY (puzzle_id) REFERENCES puzzles (id) ON DELETE CASCADE,
      PRIMARY KEY (book_id, puzzle_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -455,8 +455,8 @@ INSERT INTO `books_puzzles` (`book_id`, `puzzle_id`) VALUES
 CREATE TABLE `users_books` (
    `user_id` int(12) UNSIGNED NOT NULL,
    `book_id` int(12) UNSIGNED NOT NULL,
-   FOREIGN KEY (user_id) REFERENCES users (id),
-   FOREIGN KEY (book_id) REFERENCES books (id),
+   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+   FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE,
    PRIMARY KEY (user_id, book_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -466,8 +466,8 @@ INSERT INTO `users_books` (`user_id`, `book_id`) VALUES
 CREATE TABLE `users_apps` (
     `user_id` int(12) UNSIGNED NOT NULL,
     `app_id` int(12) UNSIGNED NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users (id),
-    FOREIGN KEY (app_id) REFERENCES books (id),
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+    FOREIGN KEY (app_id) REFERENCES apps (id) ON DELETE CASCADE,
     PRIMARY KEY (user_id, app_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

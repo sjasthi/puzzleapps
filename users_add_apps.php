@@ -10,29 +10,29 @@ require ROOT_DIR . '/db_configuration.php';
 if (isset($_POST['user-id'])) {
     $userId = $_POST['user-id'];
 }
-$removeSponsorshipsSuccess = false;
-if (isset($_POST['remove-sponsorships-submit'])) {
-    if (isset($_POST['removeSponsorshipsId'])) {
-        $removeSponsorshipsSuccess = true;
-        $countSponsorships = count($_POST['removeSponsorshipsId']);
-        for ($i = 0; $i < $countSponsorships; $i++) {
-            $bookId = $_POST['removeSponsorshipsId'][$i];
-            $sql = "DELETE FROM users_books WHERE user_id = '$userId' AND book_id = '$bookId'";
+$addAppsSuccess = false;
+if (isset($_POST['add-apps-submit'])) {
+    if (isset($_POST['addAppsId'])) {
+        $addAppsSuccess = true;
+        $countApps = count($_POST['addAppsId']);
+        for ($i = 0; $i < $countApps; $i++) {
+            $appId = $_POST['addAppsId'][$i];
+            $sql = "INSERT INTO users_apps (user_id, app_id) VALUES ('$userId', '$appId')";
             $result = mysqli_query($db, $sql);
 
             if(!$result) {
-                $removeSponsorshipsSuccess = false;
+                $addAppsSuccess = false;
             }
         }
     }
-    if (!$removeSponsorshipsSuccess) {
+    if (!$addAppsSuccess) {
         echo '<script type="text/javascript">
-                alert("Error removing one or more sponsorships.");
+                alert("Error adding one or more apps.");
                 window.location = "users_modify.php?id='.$userId.'"
                 </script>';
     } else {
         echo '<script type="text/javascript">
-                alert("Sponsorships removed.");
+                alert("Apps added!");
                 window.location = "users_modify.php?id='.$userId.'"
                 </script>';
     }

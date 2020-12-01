@@ -22,17 +22,24 @@ $addBooksResults = $db->query($addBooksQuery);
 
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $authorId = $row['author_id'];
-        $authorQuery = "SELECT * FROM users WHERE id = '$authorId'";
-        $authorResult = $db->query($authorQuery);
-        $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
-        $authorName = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
-
-        $appId = $row['app_id'];
-        $appQuery = "SELECT * FROM apps WHERE id = '$appId'";
-        $appResult = $db->query($appQuery);
-        $appRow = $appResult->fetch_array(MYSQLI_ASSOC);
-        $appName = $appRow["name"];
+        $authorName = "";
+        $authorId = null;
+        if ($row['author_id'] != null) {
+            $authorId = $row['author_id'];
+            $authorQuery = "SELECT * FROM users WHERE id = '$authorId'";
+            $authorResult = $db->query($authorQuery);
+            $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
+            $authorName = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
+        }
+        $appName = "";
+        $appId = null;
+        if ($row['app_id'] != null) {
+            $appId = $row['app_id'];
+            $appQuery = "SELECT * FROM apps WHERE id = '$appId'";
+            $appResult = $db->query($appQuery);
+            $appRow = $appResult->fetch_array(MYSQLI_ASSOC);
+            $appName = $appRow["name"];
+        }
 
         echo '<div class="right-content">';
         echo '<div class="container">';
@@ -58,7 +65,7 @@ if($result->num_rows > 0) {
             </div>
             <div class="form-group col-md-12 user-search-box">                                                                                                                             
                  <label for="author">Author:</label><br>                                                                                                                                 
-                 <input type="text" id="author" name="author_name" autocomplete="off" placeholder="No author selected..." value="'.$authorName.'" class="form-control"
+                 <input type="text" id="author_name" name="author_name" autocomplete="off" placeholder="No author selected..." value="'.$authorName.'" class="form-control"
                  aria-invalid="false">                                                                     
                  <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">                                                                                                                         
                  <div class="user_result"></div>                                                                                                                                            
@@ -88,8 +95,8 @@ if($result->num_rows > 0) {
             </div>
         </form>
         <hr>
-        <h2>Manage Books</h2>
-        <h3 style="text-align:left">Remove Puzzle From Books</h3>
+        <h2>Manage Puzzle Books</h2>
+        <h3 style="text-align:left">Remove Books</h3>
         <p>These books include this puzzle.<br>
         Select books and click the "Remove From Books" button to remove this puzzle from the selected books.</p>
         <form id="removeBooksForm" action="puzzles_remove_books.php" method="POST">
@@ -132,7 +139,7 @@ if($result->num_rows > 0) {
             </div>
         </form>
         <hr/>
-        <h3 style="text-align:left">Add Puzzle To Books</h3>
+        <h3 style="text-align:left">Add Books</h3>
         <p>These books do not include this puzzle.<br>
         Select books and click the "Add To Books" button to add this puzzle to the selected books.</p>
         <form id="addBooksForm" action="puzzles_add_books.php" method="POST">
@@ -252,7 +259,7 @@ include("footer.php");?>
             order: [[1, 'asc']]
         } );
 
-        // Handle form submission event
+        // Handle form submission events
         $('#removeBooksForm').on('submit', function(e){
             var form = this;
             var rows_selected = removeBooksTable.column(0).checkboxes.selected();
@@ -263,13 +270,11 @@ include("footer.php");?>
                 $(form).append(
                     $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'removeBookId[]')
+                        .attr('name', 'removeBooksId[]')
                         .val(rowId)
                 );
             });
         });
-
-        // Handle form submission event
         $('#addBooksForm').on('submit', function(e){
             var form = this;
             var rows_selected = addBooksTable.column(0).checkboxes.selected();
@@ -280,7 +285,7 @@ include("footer.php");?>
                 $(form).append(
                     $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'addBookId[]')
+                        .attr('name', 'addBooksId[]')
                         .val(rowId)
                 );
             });
@@ -335,6 +340,7 @@ include("footer.php");?>
                 });
             } else{
                 resultDropdown.empty();
+                $(this).parents(".user-search-box").find('input[type="hidden"]').val(null);
             }
         });
 
@@ -355,6 +361,7 @@ include("footer.php");?>
                 });
             } else{
                 resultDropdown.empty();
+                $(this).parents(".app-search-box").find('input[type="hidden"]').val(null);
             }
         });
 

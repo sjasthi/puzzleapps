@@ -15,12 +15,12 @@ $removeBooksSuccess = false;
 console_log(isset($_POST['remove-books-submit']));
 console_log(isset($_POST['removeBookId']));
 if (isset($_POST['remove-books-submit'])) {
-    if (isset($_POST['removeBookId'])) {
+    if (isset($_POST['removeBooksId'])) {
         $removeBooksSuccess = true;
-        $countBooks = count($_POST['removeBookId']);
+        $countBooks = count($_POST['removeBooksId']);
         console_log($countBooks);
         for ($i = 0; $i < $countBooks; $i++) {
-            $bookId = $_POST['removeBookId'][$i];
+            $bookId = $_POST['removeBooksId'][$i];
             console_log("Book ID: " . $bookId);
             $sql = "DELETE FROM books_puzzles WHERE book_id = '$bookId' AND puzzle_id = '$puzzleId'";
             $result = mysqli_query($db, $sql);

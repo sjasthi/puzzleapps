@@ -12,11 +12,11 @@ if (isset($_POST['book-id'])) {
 }
 $removePuzzlesSuccess = false;
 if (isset($_POST['remove-puzzles-submit'])) {
-    if (isset($_POST['removePuzzleId'])) {
+    if (isset($_POST['removePuzzlesId'])) {
         $removePuzzlesSuccess = true;
-        $countPuzzles = count($_POST['removePuzzleId']);
+        $countPuzzles = count($_POST['removePuzzlesId']);
         for ($i = 0; $i < $countPuzzles; $i++) {
-            $puzzleId = $_POST['removePuzzleId'][$i];
+            $puzzleId = $_POST['removePuzzlesId'][$i];
             $sql = "DELETE FROM books_puzzles WHERE book_id = '$bookId' AND puzzle_id = '$puzzleId'";
             $result = mysqli_query($db, $sql);
 

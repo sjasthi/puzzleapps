@@ -26,7 +26,6 @@ $GLOBALS['bookTableResults'] = mysqli_query($db, $query);
                         <th>ID</th>
                         <th>Title</th>
                         <th>Author</th>
-<!--                        <th>Sponsor</th>-->
                         <th>Notes</th>
                         <th>Front Cover</th>
                         <th>Back Cover</th>
@@ -41,13 +40,12 @@ $GLOBALS['bookTableResults'] = mysqli_query($db, $query);
                         <a id="toggle" class="toggle-vis" data-column="0">Id</a> |
                         <a id="toggle" class="toggle-vis" data-column="1">Title</a> |
                         <a id="toggle" class="toggle-vis" data-column="2">Author</a> |
-<!--                        <a id="toggle" class="toggle-vis" data-column="3">Sponsor</a> |-->
-                        <a id="toggle" class="toggle-vis" data-column="4">Description</a> |
-                        <a id="toggle" class="toggle-vis" data-column="5">Front Cover</a> |
-                        <a id="toggle" class="toggle-vis" data-column="6">Back Cover</a> |
-                        <a id="toggle" class="toggle-vis" data-column="7">Open</a> |
-                        <a id="toggle" class="toggle-vis" data-column="8">Manage</a> |
-                        <a id="toggle" class="toggle-vis" data-column="9">Delete</a>
+                        <a id="toggle" class="toggle-vis" data-column="3">Description</a> |
+                        <a id="toggle" class="toggle-vis" data-column="4">Front Cover</a> |
+                        <a id="toggle" class="toggle-vis" data-column="5">Back Cover</a> |
+                        <a id="toggle" class="toggle-vis" data-column="6">Open</a> |
+                        <a id="toggle" class="toggle-vis" data-column="7">Manage</a> |
+                        <a id="toggle" class="toggle-vis" data-column="8">Delete</a>
                     </div><br>
                     <?php
                     if ($bookTableResults->num_rows > 0) {
@@ -55,21 +53,15 @@ $GLOBALS['bookTableResults'] = mysqli_query($db, $query);
                             $id = $row["id"];
                             $title = $row["title"];
                             // Get the author information
-                            $authorId = $row["author_id"];
-                            $authorQuery = "SELECT * from users WHERE id = $authorId";
-                            $authorResult = $db->query($authorQuery);
-                            $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
-                            $author = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
-                            // Get the sponsor information
-//                            $sponsorId = $row["sponsor_id"];
-//                            if ($sponsorId) {
-//                                $sponsorQuery = "SELECT * from users WHERE id = $sponsorId" ;
-//                                $sponsorResult = $db->query($sponsorQuery);
-//                                $sponsorRow = $sponsorResult->fetch_array(MYSQLI_ASSOC);
-//                                $sponsor = $sponsorRow["first_name"] . ' ' . $sponsorRow["last_name"];
-//                            } else {
-//                                $sponsor = '';
-//                            }
+                            $authorName = "";
+                            $authorId = null;
+                            if ($row['author_id'] != null) {
+                                $authorId = $row['author_id'];
+                                $authorQuery = "SELECT * FROM users WHERE id = '$authorId'";
+                                $authorResult = $db->query($authorQuery);
+                                $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
+                                $authorName = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
+                            }
                             $description = $row["description"];
                             $front_cover = $row["front_cover"];
                             $back_cover = $row["back_cover"];
@@ -77,8 +69,7 @@ $GLOBALS['bookTableResults'] = mysqli_query($db, $query);
                             <tr>
                             <td><?php echo $id; ?></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'title', '<?php echo $id; ?>')"><?php echo $title; ?></div></td>
-                            <td><?php echo $author; ?></td>
-<!--                            <td>--><?php //echo $sponsor; ?><!--</td>-->
+                            <td><?php echo $authorName; ?></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'description', '<?php echo $id; ?>')"><?php echo $description; ?></div></td>
                             <?php echo '<td><img src="images/books/'.$row["front_cover"].'" style="width:80px;">' ?>
                             <?php echo '<td><img src="images/books/'.$row["back_cover"].'" style="width:80px;">' ?>
