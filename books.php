@@ -73,25 +73,38 @@ error_reporting(0);
 		border: 1px solid darkgoldenrod; */
 		text-align: center;
         }
-
+        .filter{
+            text-indent: 50px;
+        }
+        .filter2{
+            text-indent: 50px;
+        }
+        .filter3{
+            text-indent: 50px;
+        }
+        .filter4{
+            text-indent: 50px;
+        }
 
 	</style>
 
 	<body>
 		<?php
-    if (isset($_GET['sponsor'])) {
-        if ($_GET["preferencesUpdated"] == "Success") {
-            echo "<br><h3 align=center style='color:green'>Success! The Preferences have been updated!</h3>";
-        }
-    }
+    // if (isset($_GET['sponsor'])) {
+    //     if ($_GET["preferencesUpdated"] == "Success") {
+    //         echo "<br><h3 align=center style='color:green'>Success! The Preferences have been updated!</h3>";
+    //     }
+    // }
     ?>
 		<h1 id="title2">Books List </h1>
         
         </br>
         <form class="form" method="post">
         <div style="font-size:20px;" id="title2">Show:   
-        <div style="font-size:20px; display: inline-block"><input type="submit" name="front" value="Front Cover" />   </div>
-        <div style="font-size:20px; display: inline-block"><input type="submit" name="back" value="Back Cover" />  </div>
+        <div class="filter" style="font-size:15px; display: inline-block"><input type="submit" name="front" value="Front Cover" />   </div>
+        <div class="filter2" style="font-size:15px; display: inline-block"><input type="submit" name="back" value="Back Cover" />  </div>
+        <div class="filter3" style="font-size:15px; display: inline-block"><input type="submit" name="sample" value="Sample Puzzle" />  </div>
+        <div class="filter4" style="font-size:15px; display: inline-block"><input type="submit" name="sponsor" value="Sponsors" />  </div>
 		</div>
     
         </form>
@@ -108,6 +121,7 @@ error_reporting(0);
     $sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_width'";
     $sql8 = "SELECT `description` FROM `books`";
 
+    
 
     $results1 = mysqli_query($db, $sql1);
     $results2 = mysqli_query($db, $sql2);
@@ -161,7 +175,7 @@ error_reporting(0);
         }
 	}
 
-
+    $numBook = count($topics);
     $columns = $column[0]['preference_value'];
     $manyItems = $manyItem[0]['preference_value'];
     $book_height = $height[0]['preference_value'];
@@ -170,164 +184,164 @@ error_reporting(0);
     echo "<table id = 'table_2'>";
     echo "<tr>";
 //..............................................
-    
-
+ 
 if(isset($_SESSION['logged_in'])){
-    $email = $_SESSION['email'];
     $role = $_SESSION['role'];
+    if($role == "ADMIN" || $role === "SUPER_ADMIN" ){
+        $link = "books_sponsored.php";
+    }elseif($role == "USER"){   
+        $email = $_SESSION['email'];
+        $role = $_SESSION['role'];
 
-    $user1 = "SELECT `id` FROM `users` WHERE `email`= '$email'";
-    $sql2 = "SELECT `name` FROM `apps`";
+        $user1 = "SELECT `id` FROM `users` WHERE `email`= '$email'";
+        $sql2 = "SELECT `name` FROM `apps`";
 
-    $run1 = mysqli_query($db, $user1);
+        $run1 = mysqli_query($db, $user1);
 
-    if (mysqli_num_rows($run1) > 0) {
-        while ($row = mysqli_fetch_assoc($run1)) {
-            $ID[] = $row;
+        if (mysqli_num_rows($run1) > 0) {
+            while ($row = mysqli_fetch_assoc($run1)) {
+                $ID[] = $row;
+            }
         }
-    }
-    $userID = $ID[0]['id'];
-    $_SESSION['userID'] = $userID;
-    $app1 = "SELECT `book_id` FROM `users_books` WHERE `user_id`= '$userID'";
-    $run2 = mysqli_query($db, $app1);
+        $userID = $ID[0]['id'];
+        $_SESSION['userID'] = $userID;
+        $app1 = "SELECT `book_id` FROM `users_books` WHERE `user_id`= '$userID'";
+        $run2 = mysqli_query($db, $app1);
 
-    if (mysqli_num_rows($run2) > 0) {
-        while ($row = mysqli_fetch_assoc($run2)) {
-            $bookID[] = $row;
+        if (mysqli_num_rows($run2) > 0) {
+            while ($row = mysqli_fetch_assoc($run2)) {
+                $bookID[] = $row;
+            }
         }
-    }
-    $bID = $bookID[0]['book_id'];
+        $bID = $bookID[0]['book_id'];
 
-    if($bID == 1){
-        $isSponsor = true;
-    }elseif($role == "ADMIN"){
-        $isSponsor = true;
+        if($bID == 1){
+            $link = "books_sponsored.php";
+        }else{
+            $link = "books_visitor.php";
+        }
+
+        }
     }else{
-        $isSponsor = false;
-    }
-
+    $link = "books_visitor.php";
 }
-
-    if($isSponsor == false){
-        for ($a = 0; $a < 1; $a) {
-                if ($a >= 1) {
-                    break;
-                } else {
-    
-                    // get random index from array $topics
-                    $randIndex = array_rand($topics);
-                    $topic = $topics[$randIndex]['title'];
-                    $pic = $pics[$randIndex]['front_cover'];
-                    $pic2 = $pics2[$randIndex]['back_cover'];
-                    $des = $descrition[$randIndex]['description'];
-                    //unset($topics[$randIndex]);
-    
-                    if(!isset($_POST['front']) && !isset($_POST['back'])){
-    
-                        echo "
-                        
-                        <td id= 'box'> 
-                        <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                        <div id = 'title3'>Please sponsor to view all books!</div>
-                        <div id = 'title'>$topic</div>
-                        <div><b>Description: </b> $des </div>
-                        <form class='form' method='post' action='books_sponsor.php'> 
-                        <div style='font-size:20px; display: inline-block'><input type='submit' name='sponsor' value='Sponsor' /> </div>
-
-                        </td>";
-        
-                        }
-                    if(isset($_POST['front'])){
-    
-                    echo "
-                    
-                    <td id= 'box'> 
-                    <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                    <div id = 'title3'>Please sponsor to view all books!</div>
-                    <div id = 'title'>$topic</div>
-                    <div><b>Description: </b> $des </div>
-                    <form class='form' method='post' action='books_sponsor.php'> 
-                        <div style='font-size:20px; display: inline-block'><input type='submit' name='sponsor' value='Sponsor' /> </div>
-                    </td>";
-    
-                    }
-                    if(isset($_POST['back'])){
-    
-                        echo "
-                        
-                        <td id= 'box'> 
-                        <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic2' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                        <div id = 'title3'>Please sponsor to view all books!</div>
-                        <div id = 'title'>$topic</div>
-                        <div><b>Description: </b> $des </div>
-                        <form class='form' method='post' action='books_sponsor.php'> 
-                        <div style='font-size:20px; display: inline-block'><input type='submit' name='sponsor' value='Sponsor' /> </div>
-                        </td>";
-        
-                        }
-                    $a++;
-                }
-            
-            echo "</tr>";
-        }
-
-    }
-    else{
 //...........................................
-    for ($a = 0; $a < $manyItems; $a) {
+    if($numBook <= $manyItems){
+        $bookRange = $numBook;
+    }else{
+        $bookRange = $manyItems;
+    }
+    for ($a = 0; $a < $bookRange; $a) {
         for ($b = 0; $b < $columns; $b++) {
-            if ($a >= $manyItems) {
+            if ($a >= $bookRange) {
                 break;
             } else {
 
                 // get random index from array $topics
-                $randIndex = array_rand($topics);
+                $randIndex = $a;
+                $puzzleIndex = $randIndex + 1;
+                $sql9 = "SELECT `puzzle_id` FROM `books_puzzles` WHERE `book_id`= '$puzzleIndex'"; 
+
+                $sqlBook = "SELECT `book_id` FROM `users_books`";
+                
+               
+
+                $result9 = mysqli_query($db, $sql9);
+                $resultBook = mysqli_query($db, $sqlBook);
+                
+
+                $row = mysqli_fetch_row($result9);
+
+                // if (mysqli_num_rows($resultBook) > 0) {
+                //     while ($row = mysqli_fetch_assoc($resultBook)) {
+                //         $booksID[] = $row;
+                //     }
+                // }
+                
+                
+                
+
+                
+                    // $book_ID = $booksID[$a]['book_id'];
+
+                    // if($puzzleIndex == $book_ID){
+                    //     $sqlBook2 = "SELECT `user_id` FROM `users_books` WHERE `book_id`= '$puzzleIndex'";
+                    //     $resultBook2 = mysqli_query($db, $sqlBook2);
+                    //     if (mysqli_num_rows($resultBook2) > 0) {
+                    //         while ($row = mysqli_fetch_assoc($resultBook2)) {
+                    //             $usersID[] = $row;
+                    //         }
+                    //     }
+                            
+                    //     $sponsoredRange = count($usersID);
+                    //     //echo "range: ".$sponsoredRange;
+                    //     for ($c = 0; $c < $sponsoredRange; $c++) {
+                    //         $user_ID = $usersID[$c]['user_id'];
+
+                    //         // echo "BookID: ".$book_ID;
+                    //         // echo " UserID: ".$user_ID;
+                    //         // echo "<br>";
+                    //     }
+
+                    // }
+                    
+                $puzID = $row[0];
+                
+               
+                $sql10 = "SELECT `puzzle_image` FROM `puzzles` WHERE `id`= '$puzID'";
+
+                $result10 = mysqli_query($db, $sql10);
+
+                $puzzleImage = mysqli_fetch_row($result10);
+
+                $puzImage = $puzzleImage[0];
+                
+                // echo "image: ".$puzImage;
+                // echo " index: ".$puzzleIndex." ".$puzID;
+                // echo "<br>";
+
                 $topic = $topics[$randIndex]['title'];
-                $pic = $pics[$randIndex]['front_cover'];
+                $pic1 = $pics[$randIndex]['front_cover'];
                 $pic2 = $pics2[$randIndex]['back_cover'];
                 $des = $descrition[$randIndex]['description'];
-                //unset($topics[$randIndex]);
 
-                if(!isset($_POST['front']) && !isset($_POST['back'])){
+                $frontPic = "images/books/thumbnails/$pic1";
+                $backPic = "images/books/thumbnails/$pic2";
+                $samplePic = "images/puzzles/main/$puzImage";
+                
+                $bookID = $randIndex + 1;
 
-                    echo "
-                    
-                    <td id= 'box'> 
-                    <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                    <div id = 'title'>$topic</div>
-                    <div><b>Description: </b> $des </div>
-                    </td>";
-    
-                    }
+                $image = $frontPic;
+
                 if(isset($_POST['front'])){
 
-                echo "
-                
-                <td id= 'box'> 
-                <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                <div id = 'title'>$topic</div>
-                <div><b>Description: </b> $des </div>
-                </td>";
-
+                    $image = $frontPic;
                 }
-                if(isset($_POST['back'])){
+                elseif(isset($_POST['back'])){
 
+                    $image = $backPic;
+
+                    }
+                elseif(isset($_POST['sample'])){
+
+                    $image = $samplePic;
+
+                    }
                     echo "
                     
                     <td id= 'box'> 
-                    <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic2' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
+                     <a href='$link?id=$bookID' target='_blank'><img class='image' height='$book_height' width='$book_width' src = '$image' onerror=this.src='Images/index_images/ImageNotFound.png'></img></a>
                     <div id = 'title'>$topic</div>
                     <div><b>Description: </b> $des </div>
                     </td>";
-    
-                    }
+                    unset($topics[$randIndex]);
                 $a++;
             }
         }
         echo "</tr>";
     }
     echo "</table>";
-}
+
 ?>
 
     </div>

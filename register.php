@@ -89,7 +89,7 @@ else { // User exists
                     VALUES ('$userID','1')";
             $result = $db->query($sql);
             echo $userID;
-
+            //unset($_SESSION['bookSponsor']);
             header("location: books.php");
         }else{
          header("location: index.php");

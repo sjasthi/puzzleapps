@@ -177,7 +177,7 @@ $bookWidth = $book4[0]['preference_value'];
 						<tr>
 							<td class="width:200px">Number of Apps to show:</td>
 							<td><input disabled type="int" maxlength="2" size="10" value="<?php echo $appShow; ?>" title="Current value"></td> 
-							<td><input required type="int" name="app_show" maxlength="2" size="10" title="Enter a number" value="<?php echo $appShow; ?>"></td>
+							<td><input required type="int" name="app_show" maxlength="3" size="10" title="Enter a number" value="<?php echo $appShow; ?>"></td>
 						</tr>
                         <tr>
 							<td class="width:200px">Adjust Apps height:</td>
@@ -197,7 +197,7 @@ $bookWidth = $book4[0]['preference_value'];
 						<tr>
 							<td style="width:200px">Number of Puzzles to show:</td>
 							<td><input disabled type="int" maxlength="2" size="10" value="<?php echo $puzzleShow; ?>" title="Current value"></td> 
-							<td><input required type="int" name="puzzle_show" maxlength="2" size="10" title="Enter a number" value="<?php echo $puzzleShow; ?>"></td>
+							<td><input required type="int" name="puzzle_show" maxlength="3" size="10" title="Enter a number" value="<?php echo $puzzleShow; ?>"></td>
 						</tr>
                         <tr>
 							<td style="width:200px">Adjust Puzzles height:</td>
@@ -217,7 +217,7 @@ $bookWidth = $book4[0]['preference_value'];
 						<tr>
 							<td style="width:200px">Number of Books to show:</td>
 							<td><input disabled type="int" maxlength="2" size="10" value="<?php echo $bookShow; ?>" title="Current value"></td> 
-							<td><input required type="int" name="book_show" maxlength="2" size="10" title="Enter a number" value="<?php echo $bookShow; ?>"></td>
+							<td><input required type="int" name="book_show" maxlength="3" size="10" title="Enter a number" value="<?php echo $bookShow; ?>"></td>
 						</tr>
                         <tr>
 							<td style="width:200px">Adjust Books height:</td>
