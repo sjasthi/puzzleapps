@@ -135,7 +135,7 @@ $width[] = $row;
 }
 }
 
-
+$numPuzzle = count($topics);
 
 $columns = $column[0]['preference_value'];
 //$manyItems = count($topics); //tota puzzles number display
@@ -143,12 +143,18 @@ $manyItems = $manyItem[0]['preference_value'];
 $puzzle_height = $height[0]['preference_value'];
 $puzzle_width = $height[0]['preference_value'];
 
+if($numPuzzle <= $manyItems){
+	$puzzleRange = $numPuzzle;
+}else{
+	$puzzleRange = $manyItems;
+}
+
 echo "<table id = 'table_2'>";
 echo "<tr>";
 
-for ($a = 0; $a < $manyItems; $a) {
+for ($a = 0; $a < $puzzleRange; $a) {
 for ($b = 0; $b < $columns; $b++) {
-if ($a >= $manyItems) {
+if ($a >= $puzzleRange) {
     break;
 } else {
 
@@ -159,7 +165,7 @@ if ($a >= $manyItems) {
     $pic = $pics[$randIndex]['puzzle_image'];
     //$location = $path[$randIndex]['path'];
     $note = $notes[$randIndex]['sub_title'];
-   // unset($topics[$randIndex]);
+    unset($topics[$randIndex]);
 
    
         echo "
