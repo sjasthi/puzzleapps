@@ -17,9 +17,13 @@ $removeSponsorshipsQuery = "SELECT books.* FROM users_books JOIN books ON users_
 $removeSponsorshipsResults = $db->query($removeSponsorshipsQuery);
 
 $addSponsorshipsQuery = "SELECT * FROM books WHERE books.id NOT IN (SELECT book_id FROM users_books WHERE users_books.user_id = '$userId')";
-
-//$addSponsorshipsQuery = "SELECT books.* FROM users_books JOIN books on users_books.book_id = books.id WHERE users_books.user_id != '$userId'";
 $addSponsorshipsResults = $db->query($addSponsorshipsQuery);
+
+$removeAppsQuery = "SELECT apps.* FROM users_apps JOIN apps ON users_apps.app_id = apps.id WHERE users_apps.user_id = '$userId'";
+$removeAppResults = $db->query($removeAppsQuery);
+
+$addAppsQuery = "SELECT * FROM apps WHERE apps.id NOT IN (SELECT app_id FROM users_apps WHERE users_apps.user_id = '$userId')";
+$addAppResults = $db->query($addAppsQuery);
 
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
@@ -79,9 +83,10 @@ if($result->num_rows > 0) {
             </div>
         </form>
         <hr>
-        <h2>Manage Book Sponsorships</h2>
-        <p>This user sponsors the following books.</p>
-        <p>Select books and click the "Stop Sponsorships" button to remove book sponsorships from this user.</p>
+        <h2>Manage User Sponsorships</h2>
+        <h3 style="text-align:left">Remove Sponsorships</h3>
+        <p>This user sponsors the following books.<br>
+        Select books and click the "Stop Sponsorships" button to remove book sponsorships from this user.</p>
         <form id="removeSponsorshipsForm" action="users_remove_sponsorships.php" method="POST">
             <div id="tableView">
                 <table id="removeSponsorshipsTable" style="width:100%" width="100%" class="display" cellspacing="0">
@@ -95,23 +100,23 @@ if($result->num_rows > 0) {
                             </tr>
                         </thead>
                         <tbody>';
-        if ($removeSponsorshipsResults->num_rows > 0) {
-            while($row = $removeSponsorshipsResults->fetch_assoc()) {
-                $removeSponsorshipId = $row["id"];
-                $title = $row["title"];
-                $description = $row["description"];
-                $notes = $row["notes"];
-                ?>
-                <tr>
-                    <td><?php echo $removeSponsorshipId; ?></td>
-                    <td><div><?php echo $title; ?></div></td>
-                    <td><div><?php echo $description; ?></div></td>
-                    <td><div><?php echo $notes; ?></div></td>
-                </tr>
-                <?php
-            }
-        }
-        echo'
+                    if ($removeSponsorshipsResults->num_rows > 0) {
+                        while($row = $removeSponsorshipsResults->fetch_assoc()) {
+                            $removeSponsorshipId = $row["id"];
+                            $title = $row["title"];
+                            $description = $row["description"];
+                            $notes = $row["notes"];
+                            ?>
+                            <tr>
+                                <td><?php echo $removeSponsorshipId; ?></td>
+                                <td><div><?php echo $title; ?></div></td>
+                                <td><div><?php echo $description; ?></div></td>
+                                <td><div><?php echo $notes; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
                         </tbody>
                     </div>
                 </table>
@@ -122,6 +127,7 @@ if($result->num_rows > 0) {
             </div>
         </form>
         <hr/>
+        <h3 style="text-align:left">Add Sponsorships</h3>
         <p>This user does not sponsor the following books.<br>
         Select books and click the "Start Sponsorships" button to add book sponsorships to this user.</p>
         <form id="addSponsorshipsForm" action="users_add_sponsorships.php" method="POST">
@@ -137,23 +143,23 @@ if($result->num_rows > 0) {
                             </tr>
                         </thead>
                         <tbody>';
-        if ($addSponsorshipsResults->num_rows > 0) {
-            while($row = $addSponsorshipsResults->fetch_assoc()) {
-                $addSponsorshipId = $row["id"];
-                $title = $row["title"];
-                $description = $row["description"];
-                $notes = $row["notes"];
-                ?>
-                <tr>
-                    <td><?php echo $addSponsorshipId; ?></td>
-                    <td><div><?php echo $title; ?></div></td>
-                    <td><div><?php echo $description; ?></div></td>
-                    <td><div><?php echo $notes; ?></div></td>
-                </tr>
-                <?php
-            }
-        }
-        echo'
+                    if ($addSponsorshipsResults->num_rows > 0) {
+                        while($row = $addSponsorshipsResults->fetch_assoc()) {
+                            $addSponsorshipId = $row["id"];
+                            $title = $row["title"];
+                            $description = $row["description"];
+                            $notes = $row["notes"];
+                            ?>
+                            <tr>
+                                <td><?php echo $addSponsorshipId; ?></td>
+                                <td><div><?php echo $title; ?></div></td>
+                                <td><div><?php echo $description; ?></div></td>
+                                <td><div><?php echo $notes; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
                         </tbody>
                     </div>
                 </table>
@@ -161,6 +167,81 @@ if($result->num_rows > 0) {
             <input type="hidden" name="user-id" value="'.$userId.'">
             <div class="control-group text-left" id="wrap">
                 <button type="submit" name="add-sponsorships-submit" class="btn btn-primary btn-md align-items-center">Start Sponsorships</button>
+            </div>
+        </form>
+        <hr>
+        <h2>Manage User Apps</h2>
+        <h3 style="text-align:left">Remove Apps</h3>
+        <p>This user is associated with the following apps.<br>
+        Select apps and click the "Remove Apps" button to disassociate apps from this user.</p>
+        <form id="removeAppsForm" action="users_remove_apps.php" method="POST">
+            <div id="tableView">
+                <table id="removeAppsTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                    <div>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                    if ($removeAppResults->num_rows > 0) {
+                        while($row = $removeAppResults->fetch_assoc()) {
+                            $removeAppId = $row["id"];
+                            $name = $row["name"];
+                            ?>
+                            <tr>
+                                <td><?php echo $removeAppId; ?></td>
+                                <td><div><?php echo $name; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <input type="hidden" name="user-id" value="'.$userId.'">
+            <div class="control-group text-left" id="wrap">
+                <button type="submit" name="remove-apps-submit" class="btn btn-primary btn-md align-items-center">Remove Apps</button>
+            </div>
+        </form>
+        <hr/>
+        <h3 style="text-align:left">Add Apps</h3>
+        <p>This user is not associated with the following apps.<br>
+        Select apps and click the "Add Apps" button to associate apps to this user.</p>
+        <form id="addAppsForm" action="users_add_apps.php" method="POST">
+            <div id="tableView">
+                <table id="addAppsTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                    <div>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                    if ($addAppResults->num_rows > 0) {
+                        while($row = $addAppResults->fetch_assoc()) {
+                            $addAppId = $row["id"];
+                            $name = $row["name"];
+                            ?>
+                            <tr>
+                                <td><?php echo $addAppId; ?></td>
+                                <td><div><?php echo $name; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <input type="hidden" name="user-id" value="'.$userId.'">
+            <div class="control-group text-left" id="wrap">
+                <button type="submit" name="add-apps-submit" class="btn btn-primary btn-md align-items-center">Add Apps</button>
             </div>
         </form>
     </div>
@@ -234,8 +315,34 @@ include("footer.php"); ?>
             ],
             order: [[1, 'asc']]
         } );
+        var removeAppsTable = $('#removeAppsTable').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
+        } );
+        var addAppsTable = $('#addAppsTable').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
+        } );
 
-        // Handle form submission event
+        // Handle form submission events
         $('#removeSponsorshipsForm').on('submit', function(e){
             var form = this;
             var rows_selected = removeSponsorshipsTable.column(0).checkboxes.selected();
@@ -251,7 +358,6 @@ include("footer.php"); ?>
                 );
             });
         });
-        // Handle form submission event
         $('#addSponsorshipsForm').on('submit', function(e){
             var form = this;
             var rows_selected = addSponsorshipsTable.column(0).checkboxes.selected();
@@ -263,6 +369,36 @@ include("footer.php"); ?>
                     $('<input>')
                         .attr('type', 'hidden')
                         .attr('name', 'addSponsorshipsId[]')
+                        .val(rowId)
+                );
+            });
+        });
+        $('#removeAppsForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = removeAppsTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'removeAppsId[]')
+                        .val(rowId)
+                );
+            });
+        });
+        $('#addAppsForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = addAppsTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'addAppsId[]')
                         .val(rowId)
                 );
             });

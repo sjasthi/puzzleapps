@@ -20,14 +20,24 @@ $removePuzzleResults = $db->query($removePuzzlesQuery);
 $addPuzzlesQuery = "SELECT * FROM puzzles WHERE puzzles.id NOT IN (SELECT puzzle_id FROM books_puzzles WHERE books_puzzles.book_id = '$bookId')";
 $addPuzzleResults = $db->query($addPuzzlesQuery);
 
+$removeSponsorsQuery = "SELECT users.* FROM users_books JOIN users ON users_books.user_id = users.id WHERE users_books.book_id = '$bookId'";
+$removeSponsorResults = $db->query($removeSponsorsQuery);
+
+$addSponsorsQuery = "SELECT * FROM users WHERE users.id NOT IN (SELECT user_id FROM users_books WHERE users_books.book_id = '$bookId')";
+$addSponsorResults = $db->query($addSponsorsQuery);
+
 
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        $authorId = $row['author_id'];
-        $authorQuery = "SELECT * FROM users WHERE id = '$authorId'";
-        $authorResult = $db->query($authorQuery);
-        $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
-        $authorName = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
+        $authorName = "";
+        $authorId = null;
+        if ($row['author_id'] != null) {
+            $authorId = $row['author_id'];
+            $authorQuery = "SELECT * FROM users WHERE id = '$authorId'";
+            $authorResult = $db->query($authorQuery);
+            $authorRow = $authorResult->fetch_array(MYSQLI_ASSOC);
+            $authorName = $authorRow["first_name"] . ' ' . $authorRow["last_name"];
+        }
 
         echo '<div class="right-content">';
         echo '<div class="container">';
@@ -41,7 +51,7 @@ if($result->num_rows > 0) {
             </div>
             <div class="form-group col-md-12 author-search-box">                                                                                                                             
                  <label for="path">Author:</label><br>                                                                                                                                 
-                 <input type="text" name="author_name" required autocomplete="off" value="'.$authorName.'" placeholder="'.$authorName.'" class="form-control" data-validation-required-message="Author is required."
+                 <input type="text" name="author_name" autocomplete="off" placeholder="No author selected..." value="'.$authorName.'" class="form-control"
                  aria-invalid="false">                                                                     
                  <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">                                                                                                                         
                  <div class="author_result"></div>                                                                                                                                            
@@ -73,8 +83,8 @@ if($result->num_rows > 0) {
         <hr>
         <h2>Manage Book Puzzles</h2>
         <h3 style="text-align:left">Remove Puzzles</h3>
-        <p>These puzzles are in this book.</p>
-        <p>Select puzzles and click the "Remove Puzzles" button to remove puzzles from this book.</p>
+        <p>These puzzles are in this book.<br>
+        Select puzzles and click the "Remove Puzzles" button to remove puzzles from this book.</p>
         <form id="removePuzzlesForm" action="books_remove_puzzles.php" method="POST">
             <div id="tableView">
                 <table id="removePuzzlesTable" style="width:100%" width="100%" class="display" cellspacing="0">
@@ -118,7 +128,7 @@ if($result->num_rows > 0) {
             </div>
         </form>
         <hr/>
-        <h3 style="text-align:left">Add Puzzles To Book</h3>
+        <h3 style="text-align:left">Add Puzzles</h3>
         <p>These puzzles are not in this book.<br>
         Select puzzles and click the "Add Puzzles" button to add puzzles to this book.</p>
         <form id="addPuzzlesForm" action="books_add_puzzles.php" method="POST">
@@ -161,6 +171,81 @@ if($result->num_rows > 0) {
             <input type="hidden" name="book-id" value="'.$bookId.'">
             <div class="control-group text-left" id="wrap">
                 <button type="submit" name="add-puzzles-submit" class="btn btn-primary btn-md align-items-center">Add Puzzles</button>
+            </div>
+        </form>
+        <hr>
+        <h2>Manage Book Sponsors</h2>
+        <h3 style="text-align:left">Remove Sponsors</h3>
+        <p>These users are sponsoring this book.<br>
+        Select users and click the "Remove Sponsors" button to remove sponsors from this book.</p>
+        <form id="removeSponsorsForm" action="books_remove_sponsors.php" method="POST">
+            <div id="tableView">
+                <table id="removeSponsorsTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                    <div>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                    if ($removeSponsorResults->num_rows > 0) {
+                        while($row = $removeSponsorResults->fetch_assoc()) {
+                            $removeSponsorId = $row["id"];
+                            $name = $row["first_name"] . " " . $row["last_name"];
+                            ?>
+                            <tr>
+                                <td><?php echo $removeSponsorId; ?></td>
+                                <td><div><?php echo $name; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <input type="hidden" name="book-id" value="'.$bookId.'">
+            <div class="control-group text-left" id="wrap">
+                <button type="submit" name="remove-sponsors-submit" class="btn btn-primary btn-md align-items-center">Remove Sponsors</button>
+            </div>
+        </form>
+        <hr/>
+        <h3 style="text-align:left">Add Sponsors</h3>
+        <p>These users are not sponsoring this book.<br>
+        Select users and click the "Add Sponsors" button to add sponsors to this book.</p>
+        <form id="addSponsorsForm" action="books_add_sponsors.php" method="POST">
+            <div id="tableView">
+                <table id="addSponsorsTable" style="width:100%" width="100%" class="display" cellspacing="0">
+                    <div>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Name</th>
+                            </tr>
+                        </thead>
+                        <tbody>';
+                    if ($addSponsorResults->num_rows > 0) {
+                        while($row = $addSponsorResults->fetch_assoc()) {
+                            $addSponsorId = $row["id"];
+                            $name = $row["first_name"] . " " . $row["last_name"];
+                            ?>
+                            <tr>
+                                <td><?php echo $addSponsorId; ?></td>
+                                <td><div><?php echo $name; ?></div></td>
+                            </tr>
+                            <?php
+                        }
+                    }
+                    echo'
+                        </tbody>
+                    </div>
+                </table>
+            </div>
+            <input type="hidden" name="book-id" value="'.$bookId.'">
+            <div class="control-group text-left" id="wrap">
+                <button type="submit" name="add-sponsors-submit" class="btn btn-primary btn-md align-items-center">Add Sponsors</button>
             </div>
         </form>
     </div>
@@ -239,6 +324,32 @@ include("footer.php"); ?>
             ],
             order: [[1, 'asc']]
         } );
+        var removeSponsorsTable = $('#removeSponsorsTable').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
+        } );
+        var addSponsorsTable = $('#addSponsorsTable').DataTable( {
+            orderCellsTop: true,
+            fixedHeader: true,
+            retrieve: true,
+            paging: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    checkboxes: true
+                }
+            ],
+            order: [[1, 'asc']]
+        } );
 
         // Handle form submission event
         $('#removePuzzlesForm').on('submit', function(e){
@@ -251,12 +362,11 @@ include("footer.php"); ?>
                 $(form).append(
                     $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'removePuzzleId[]')
+                        .attr('name', 'removePuzzlesId[]')
                         .val(rowId)
                 );
             });
         });
-        // Handle form submission event
         $('#addPuzzlesForm').on('submit', function(e){
             var form = this;
             var rows_selected = addPuzzlesTable.column(0).checkboxes.selected();
@@ -267,7 +377,37 @@ include("footer.php"); ?>
                 $(form).append(
                     $('<input>')
                         .attr('type', 'hidden')
-                        .attr('name', 'addPuzzleId[]')
+                        .attr('name', 'addPuzzlesId[]')
+                        .val(rowId)
+                );
+            });
+        });
+        $('#removeSponsorsForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = removeSponsorsTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'removeSponsorsId[]')
+                        .val(rowId)
+                );
+            });
+        });
+        $('#addSponsorsForm').on('submit', function(e){
+            var form = this;
+            var rows_selected = addSponsorsTable.column(0).checkboxes.selected();
+
+            // Iterate over all selected checkboxes
+            $.each(rows_selected, function(index, rowId){
+                // Create a hidden element
+                $(form).append(
+                    $('<input>')
+                        .attr('type', 'hidden')
+                        .attr('name', 'addSponsorsId[]')
                         .val(rowId)
                 );
             });
@@ -322,6 +462,7 @@ include("footer.php"); ?>
                 });
             } else{
                 resultDropdown.empty();
+                $(this).parents(".author-search-box").find('input[type="hidden"]').val(null);
             }
         });
 

@@ -9,13 +9,8 @@ include(ROOT_DIR . '/nav.php');
 require ROOT_DIR . '/db_configuration.php';
 
 if (isset($_GET['id'])) {
+    console_log("id isset");
     $id = $_GET['id'];
-}
-if (isset($_GET['author_id'])) {
-    $authorId = $_GET['author_id'];
-}
-if (isset($_GET['app_id'])) {
-    $appId = $_GET['app_id'];
 }
 ?>
 
@@ -139,13 +134,11 @@ if (isset($_GET['app_id'])) {
             }
         }
 
-
-
         if (isset($_GET['id'])){
             $title = mysqli_real_escape_string($db, $_POST['title']);
             $subTitle = mysqli_real_escape_string($db, $_POST['sub_title']);
-            $authorId = ( isset($_POST['author_id']) ) ? $_POST['author_id'] : null;
-            $appId = ( isset($_POST['app_id']) ) ? $_POST['app_id'] : null;
+            $authorId = ($_POST['author_id'] == '') ? 'null' : $_POST['author_id'];
+            $appId = ($_POST['app_id'] == '') ? 'null' : $_POST['app_id'];
             $directions = mysqli_real_escape_string($db, $_POST['directions']);
             $notes = mysqli_real_escape_string($db, $_POST['notes']);
             $puzzleImage = mysqli_real_escape_string($db, $puzzleImageFileName);
@@ -154,14 +147,14 @@ if (isset($_GET['app_id'])) {
             $sql = "UPDATE puzzles
                     SET title='$title',
                         sub_title='$subTitle',
-                        author_id='$authorId',
-                        app_id='$appId',
+                        author_id=$authorId,
+                        app_id=$appId,
                         directions='$directions',
                         notes = '$notes',
                         puzzle_image = '$puzzleImage',
                         solution_image = '$solutionImage'
                     WHERE id = '$id'";
-
+            console_log($sql);
             $result = mysqli_query($db, $sql);
 
             if(!$result) {

@@ -140,7 +140,7 @@ if (isset($_GET['author_id'])) {
 
     if (isset($_GET['id'])){
         $title = mysqli_real_escape_string($db, $_POST['title']);
-        $authorId = ( isset($_POST['author_id']) ) ? $_POST['author_id'] : null;
+        $authorId = ($_POST['author_id'] == '') ? 'null' : $_POST['author_id'];
         $description = mysqli_real_escape_string($db, $_POST['description']);
         $notes = mysqli_real_escape_string($db, $_POST['notes']);
         $frontCover = mysqli_real_escape_string($db, $frontCoverFileName);
@@ -148,7 +148,7 @@ if (isset($_GET['author_id'])) {
 
         $sql = "UPDATE books
                 SET title='$title',
-                    author_id='$authorId',
+                    author_id=$authorId,
                     description='$description',
                     notes = '$notes',
                     front_cover = '$frontCover',

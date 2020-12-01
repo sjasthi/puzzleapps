@@ -10,30 +10,29 @@ require ROOT_DIR . '/db_configuration.php';
 if (isset($_POST['book-id'])) {
     $bookId = $_POST['book-id'];
 }
-$addPuzzlesSuccess = false;
-if (isset($_POST['add-puzzles-submit'])) {
-    if (isset($_POST['addPuzzlesId'])) {
-        $addPuzzlesSuccess = true;
-        $countPuzzles = count($_POST['addPuzzlesId']);
-        for ($i = 0; $i < $countPuzzles; $i++) {
-            $puzzleId = $_POST['addPuzzlesId'][$i];
-            $sql = "INSERT into books_puzzles (book_id, puzzle_id) VALUES ('$bookId', '$puzzleId')";
+$removeSponsorsSuccess = false;
+if (isset($_POST['remove-sponsors-submit'])) {
+    if (isset($_POST['removeSponsorsId'])) {
+        $removeSponsorsSuccess = true;
+        $countSponsors = count($_POST['removeSponsorsId']);
+        for ($i = 0; $i < $countSponsors; $i++) {
+            $userId = $_POST['removeSponsorsId'][$i];
+            $sql = "DELETE FROM users_books WHERE user_id = '$userId' AND book_id = '$bookId'";
             $result = mysqli_query($db, $sql);
 
             if(!$result) {
-                $addPuzzlesSuccess = false;
-                die('Add puzzle failed: ' . mysqli_error($db));
+                $removeSponsorsSuccess = false;
             }
         }
     }
-    if (!$addPuzzlesSuccess) {
+    if (!$removeSponsorsSuccess) {
         echo '<script type="text/javascript">
-                alert("Error adding one or more puzzles.");
+                alert("Error removing one or more sponsors.");
                 window.location = "books_modify.php?id='.$bookId.'"
                 </script>';
     } else {
         echo '<script type="text/javascript">
-                alert("Puzzles added!");
+                alert("Sponsors removed.");
                 window.location = "books_modify.php?id='.$bookId.'"
                 </script>';
     }
