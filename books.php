@@ -227,7 +227,7 @@ if(isset($_SESSION['logged_in'])){
                         echo "
                         
                         <td id= 'box'> 
-                        <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
+                        <img class='image' height='$book_height' width='$book_width' src = 'images/books/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
                         <div id = 'title3'>Please sponsor to view all books!</div>
                         <div id = 'title'>$topic</div>
                         <div><b>Description: </b> $des </div>
