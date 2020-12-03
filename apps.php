@@ -210,7 +210,7 @@ error_reporting(0);
                     ?>
                     
                     <td id= "box"> 
-                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
@@ -246,7 +246,7 @@ error_reporting(0);
 						?>
                     
                     <td id= "box"> 
-                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
@@ -293,7 +293,7 @@ error_reporting(0);
                     ?>
                     
                     <td id= "box"> 
-                    <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
