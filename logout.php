@@ -25,6 +25,7 @@ require ROOT_DIR . '/db_configuration.php';
     unset($_SESSION['last_name']);
     unset($_SESSION['role']);
     unset($_SESSION['logged_in']);
+    unset($_SESSION['bookSponsor']);
     
     header('location: index.php');
 ?>

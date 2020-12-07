@@ -12,7 +12,7 @@ error_reporting(0);
 <html>
 
 	<head>
-		<title>Books List</title>
+		<title>Would you like to sponsor this book?</title>
 	</head>
 	<style>
 		.image {
@@ -82,8 +82,15 @@ error_reporting(0);
         .sponsor{
             font-size: 20px;
             color: darkgoldenrod;
-
         }
+        .filter:hover {
+		transform: scale(1.2);
+        color: green;
+		}
+        .sponsor:hover {
+		transform: scale(1.2);
+        color: green;
+		}
 
 	</style>
 
@@ -95,7 +102,7 @@ error_reporting(0);
     //     }
     // }
     ?>
-		<h1 id="title2">Books List </h1>
+		<h1 id="title2">Would you like to sponsor this book? </h1>
         <h4 id="title4">Only sponsors can access the content of the books.
 Sponsor a book to access the content for 100 books. </h4>
         
@@ -105,80 +112,92 @@ Sponsor a book to access the content for 100 books. </h4>
         <div class="filter" style="font-size:15px; display: inline-block"><input type="submit" name="front" value="Front Cover" />   </div>
         <div class="filter" style="font-size:15px; display: inline-block"><input type="submit" name="back" value="Back Cover" />  </div>
         <div class="filter" style="font-size:15px; display: inline-block"><input type="submit" name="sample" value="Sample Puzzle" />  </div>
-        <div class="filter" style="font-size:15px; display: inline-block"><input type="submit" name="sponsor" value="Sponsors" />  </div>
+        <!--<div class="filter" style="font-size:15px; display: inline-block"><input type="submit" name="sponsor" value="Sponsors" />  </div>-->
 		</div>
     
         </form>
         
     <?php
 
+    if(isset($_GET['id'])){
+        $id = $_GET['id'];
+      
+        $sql1 = "SELECT `puzzle_id` FROM `books_puzzles` WHERE `book_id`= '$id'";
+        $sql2 = "SELECT `title` FROM `books` WHERE `id`= '$id'";
+        $sql3 = "SELECT `front_cover` FROM `books` WHERE `id`= '$id'";
+        $sql4 = "SELECT `back_cover` FROM `books` WHERE `id`= '$id'";
+        $sql8 = "SELECT `description` FROM `books` WHERE `id`= '$id'";
+        $sql6 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_height'";
+        $sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_width'";
+        $sql9 = "SELECT `puzzle_id` FROM `books_puzzles` WHERE `book_id`= '$id'"; 
+        $sqlBook = "SELECT `book_id` FROM `users_books`";
 
-    $sql1 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'books_per_row'";
-    $sql2 = "SELECT `title` FROM `books`";
-    $sql3 = "SELECT `front_cover` FROM `books`";
-    $sql4 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'books_to_show'";
-    $sql5 = "SELECT `back_cover` FROM `books`";
-    $sql6 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_height'";
-    $sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'book_width'";
-    $sql8 = "SELECT `description` FROM `books`";
+        $result9 = mysqli_query($db, $sql9);
+        $resultBook = mysqli_query($db, $sqlBook);
+                
 
+        $row = mysqli_fetch_row($result9);
     
+        $puzID = $row[0];
+                
+               
+        $sql10 = "SELECT `puzzle_image` FROM `puzzles` WHERE `id`= '$puzID'";
 
-    $results1 = mysqli_query($db, $sql1);
-    $results2 = mysqli_query($db, $sql2);
-    $results3 = mysqli_query($db, $sql3);
-    $results4 = mysqli_query($db, $sql4);
-    $results5 = mysqli_query($db, $sql5);
-    $results6 = mysqli_query($db, $sql6);
-    $results7 = mysqli_query($db, $sql7);
-    $results8 = mysqli_query($db, $sql8);
+        $result10 = mysqli_query($db, $sql10);
+
+        $puzzleImage = mysqli_fetch_row($result10);
+
+        $puzImage = $puzzleImage[0];
+
+        $results1 = mysqli_query($db, $sql1);
+        $results2 = mysqli_query($db, $sql2);
+        $results3 = mysqli_query($db, $sql3);
+        $results4 = mysqli_query($db, $sql4);
+        $results6 = mysqli_query($db, $sql6);
+        $results7 = mysqli_query($db, $sql7);
+        $results8 = mysqli_query($db, $sql8);
 
 
-    if (mysqli_num_rows($results1) > 0) {
-        while ($row = mysqli_fetch_assoc($results1)) {
-            $column[] = $row;
+        if (mysqli_num_rows($results1) > 0) {
+            while ($row = mysqli_fetch_assoc($results1)) {
+                $puzzles[] = $row;
+            }
         }
-    }
-
-    if (mysqli_num_rows($results2) > 0) {
-        while ($row = mysqli_fetch_assoc($results2)) {
-            $topics[] = $row;
+        if (mysqli_num_rows($results2) > 0) {
+            while ($row = mysqli_fetch_assoc($results2)) {
+                $topics[] = $row;
+            }
         }
-    }
-
-    if (mysqli_num_rows($results3) > 0) {
-        while ($row = mysqli_fetch_assoc($results3)) {
-            $pics[] = $row;
+    
+        if (mysqli_num_rows($results3) > 0) {
+            while ($row = mysqli_fetch_assoc($results3)) {
+                $pics[] = $row;
+            }
         }
-        while ($row = mysqli_fetch_assoc($results5)) {
-            $pics2[] = $row;
+        if (mysqli_num_rows($results4) > 0) {
+            while ($row = mysqli_fetch_assoc($results4)) {
+                $pics2[] = $row;
+            }
         }
-    }
-
-    if (mysqli_num_rows($results4) > 0) {
-        while ($row = mysqli_fetch_assoc($results4)) {
-            $manyItem[] = $row;
+    
+        if (mysqli_num_rows($results6) > 0) {
+            while ($row = mysqli_fetch_assoc($results6)) {
+                $height[] = $row;
+            }
         }
-    }
-    if (mysqli_num_rows($results6) > 0) {
-        while ($row = mysqli_fetch_assoc($results6)) {
-            $height[] = $row;
+        if (mysqli_num_rows($results7) > 0) {
+            while ($row = mysqli_fetch_assoc($results7)) {
+                $width[] = $row;
+            }
         }
-	}
-	if (mysqli_num_rows($results7) > 0) {
-        while ($row = mysqli_fetch_assoc($results7)) {
-            $width[] = $row;
+        if (mysqli_num_rows($results8) > 0) {
+            while ($row = mysqli_fetch_assoc($results8)) {
+                $descrition[] = $row;
+            }
         }
-    }
-    if (mysqli_num_rows($results8) > 0) {
-        while ($row = mysqli_fetch_assoc($results8)) {
-            $descrition[] = $row;
-        }
-	}
 
     $numBook = count($topics);
-    $columns = $column[0]['preference_value'];
-    $manyItems = $manyItem[0]['preference_value'];
+      
     $book_height = $height[0]['preference_value'];
 	$book_width = $width[0]['preference_value'];
 
@@ -222,49 +241,19 @@ if(isset($_SESSION['logged_in'])){
     }
 
 }
-    if($numBook <= $manyItems){
-        $bookRange = $numBook;
-    }else{
-    $bookRange = $manyItems;
-    }
     if($isSponsor == false){
         for ($a = 0; $a < 1; $a) {
                 if ($a >= 1) {
                     break;
                 } else {
                     $randIndex = array_rand($topics);
-                    $puzzleIndex = $randIndex + 1;
-                    $sql9 = "SELECT `puzzle_id` FROM `books_puzzles` WHERE `book_id`= '$puzzleIndex'";
-                    $result9 = mysqli_query($db, $sql9);
-    
-                    if (mysqli_num_rows($result9) > 0) {
-                        while ($row = mysqli_fetch_assoc($result9)) {
-                            $puzzleID[] = $row;
-                        }
-                    }
-                    $puzID = $puzzleID[0]['puzzle_id'];
-                  
-                   
-                    $sql10 = "SELECT `puzzle_image` FROM `puzzles` WHERE `id`= '$puzID'";
-                    $result10 = mysqli_query($db, $sql10);
-                    if (mysqli_num_rows($result10) > 0) {
-                        while ($row = mysqli_fetch_assoc($result10)) {
-                            $puzzleImage[] = $row;
-                        }
-                    }
-    
-                    $puzImage = $puzzleImage[0]['puzzle_image'];
-                   
-    
-    
                     $topic = $topics[$randIndex]['title'];
                     $pic1 = $pics[$randIndex]['front_cover'];
                     $pic2 = $pics2[$randIndex]['back_cover'];
                     $des = $descrition[$randIndex]['description'];
-    
-                    $frontPic = "images/books/thumbnails/$pic1";
-                    $backPic = "images/books/thumbnails/$pic2";
-                    $samplePic = "images/puzzles/$puzImage";
+                    $frontPic = "images/books/$pic1";
+                    $backPic = "images/books/$pic2";
+                    $samplePic = "images/puzzles/main/$puzImage";
                     
                     unset($topics[$randIndex]);
     
@@ -284,17 +273,21 @@ if(isset($_SESSION['logged_in'])){
                         $image = $samplePic;
     
                         }
+
+                        $_SESSION['bookID'] = $id;
+
                         echo "
                         
                         <td id= 'box'> 
                         <img class='image' height='$book_height' width='$book_width' src = '$image' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
                         <div id = 'title'>$topic</div>
                         <div><b>Description: </b> $des </div>
-                        <div style='font-size:20px; color: darkgoldenrod'>Click here to see the list of books waiting for a sponsorship</div>
-                        <form action=books_sponsor.php>
-                        <div class='sponsor' style='display: inline-block'><input type='submit' name='sponsor' value='Sponsor' /> </div>
+                        <div style='font-size:20px; color: darkgoldenrod'>Click here to sponsor this book</div>
+                        <form action=books_sponsor.php>  
+                        <div class='sponsor' style='display: inline-block'><input type='submit' name='sponsor' value='Sponsor'></div>
                         </form>
                         </td>";
+
                     $a++;
                 }
             
@@ -303,102 +296,8 @@ if(isset($_SESSION['logged_in'])){
 
         
     }
-    else{
-//...........................................
-    if($numBook <= $manyItems){
-        $bookRange = $numBook;
-    }else{
-        $bookRange = $manyItems;
+    
     }
-    for ($a = 0; $a < $bookRange; $a) {
-        for ($b = 0; $b < $columns; $b++) {
-            if ($a >= $bookRange) {
-                break;
-            } else {
-
-                // get random index from array $topics
-                $randIndex = array_rand($topics);
-                $puzzleIndex = $randIndex + 1;
-                $sql9 = "SELECT `puzzle_id` FROM `books_puzzles` WHERE `book_id`= '$puzzleIndex'";
-                $result9 = mysqli_query($db, $sql9);
-
-                if (mysqli_num_rows($result9) > 0) {
-                    while ($row = mysqli_fetch_assoc($result9)) {
-                        $puzzleID[] = $row;
-                    }
-                }
-                $puzID = $puzzleID[0]['puzzle_id'];
-                echo $randIndex." ".$puzID;
-                echo "<br>";
-               
-                $sql10 = "SELECT `puzzle_image` FROM `puzzles` WHERE `id`= '$puzID'";
-                $result10 = mysqli_query($db, $sql10);
-                if (mysqli_num_rows($result10) > 0) {
-                    while ($row = mysqli_fetch_assoc($result10)) {
-                        $puzzleImage[] = $row;
-                    }
-                }
-                $puzImage = $puzzleImage[0]['puzzle_image'];
-                echo $puzImage;
-
-
-                $topic = $topics[$randIndex]['title'];
-                $pic = $pics[$randIndex]['front_cover'];
-                $pic2 = $pics2[$randIndex]['back_cover'];
-                $des = $descrition[$randIndex]['description'];
-                unset($topics[$randIndex]);
-
-                if(!isset($_POST['front']) && !isset($_POST['back'])){
-
-                    echo "
-                    
-                    <td id= 'box'> 
-                    <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                    <div id = 'title'>$topic</div>
-                    <div><b>Description: </b> $des </div>
-                    </td>";
-    
-                    }
-                if(isset($_POST['front'])){
-
-                echo "
-                
-                <td id= 'box'> 
-                <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                <div id = 'title'>$topic</div>
-                <div><b>Description: </b> $des </div>
-                </td>";
-
-                }
-                if(isset($_POST['back'])){
-
-                    echo "
-                    
-                    <td id= 'box'> 
-                    <img class='image' height='$book_height' width='$book_width' src = 'images/books/thumbnails/$pic2' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                    <div id = 'title'>$topic</div>
-                    <div><b>Description: </b> $des </div>
-                    </td>";
-    
-                    }
-                if(isset($_POST['sample'])){
-
-                    echo "
-                    
-                    <td id= 'box'> 
-                    <img class='image' height='$book_height' width='$book_width' src = 'images/puzzles/$puzImage' onerror=this.src='Images/index_images/ImageNotFound.png'></img>
-                    <div id = 'title'>$topic</div>
-                    <div><b>Description: </b> $des </div>
-                    </td>";
-    
-                    }
-                $a++;
-            }
-        }
-        echo "</tr>";
-    }
-    echo "</table>";
-}
 ?>
 
     </div>

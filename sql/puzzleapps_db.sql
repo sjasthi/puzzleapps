@@ -49,7 +49,18 @@ CREATE TABLE `preferences` (
 ) AUTO_INCREMENT=4 ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO `preferences` (`id`, `preference_name`, `preference_value`) VALUES
-(3, 'puzzlesPerPage', '8');
+(1, 'book_height', '200', NULL),
+(2, 'book_width', '200', NULL),
+(3, 'books_per_row', '4', NULL),
+(4, 'books_to_show', '21', NULL),
+(5, 'app_height', '200', NULL),
+(6, 'app_width', '300', NULL),
+(7, 'apps_per_row', '4', NULL),
+(8, 'apps_to_show', '25', NULL),
+(9, 'puzzle_height', '200', NULL),
+(10, 'puzzle_width', '300', NULL),
+(11, 'puzzles_per_row', '4', NULL),
+(12, 'puzzles_to_show', '21', NULL);
 
 
 CREATE TABLE `apps` (

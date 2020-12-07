@@ -15,11 +15,11 @@ if ( $result->num_rows == 0 ){ // User doesn't exist
 else { // User exists
     $user = $result->fetch_assoc();
 
-    if ( password_verify($pass, $user['password']) ) {
+    if ( password_verify($_POST['password'], $user['password']) ) {
         $_SESSION['email'] = $user['email'];
         $_SESSION['first_name'] = $user['first_name'];
         $_SESSION['last_name'] = $user['last_name'];
-        $_SESSION['active'] = $user['active'];
+        //$_SESSION['active'] = $user['active'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['logged_in'] = true;
 

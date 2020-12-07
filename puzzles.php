@@ -76,7 +76,6 @@ $sql1 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= '
 $sql2 = "SELECT `title` FROM `puzzles`";
 $sql3 = "SELECT `puzzle_image` FROM `puzzles`";
 //$sql4 = "SELECT `path` FROM `puzzles`";
-$sql5 = "SELECT `sub_title` FROM `puzzles`";
 $sql6 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'puzzles_to_show'";
 $sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'puzzle_height'";
 $sql8 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'puzzle_width'";
@@ -85,7 +84,6 @@ $results1 = mysqli_query($db, $sql1);
 $results2 = mysqli_query($db, $sql2);
 $results3 = mysqli_query($db, $sql3);
 //$results4 = mysqli_query($db, $sql4);
-$results5 = mysqli_query($db, $sql5);
 $results6 = mysqli_query($db, $sql6);
 $results7 = mysqli_query($db, $sql7);
 $results8 = mysqli_query($db, $sql8);
@@ -114,11 +112,6 @@ $pics[] = $row;
 // $path[] = $row;
 // }
 //}
-if (mysqli_num_rows($results5) > 0) {
-while ($row = mysqli_fetch_assoc($results5)) {
-$notes[] = $row;
-}
-}
 if (mysqli_num_rows($results6) > 0) {
 while ($row = mysqli_fetch_assoc($results6)) {
 $manyItem[] = $row;
@@ -164,7 +157,6 @@ if ($a >= $puzzleRange) {
     $topic = $topics[$randIndex]['title'];
     $pic = $pics[$randIndex]['puzzle_image'];
     //$location = $path[$randIndex]['path'];
-    $note = $notes[$randIndex]['sub_title'];
     unset($topics[$randIndex]);
 
    
