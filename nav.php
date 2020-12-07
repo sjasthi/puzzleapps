@@ -1,6 +1,7 @@
 <?php
 require_once('initialize.php');
 require_once __DIR__ . '/bootstrap.php';
+//session_start();
 ?>
 
 <!DOCTYPE html>
@@ -68,12 +69,31 @@ require_once __DIR__ . '/bootstrap.php';
                         <br/>About</li>
                 </a>
 
-
-                <a href="login.php">
+                <?php
+		if(isset($_SESSION['logged_in'])){
+			
+			?>
+			<a href="logout.php">
+                    <li <?php if($nav_selected == "LOGIN"){ echo 'class="current-page"'; } ?>>
+                        <img src="images/ui/login.png">
+                        <br/>Logout</li>
+                </a>
+			</form>
+		<?php
+        }
+        else{
+            ?>
+            <a href="login.php">
                     <li <?php if($nav_selected == "LOGIN"){ echo 'class="current-page"'; } ?>>
                         <img src="images/ui/login.png">
                         <br/>Login</li>
                 </a>
+                <?php
+        }
+        
+
+	?>
+                
             </div>
         <br />
     </div>

@@ -11,18 +11,24 @@ require ROOT_DIR . '/db_configuration.php';
 <div class="right-content">
     <div class="container">
         <?php
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-    $sql = "DELETE FROM apps WHERE id = '$id'";
-    $result = $db->query($sql);
+        if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+            $sql = "DELETE FROM apps WHERE id = '$id'";
+            $result = $db->query($sql);
+            if(!$result) {
+                echo '<script type="text/javascript">
+                alert("Error deleting app.");
+                window.location = "apps_list.php"
+                </script>';
+            } else {
+                echo '<script type="text/javascript">
+                alert("App deleted!");
+                window.location = "apps_list.php"
+                </script>';
+            }
 
-} else {
-    header("HTTP/1.1 500 Failed to delete");
-    exit;
-}
-?>
-        <h1>App Deleted!</h1>
-
+        }
+        ?>
     </div>
 </div>
 

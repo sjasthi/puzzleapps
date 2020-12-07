@@ -113,20 +113,30 @@ require ROOT_DIR . '/db_configuration.php';
     }
 
     $title = mysqli_real_escape_string($db, $_POST['title']);
-    $authorId = mysqli_real_escape_string($db, $_POST['author_id']);
-    $sponsorId = mysqli_real_escape_string($db, $_POST['sponsor_id']);
+    $authorId = ($_POST['author_id'] == '') ? 'null' : $_POST['author_id'];
     $description = mysqli_real_escape_string($db, $_POST['description']);
     $notes = mysqli_real_escape_string($db, $_POST['notes']);
     $frontCover = mysqli_real_escape_string($db, $frontCoverFileName);
     $backCover = mysqli_real_escape_string($db, $backCoverFileName);
 
-    $sql = "INSERT INTO books (title, author_id, sponsor_id, description, notes, front_cover, back_cover)
-            VALUES ('$title', '$authorId', '$sponsorId', '$description', '$notes', '$frontCover', '$backCover')";
+    $sql = "INSERT INTO books (title, author_id, description, notes, front_cover, back_cover)
+            VALUES ('$title', $authorId, '$description', '$notes', '$frontCover', '$backCover')";
     $result = mysqli_query($db, $sql);
 
+    $book = mysqli_query($db,"SELECT LAST_INSERT_ID()")->fetch_row();
+    $bookId = $book[0];
+
     if(!$result) {
-        die('Create book failed: ' . mysqli_error($db));
-    } else { echo '<h1>Book Created!</h1>'; }
+        echo '<script type="text/javascript">
+                    alert("Error creating book. Try again.");
+                    window.location = "books_create.php"
+                    </script>';
+    } else {
+        echo '<script type="text/javascript">
+                    alert("Book created!");
+                    window.location = "books_modify.php?id='.$bookId.'"
+                    </script>';
+    }
 
 echo '</div></div>';
 include("footer.php");

@@ -12,7 +12,22 @@ require ROOT_DIR . '/db_configuration.php';
 <div class="right-content">
     <div class="container">
 
-        <h3>Login (TO BE DONE LATER)</h3>
+    <?php
+
+    session_start();
+    session_unset();
+    session_destroy();
+    session_write_close();
+    setcookie(session_name(),'',0,'/');
+    session_regenerate_id(true);
+    unset($_SESSION['email']);
+    unset($_SESSION['first_name']);
+    unset($_SESSION['last_name']);
+    unset($_SESSION['role']);
+    unset($_SESSION['logged_in']);
+    
+    header('location: index.php');
+?>
 
     </div>
 </div>

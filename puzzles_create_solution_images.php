@@ -2,7 +2,7 @@
 if (isset($_POST['import-solution-images'])) {
     $countFiles = count($_FILES['solution-images-file']['name']);
     $solutionImageSuccess = false;
-    $target_dir = "images/puzzles/solution/";
+    $target_dir = "images/puzzles/";
     $allowableExtensions = array("jpeg", "jpg", "png", "gif");
     for($i = 0; $i < $countFiles; $i++) {
 
@@ -19,7 +19,7 @@ if (isset($_POST['import-solution-images'])) {
         }
 
         if (!file_exists($target_dir)) {
-            mkdir("images/puzzles/solution/", 0777);
+            mkdir("images/puzzles/", 0777);
         }
 
         if (file_exists($solutionImageFile)) {

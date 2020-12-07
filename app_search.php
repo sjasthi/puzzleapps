@@ -1,18 +1,12 @@
 <?php
-/* Attempt MySQL server connection. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
-$link = mysqli_connect("localhost", "root", "", "puzzleapps_db");
-
-// Check connection
-if($link === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
-}
+require_once __DIR__ . '/bootstrap.php';
+require ROOT_DIR . '/db_configuration.php';
 
 if(isset($_REQUEST["term"])){
     // Prepare a select statement
     $sql = "SELECT * FROM apps WHERE name like ?";
 
-    if($stmt = mysqli_prepare($link, $sql)){
+    if($stmt = mysqli_prepare($db, $sql)){
         // Bind variables to the prepared statement as parameters
         mysqli_stmt_bind_param($stmt, "s", $param_term);
 
@@ -44,4 +38,4 @@ if(isset($_REQUEST["term"])){
 }
 
 // close connection
-mysqli_close($link);
+mysqli_close($db);
