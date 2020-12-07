@@ -19,7 +19,7 @@ $GLOBALS['puzzleTableResults'] = mysqli_query($db, $query);
 
         <div id="tableView">
             <button><a class="btn btn-sm" href="puzzles_create.php">Create A New Puzzle</a></button>
-            <button><a class="btn btn-sm" href="puzzles_import.php">Import Puzzles</a></button>
+            <button><a class="btn btn-sm" href="puzzles_import.php">Bulk Management</a></button>
             <table id="puzzlesTable" style="width:100%">
                 <div>
                     <thead>
