@@ -15,14 +15,20 @@ require ROOT_DIR . '/db_configuration.php';
             $id = $_GET['id'];
             $sql = "DELETE FROM puzzles WHERE id = '$id'";
             $result = $db->query($sql);
+            if(!$result) {
+                echo '<script type="text/javascript">
+                alert("Error deleting puzzle.");
+                window.location = "puzzles_list.php"
+                </script>';
+            } else {
+                echo '<script type="text/javascript">
+                alert("Puzzle deleted!");
+                window.location = "puzzles_list.php"
+                </script>';
+            }
 
-        } else {
-            header("HTTP/1.1 500 Failed to delete");
-            exit;
         }
         ?>
-        <h1>Puzzle Deleted!</h1>
-
     </div>
 </div>
 

@@ -18,7 +18,6 @@ error_reporting(0);
 		.image {
 		padding: 20px 20px 20px 20px;
 		transition: transform .2s;
-
 		}
 
 		.image:hover {
@@ -434,7 +433,6 @@ if(isset($_SESSION['logged_in'])){
         echo "</tr>";
     }
     echo "</table>";
-
 ?>
 
     </div>

@@ -15,14 +15,19 @@ require ROOT_DIR . '/db_configuration.php';
             $id = $_GET['id'];
             $sql = "DELETE FROM books WHERE id = '$id'";
             $result = $db->query($sql);
-
-        } else {
-            header("HTTP/1.1 500 Failed to delete");
-            exit;
+            if(!$result) {
+                echo '<script type="text/javascript">
+                alert("Error deleting book.");
+                window.location = "books_list.php"
+                </script>';
+            } else {
+                echo '<script type="text/javascript">
+                alert("Book deleted!");
+                window.location = "books_list.php"
+                </script>';
+            }
         }
         ?>
-        <h1>Book Deleted!</h1>
-
     </div>
 </div>
 

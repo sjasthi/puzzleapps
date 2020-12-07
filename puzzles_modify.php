@@ -51,11 +51,6 @@ if($result->num_rows > 0) {
                 <input class="form-control" name="title" value="' .$row["title"].'" required data-validation-required-message="Please enter the title."  
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
-            <div class="control-group form-group col-md-12">
-                <label for="sub_title">Sub-Title:</label><br>
-                <input class="form-control" name="sub_title" value="' .$row["sub_title"].'"  
-                maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
-            </div>
             <div class="form-group col-md-12 app-search-box">
                 <label for="app">App:</label><br>
                 <input type="text" name="app" id="app" autocomplete="off" placeholder="No app selected..." value="'.$appName.'" class="form-control"
@@ -83,12 +78,12 @@ if($result->num_rows > 0) {
             <div class="form-group col-md-6">
                 <label for="puzzle_image">Puzzle Image:</label><br>
                 <input type="file"  name="puzzle_image" id="puzzle_image">
-                <img id="puzzleImagePreview" src="images/puzzles/main/'.$row["puzzle_image"].'">
+                <img id="puzzleImagePreview" src="images/puzzles/'.$row["puzzle_image"].'">
             </div>            
             <div class="form-group col-md-6">
                 <label for="solution_image">Solution Image:</label><br>
                 <input type="file" name="solution_image" id="solution_image">
-                <img id="solutionImagePreview" src="images/puzzles/solution/'.$row["solution_image"].'">
+                <img id="solutionImagePreview" src="images/puzzles/'.$row["solution_image"].'">
             </div>
             <div class="control-group text-left" id="wrap">
                 <button type="submit" name="submit" class="btn btn-primary btn-md align-items-center">Update Puzzle Metadata</button>
@@ -334,7 +329,7 @@ include("footer.php");?>
                     let usersHTML = '';
                     // Display the returned data in browser
                     for (var i = 0; i < users.length; i++) {
-                        usersHTML += "<p>" + users[i].first_name + " " + users[i].last_name + "</p>";
+                        usersHTML += "<p userId='" + users[i].id + "'>" + users[i].first_name + " " + users[i].last_name + "</p>";
                     }
                     resultDropdown.html(usersHTML);
                 });
@@ -355,7 +350,7 @@ include("footer.php");?>
                     let appsHTML = '';
                     // Display the returned data in browser
                     for (var i = 0; i < apps.length; i++) {
-                        appsHTML += "<p>" + apps[i].name + "</p>";
+                        appsHTML += "<p appId='" + apps[i].id + "'>" + apps[i].name + "</p>";
                     }
                     resultDropdown.html(appsHTML);
                 });
@@ -368,12 +363,12 @@ include("footer.php");?>
         // Set search input value on click of result item
         $(document).on("click", ".user_result p", function(event){
             $(this).parents(".user-search-box").find('input[type="text"]').val($(this).text());
-            $(this).parents(".user-search-box").find('input[type="hidden"]').val(users[0].id);
+            $(this).parents(".user-search-box").find('input[type="hidden"]').val($(this).attr("userId"));
             $(this).parent(".user_result").empty();
         });
         $(document).on("click", ".app_result p", function(event){
             $(this).parents(".app-search-box").find('input[type="text"]').val($(this).text());
-            $(this).parents(".app-search-box").find('input[type="hidden"]').val(apps[0].id);
+            $(this).parents(".app-search-box").find('input[type="hidden"]').val($(this).attr("appId"));
             $(this).parent(".app_result").empty();
         });
     });

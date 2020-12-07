@@ -22,7 +22,7 @@ if (isset($_GET['id'])) {
         $puzzleImageSuccess = true;
         if (isset($_FILES["puzzle_image"]) && is_uploaded_file($_FILES["puzzle_image"]['tmp_name'])) {
             $puzzleImageSuccess = false;
-            $target_dir = "images/puzzles/main/";
+            $target_dir = "images/puzzles/";
             $puzzleImageFileName = basename($_FILES["puzzle_image"]["name"]);
             $puzzleImageFile = $target_dir . $puzzleImageFileName;
             $uploadOk = 1;
@@ -37,7 +37,7 @@ if (isset($_GET['id'])) {
 
             if(!file_exists($target_dir))
             {
-                mkdir("images/puzzles/main/", 0775);
+                mkdir("images/puzzles/", 0775);
             }
 
             if (file_exists($puzzleImageFile)) {
@@ -80,7 +80,7 @@ if (isset($_GET['id'])) {
         $solutionImageSuccess = true;
         if (isset($_FILES["solution_image"]) && is_uploaded_file($_FILES["solution_image"]['tmp_name'])) {
             $solutionImageSuccess = false;
-            $target_dir = "images/puzzles/solution/";
+            $target_dir = "images/puzzles/";
             $solutionImageFileName = basename($_FILES["solution_image"]["name"]);
             $solutionImageFile = $target_dir . $solutionImageFileName;
             $uploadOk = 1;
@@ -95,7 +95,7 @@ if (isset($_GET['id'])) {
 
             if(!file_exists($target_dir))
             {
-                mkdir("images/puzzles/solution/", 0775);
+                mkdir("images/puzzles/", 0775);
             }
 
             if (file_exists($solutionImageFile)) {
@@ -136,7 +136,6 @@ if (isset($_GET['id'])) {
 
         if (isset($_GET['id'])){
             $title = mysqli_real_escape_string($db, $_POST['title']);
-            $subTitle = mysqli_real_escape_string($db, $_POST['sub_title']);
             $authorId = ($_POST['author_id'] == '') ? 'null' : $_POST['author_id'];
             $appId = ($_POST['app_id'] == '') ? 'null' : $_POST['app_id'];
             $directions = mysqli_real_escape_string($db, $_POST['directions']);
@@ -146,7 +145,6 @@ if (isset($_GET['id'])) {
 
             $sql = "UPDATE puzzles
                     SET title='$title',
-                        sub_title='$subTitle',
                         author_id=$authorId,
                         app_id=$appId,
                         directions='$directions',

@@ -19,20 +19,13 @@ echo '<form action="books_create_a_book.php" method="POST" enctype="multipart/fo
                 maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
 
-            <div class="form-group col-md-12 search-box">
+            <div class="form-group col-md-12 author-search-box">
                 <label for="author">Author:</label><br>
                 <input type="text" name="author" id="author" autocomplete="off" placeholder="Search users..." class="form-control"
                 maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
                 <input type="hidden" value="" name="author_id" id="author_id">
-                <div class="result"></div>
+                <div class="author_result"></div>
             </div>
-            
-            <div class="form-group col-md-12 search-box">                                                                                                                             
-                 <label for="sponsor">Sponsor:</label><br>                                                                                                                                 
-                 <input type="text" name="sponsor" id="sponsor" autocomplete="off" placeholder="Search users..."  class="form-control" aria-invalid="false">                                                                     
-                 <input type="hidden" value="" name="sponsor_id" id="sponsor_id">                                                                                                                         
-                 <div class="result"></div>                                                                                                                                            
-             </div> 
 
             <div class="control-group form-group col-lg-12">
                 <label for="description">Description:</label><br>
@@ -72,30 +65,31 @@ include("footer.php");
 <script type="text/javascript">
     $(document).ready(function(){
         var users = '';
-        $('.search-box input[type="text"]').on("keyup input", function(){
+        $('.author-search-box input[type="text"]').on("keyup input", function(){
             /* Get input value on change */
             var inputVal = $(this).val();
-            var resultDropdown = $(this).siblings(".result");
+            var resultDropdown = $(this).siblings(".author_result");
             if(inputVal.length){
                 $.get("user_search.php", {term: inputVal}).done(function(data){
                     users = JSON.parse(data);
                     let usersHTML = '';
                     // Display the returned data in browser
                     for (var i = 0; i < users.length; i++) {
-                        usersHTML += "<p>" + users[i].first_name + " " + users[i].last_name + "</p>";
+                        usersHTML += "<p userId='" + users[i].id + "'>" + users[i].first_name + " " + users[i].last_name + "</p>";
                     }
                     resultDropdown.html(usersHTML);
                 });
             } else{
                 resultDropdown.empty();
+                $(this).parents(".author-search-box").find('input[type="hidden"]').val(null);
             }
         });
 
         // Set search input value on click of result item
-        $(document).on("click", ".result p", function(event){
-            $(this).parents(".search-box").find('input[type="text"]').val($(this).text());
-            $(this).parents(".search-box").find('input[type="hidden"]').val(users[0].id);
-            $(this).parent(".result").empty();
+        $(document).on("click", ".author_result p", function(event){
+            $(this).parents(".author-search-box").find('input[type="text"]').val($(this).text());
+            $(this).parents(".author-search-box").find('input[type="hidden"]').val($(this).attr("userId"));
+            $(this).parent(".author_result").empty();
         });
     });
 </script>
@@ -126,3 +120,5 @@ include("footer.php");
         });
     })();
 </script>
+
+<?php include("footer.php"); ?>

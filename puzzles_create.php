@@ -18,11 +18,6 @@ echo '<div class="right-content">';
                     <input class="form-control" name="title" required data-validation-required-message="Please enter the puzzle title."
                            maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
                 </div>
-                <div class="control-group form-group col-md-12">
-                    <label for="sub-title">Sub-Title:</label><br>
-                    <input class="form-control" name="sub-title"
-                           maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
-                </div>
                 <div class="form-group col-md-12 app-search-box">
                     <label for="app">App:</label><br>
                     <input type="text" name="app" id="app" autocomplete="off" placeholder="Search apps..." class="form-control"
@@ -57,7 +52,7 @@ echo '<div class="right-content">';
 
                 <div class="form-group col-md-6">
                     <label for="solution_image">Solution Image:</label><br>
-                    <input type="file" name="solution_image" id="solution_image" required>
+                    <input type="file" name="solution_image" id="solution_image">
                     <img id="solutionImage" src="about:blank">
                 </div>
                 <br>
@@ -85,12 +80,13 @@ include("footer.php");
                     let usersHTML = '';
                     // Display the returned data in browser
                     for (var i = 0; i < users.length; i++) {
-                        usersHTML += "<p>" + users[i].first_name + " " + users[i].last_name + "</p>";
+                        usersHTML += "<p userId='" + users[i].id + "'>" + users[i].first_name + " " + users[i].last_name + "</p>";
                     }
                     resultDropdown.html(usersHTML);
                 });
             } else{
                 resultDropdown.empty();
+                $(this).parents(".user-search-box").find('input[type="hidden"]').val(null);
             }
         });
 
@@ -105,24 +101,26 @@ include("footer.php");
                     let appsHTML = '';
                     // Display the returned data in browser
                     for (var i = 0; i < apps.length; i++) {
-                        appsHTML += "<p>" + apps[i].name + "</p>";
+                        appsHTML += "<p appId='" + apps[i].id + "'>" + apps[i].name + "</p>";
+
                     }
                     resultDropdown.html(appsHTML);
                 });
             } else{
                 resultDropdown.empty();
+                $(this).parents(".app-search-box").find('input[type="hidden"]').val(null);
             }
         });
 
         // Set search input value on click of result item
         $(document).on("click", ".user_result p", function(event){
             $(this).parents(".user-search-box").find('input[type="text"]').val($(this).text());
-            $(this).parents(".user-search-box").find('input[type="hidden"]').val(users[0].id);
+            $(this).parents(".user-search-box").find('input[type="hidden"]').val($(this).attr("userId"));
             $(this).parent(".user_result").empty();
         });
         $(document).on("click", ".app_result p", function(event){
             $(this).parents(".app-search-box").find('input[type="text"]').val($(this).text());
-            $(this).parents(".app-search-box").find('input[type="hidden"]').val(apps[0].id);
+            $(this).parents(".app-search-box").find('input[type="hidden"]').val($(this).attr("appId"));
             $(this).parent(".app_result").empty();
         });
     });

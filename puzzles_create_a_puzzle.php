@@ -16,7 +16,7 @@ $puzzleImageFile = null;
 $puzzleImageSuccess = true;
 if (isset($_FILES["puzzle_image"]) && is_uploaded_file($_FILES["puzzle_image"]['tmp_name'])) {
     $puzzleImageSuccess = false;
-    $target_dir = "images/puzzles/main/";
+    $target_dir = "images/puzzles/";
     $puzzleImageFileName = basename($_FILES["puzzle_image"]["name"]);
     $puzzleImageFile = $target_dir . $puzzleImageFileName;
     $uploadOk = 1;
@@ -30,7 +30,7 @@ if (isset($_FILES["puzzle_image"]) && is_uploaded_file($_FILES["puzzle_image"]['
     }
 
     if(!file_exists($target_dir)) {
-        mkdir("images/puzzles/main/", 0777);
+        mkdir("images/puzzles/", 0777);
     }
 
     if (file_exists($puzzleImageFile)) {
@@ -62,10 +62,11 @@ if (isset($_FILES["puzzle_image"]) && is_uploaded_file($_FILES["puzzle_image"]['
 }
 
 $solutionImageFile = null;
+$solutionImageFileName = '';
 $solutionImageSuccess = true;
 if (isset($_FILES["solution_image"]) && is_uploaded_file($_FILES["solution_image"]['tmp_name'])) {
     $solutionImageSuccess = false;
-    $target_dir = "images/puzzles/solution/";
+    $target_dir = "images/puzzles/";
     $solutionImageFileName = basename($_FILES["solution_image"]["name"]);
     $solutionImageFile = $target_dir . $solutionImageFileName;
     $uploadOk = 1;
@@ -79,7 +80,7 @@ if (isset($_FILES["solution_image"]) && is_uploaded_file($_FILES["solution_image
     }
 
     if(!file_exists($target_dir)) {
-        mkdir("images/puzzles/solution/", 0777);
+        mkdir("images/puzzles/", 0777);
     }
 
     if (file_exists($solutionImageFile)) {
@@ -111,7 +112,6 @@ if (isset($_FILES["solution_image"]) && is_uploaded_file($_FILES["solution_image
 }
 
 $title = mysqli_real_escape_string($db, $_POST['title']);
-$subTitle = mysqli_real_escape_string($db, $_POST['sub_title']);
 $appId = mysqli_real_escape_string($db, $_POST['app_id']);
 $authorId = mysqli_real_escape_string($db, $_POST['author_id']);
 $directions = mysqli_real_escape_string($db, $_POST['directions']);
@@ -119,8 +119,8 @@ $notes = mysqli_real_escape_string($db, $_POST['notes']);
 $puzzleImage = mysqli_real_escape_string($db, $puzzleImageFileName);
 $solutionImage = mysqli_real_escape_string($db, $solutionImageFileName);
 
-$sql = "INSERT INTO puzzles (title, sub_title, app_id, author_id, directions, notes, puzzle_image, solution_image)
-            VALUES ('$title', '$subTitle', '$appId', '$authorId', '$directions', '$notes', '$puzzleImage', '$solutionImage')";
+$sql = "INSERT INTO puzzles (title, app_id, author_id, directions, notes, puzzle_image, solution_image)
+            VALUES ('$title','$appId', '$authorId', '$directions', '$notes', '$puzzleImage', '$solutionImage')";
 $result = mysqli_query($db, $sql);
 
 $puzzle = mysqli_query($db,"SELECT LAST_INSERT_ID()")->fetch_row();

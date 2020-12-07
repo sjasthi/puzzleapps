@@ -5,7 +5,6 @@ $left_selected = "BOOKS";
 
 require_once __DIR__ . '/bootstrap.php';
 include(ROOT_DIR . '/nav.php');
-include(ROOT_DIR . '/user_search.php');
 require ROOT_DIR . '/db_configuration.php';
 
 if (isset($_GET['id'])) {
@@ -49,13 +48,13 @@ if($result->num_rows > 0) {
                 <input class="form-control" name="title" value="' .$row["title"].'" required data-validation-required-message="Please enter the title."  
                 maxlength="500" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
             </div>
-            <div class="form-group col-md-12 author-search-box">                                                                                                                             
-                 <label for="path">Author:</label><br>                                                                                                                                 
-                 <input type="text" name="author_name" autocomplete="off" placeholder="No author selected..." value="'.$authorName.'" class="form-control"
-                 aria-invalid="false">                                                                     
-                 <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">                                                                                                                         
-                 <div class="author_result"></div>                                                                                                                                            
-            </div>                                                                                                                                                                   
+            <div class="form-group col-md-12 author-search-box">
+                <label for="author">Author:</label><br>
+                <input type="text" name="author" id="author" autocomplete="off" placeholder="No author selected..." value="'.$authorName.'" class="form-control"
+                maxlength="100" data-validation-maxlength-message="Enter fewer characters." aria-invalid="false">
+                <input type="hidden" value="'.$authorId.'" name="author_id" id="author_id">
+                <div class="author_result"></div>
+            </div>                                                                                                                                                                  
             <div class="control-group form-group col-lg-12">
                 <label for="description">Description:</label><br>
                 <input rows="5" class="form-control" name="description" value="'.$row["description"].'" required data-validation-required-message="Description is required."
@@ -445,18 +444,18 @@ include("footer.php"); ?>
             URL.revokeObjectURL(this.src);
         });
 
-        var authors = '';
+        var users = '';
         $('.author-search-box input[type="text"]').on("keyup input", function(){
             /* Get input value on change */
             var inputVal = $(this).val();
             var resultDropdown = $(this).siblings(".author_result");
             if(inputVal.length){
                 $.get("user_search.php", {term: inputVal}).done(function(data){
-                    authors = JSON.parse(data);
+                    users = JSON.parse(data);
                     let usersHTML = '';
                     // Display the returned data in browser
-                    for (var i = 0; i < authors.length; i++) {
-                        usersHTML += "<p>" + authors[i].first_name + " " + authors[i].last_name + "</p>";
+                    for (var i = 0; i < users.length; i++) {
+                        usersHTML += "<p userId='" + users[i].id + "'>" + users[i].first_name + " " + users[i].last_name + "</p>";
                     }
                     resultDropdown.html(usersHTML);
                 });
@@ -469,7 +468,7 @@ include("footer.php"); ?>
         // Set search input value on click of result item
         $(document).on("click", ".author_result p", function(){
             $(this).parents(".author-search-box").find('input[type="text"]').val($(this).text());
-            $(this).parents(".author-search-box").find('input[type="hidden"]').val(authors[0].id);
+            $(this).parents(".author-search-box").find('input[type="hidden"]').val($(this).attr("userId"));
             $(this).parent(".author_result").empty();
         });
     });

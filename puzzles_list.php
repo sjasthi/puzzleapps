@@ -69,8 +69,8 @@ $GLOBALS['puzzleTableResults'] = mysqli_query($db, $query);
                             <td><div contenteditable="true" onBlur="updateValue(this, 'sub_title', '<?php echo $id; ?>')"><?php echo $subtitle; ?></div></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'directions', '<?php echo $id; ?>')"><?php echo $directions; ?></div></td>
                             <td><div contenteditable="true" onBlur="updateValue(this, 'notes', '<?php echo $id; ?>')"><?php echo $notes; ?></div></td>
-                            <?php echo '<td><img src="images/puzzles/main/'.$row["puzzle_image"].'" style="width:80px;">' ?>
-                            <?php echo '<td><img src="images/puzzles/solution/'.$row["solution_image"].'" style="width:80px;">' ?>
+                            <?php echo '<td><img src="images/puzzles/'.$row["puzzle_image"].'" style="width:80px;">' ?>
+                            <?php echo '<td><img src="images/puzzles/'.$row["solution_image"].'" style="width:80px;">' ?>
                             <?php echo '<td><a class="btn btn-info btn-sm" href="puzzles_view.php?id='.$row["id"].'" target="_blank">View</a></td>' ?>
                             <?php echo '<td><a class="btn btn-primary btn-sm" href="puzzles_play.php?id='.$row["id"].'" target="_blank">Play</a></td>' ?>
                             <?php echo '<td><a class="btn btn-warning btn-sm" href="puzzles_modify.php?id='.$row["id"].'">Manage</a></td>' ?>

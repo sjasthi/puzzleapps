@@ -197,7 +197,7 @@ Sponsor a book to access the content for 100 books. </h4>
         }
 
     $numBook = count($topics);
-
+      
     $book_height = $height[0]['preference_value'];
 	$book_width = $width[0]['preference_value'];
 
@@ -247,12 +247,10 @@ if(isset($_SESSION['logged_in'])){
                     break;
                 } else {
                     $randIndex = array_rand($topics);
-
                     $topic = $topics[$randIndex]['title'];
                     $pic1 = $pics[$randIndex]['front_cover'];
                     $pic2 = $pics2[$randIndex]['back_cover'];
                     $des = $descrition[$randIndex]['description'];
-    
                     $frontPic = "images/books/$pic1";
                     $backPic = "images/books/$pic2";
                     $samplePic = "images/puzzles/main/$puzImage";
@@ -277,7 +275,7 @@ if(isset($_SESSION['logged_in'])){
                         }
 
                         $_SESSION['bookID'] = $id;
-                       
+
                         echo "
                         
                         <td id= 'box'> 
@@ -289,7 +287,7 @@ if(isset($_SESSION['logged_in'])){
                         <div class='sponsor' style='display: inline-block'><input type='submit' name='sponsor' value='Sponsor'></div>
                         </form>
                         </td>";
-                        
+
                     $a++;
                 }
             

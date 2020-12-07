@@ -169,7 +169,7 @@ if(isset($_SESSION['logged_in'])){
 
                         $pic = $puzzle[$a]['puzzle_image'];
 
-                        $image = "images/puzzles/main/$pic";
+                        $image = "images/puzzles/$pic";
                         
                         $userAppID = $appID[$a]['app_id']-1;
     

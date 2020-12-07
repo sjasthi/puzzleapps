@@ -221,7 +221,6 @@ error_reporting(0);
                     <td id= "box"> 
 
                     <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
-
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
@@ -284,17 +283,13 @@ error_reporting(0);
                     </td>
     
 				<?php
-
 					unset($topics[$randIndex]);
 					$a++;
-						
 				}
 			}
 			echo "</tr>";
 		}
 		echo "</table>";
-
-		
 	}
 	}
 	else{
@@ -306,7 +301,6 @@ error_reporting(0);
 	}else{
 		$appRange = $manyItems;
 	}
-
     for ($a = 0; $a < $appRange; $a) {	//VISITOR
         for ($b = 0; $b < $columns; $b++) {
             if ($a >= $appRange) {
@@ -324,7 +318,6 @@ error_reporting(0);
                     
                     <td id= "box"> 
                     <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
-
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
