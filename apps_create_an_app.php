@@ -11,51 +11,56 @@ require ROOT_DIR . '/db_configuration.php';
 <div class="right-content">
     <div class="container">
 
-        <?php
-$target_file = null;
-$success = true;
-if (isset($_FILES["icon"]) && is_uploaded_file($_FILES["icon"]['tmp_name'])) {
-    $success = false;
-    $target_dir = "images/apps/thumbnails/";
-    $path_parts = pathinfo($_FILES["icon"]["name"]);
-    $extension = $path_parts['extension'];
-    $target_file = $target_dir . getToken(16) . "." . $extension;
-    $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-    if(!file_exists($target_dir))
-    {
-        mkdir("images/apps/thumbnails/", 0700);
-    }
-
-    $uploadOk = 1;
-    //echo $target_file;
-    $check = getimagesize($_FILES["icon"]["tmp_name"]);
-    if ($check == false) {
-        $uploadOk = 0;
-        $errorReason = "not an image.";
-    }
-    if (file_exists($target_file)) {
-        unlink($target_file);
-    }
-    if ($_FILES["icon"]["size"] > 5000000) {
-        $uploadOk = 0;
-        $errorReason = "image was too large.";
-    }
-    $allowableExtensions = array("jpeg", "jpg", "png", "PNG", "JPG", "JPEG", "gif", "GIF");
-    if (!in_array($extension, $allowableExtensions)) {
-        $uploadOk = 0;
-        $errorReason = "image has a bad extension.";
-    }
-    if ($uploadOk == 0) {
+    <?php
+    $target_file = null;
+    $success = true;
+    if (isset($_FILES["icon"]) && is_uploaded_file($_FILES["icon"]['tmp_name'])) {
         $success = false;
-    } else {
-        if (move_uploaded_file($_FILES["icon"]["tmp_name"], $target_file)) {
-            $success = true;
+        $target_dir = "images/apps/";
+        $fileName = basename($_FILES["icon"]["name"]);
+        $target_file = $target_dir . $fileName;
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $check = getimagesize($_FILES["icon"]["tmp_name"]);
+        if ($check != false) {
+            $uploadOk = 1;
         } else {
-            $success = false;
+            echo "Sorry, not an image.";
+            $uploadOk = 0;
         }
-    }
 
-}
+        if(!file_exists($target_dir))
+        {
+            mkdir("images/apps/", 0700);
+        }
+
+        if (file_exists($target_file)) {
+            echo "Sorry, file already exists.";
+            $uploadOk = 0;
+        }
+
+        if ($_FILES["icon"]["size"] > 500000) {
+            echo "Sorry, your file is too large.";
+        }
+
+        $allowableExtensions = array("jpeg", "jpg", "png", "gif");
+        if (!in_array($imageFileType, $allowableExtensions)) {
+            echo "Sorry, only jpg, png, and gif files allowed.";
+        }
+
+        if ($uploadOk == 0) {
+            echo "Sorry, your file was not uploaded.";
+            $success = false;
+        } else {
+            if (move_uploaded_file($_FILES["icon"]["tmp_name"], $target_file)) {
+                $success = true;
+            } else {
+                echo "Sorry, there was an error uploading your file.";
+                $success = false;
+            }
+        }
+
+    }
     $name = mysqli_real_escape_string($db, $_POST['name']);
     $path = mysqli_real_escape_string($db, $_POST['path']);
     $description = mysqli_real_escape_string($db, $_POST['description']);
@@ -68,18 +73,30 @@ if (isset($_FILES["icon"]) && is_uploaded_file($_FILES["icon"]['tmp_name'])) {
     if (isset($_POST['status']) and ($_POST['status']=='on')) $status=1; else $status=0;
     $token = mysqli_real_escape_string($db, $_POST['token']);
     if (isset($_POST['playable']) and ($_POST['playable']=='on')) $playable=1; else $playable=0;
-    $icon = mysqli_real_escape_string($db, $_POST['icon']);
+    $icon = mysqli_real_escape_string($db, $fileName);
 
-        $sql = "INSERT INTO apps(name, description, path, notes, 
-                            inputFromDB, inputFromUI, outputToDB, outputToUI, developer, 
-                            status, token, playable, icon)
-                   VALUES ('$name', '$description', '$path', '$notes', 
-                          '$inputFromDB', '$inputFromUI', '$outputToDB', '$outputToUI', 
-                          '$developer', '$status', '$token', '$playable', '$icon')";
-        mysqli_query($db, $sql);
-?>
-    <h1>App created!</h1>
-    </div>
-</div>
+    $sql = "INSERT INTO apps(name, description, path, notes, 
+                        inputFromDB, inputFromUI, outputToDB, outputToUI, developer, 
+                        status, token, playable, icon)
+               VALUES ('$name', '$description', '$path', '$notes', 
+                      '$inputFromDB', '$inputFromUI', '$outputToDB', '$outputToUI', 
+                      '$developer', '$status', '$token', '$playable', '$icon')";
+    $result = mysqli_query($db, $sql);
 
-<?php include("footer.php"); ?>
+    $app = mysqli_query($db,"SELECT LAST_INSERT_ID()")->fetch_row();
+    $appId = $app[0];
+
+    if(!$result) {
+        echo '<script type="text/javascript">
+                alert("Error creating app. Try again.");
+                window.location = "apps_create.php"
+                </script>';
+    } else {
+        echo '<script type="text/javascript">
+                alert("App created!");
+                window.location = "apps_modify.php?id='.$appId.'"
+                </script>';
+    }
+
+echo '</div></div>';
+include("footer.php"); ?>

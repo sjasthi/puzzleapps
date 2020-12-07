@@ -115,8 +115,8 @@ require_once ROOT_DIR . '/App.php';
         </div>
 
         <div class="controls">
-                <label for="icon">Application Image:</label><br>
-                <input type="file" name="icon"  id="fileToUpload" >
+                <label for="image">Application Image:</label><br>
+                <input type="file" name="imageFile"  id="imageFile" >
                 <p class="help-block"></p>
 
         </div>

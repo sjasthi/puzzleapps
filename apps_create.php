@@ -11,7 +11,7 @@ echo '<div class="right-content">';
 echo '<div class="container">';
 
 echo '<h1>Create An App</h1>';
-echo '<form action="apps_create_an_app.php" method="POST">
+echo '<form action="apps_create_an_app.php" method="POST" enctype="multipart/form-data">
         <div class="form-row">
             <div class="control-group form-group col-md-12">
                 <label for="name">Name:</label><br>
@@ -81,9 +81,10 @@ echo '<form action="apps_create_an_app.php" method="POST">
             </div>
         </div>
 
-        <div class="controls">
+        <div class="form-group col-md-6">
                 <label for="icon">Application Image:</label><br>
-                <input type="file" name="icon"  id="fileToUpload" >
+                <input type="file" name="icon" id="icon" required>
+                <img id="preview" src="about:blank"/>
         </div>
         <br><br><br>
         <div class="text-left">
@@ -93,4 +94,20 @@ echo '<form action="apps_create_an_app.php" method="POST">
     </div>
 </div>';
 
-include("footer.php");
+include("footer.php"); ?>
+<script>
+(function() {
+    var URL = window.URL || window.webkitURL;
+    var input = document.getElementById('icon');
+    var preview = document.querySelector('#preview');
+
+    // When the file input changes, create a object URL around the file.
+    input.addEventListener('change', function () {
+        preview.src = URL.createObjectURL(this.files[0]);
+    });
+    // When the image loads, release object URL
+    preview.addEventListener('load', function () {
+        URL.revokeObjectURL(this.src);
+    });
+})();
+</script>

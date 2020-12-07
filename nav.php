@@ -3,7 +3,15 @@ require_once('initialize.php');
 require_once __DIR__ . '/bootstrap.php';
 //session_start();
 ?>
+<style>
+div.name {
+  position: absolute;
+  top: 13;
+  left: 250;
+  width: 200px;
 
+}
+</style>
 <!DOCTYPE html>
 
 <html>
@@ -31,7 +39,9 @@ require_once __DIR__ . '/bootstrap.php';
                 <li class="horizontal-li-logo">
                     <img src ="images/logo.png">
                     <br/>Indic Puzzles</li>
+
             </a>
+                
             <div class="topnav-right">
                 <a href="puzzles.php">
                     <li <?php if($nav_selected == "PUZZLES"){ echo 'class="current-page"'; } ?>>
@@ -56,12 +66,19 @@ require_once __DIR__ . '/bootstrap.php';
                         <img src="images/ui/sponsor.png">
                         <br/>Sponsor</li>
                 </a>
-
-                <a href="admin.php">
-                    <li <?php if($nav_selected == "ADMIN"){ echo 'class="current-page"'; } ?>>
+                <?php
+                if(isset($_SESSION['logged_in'])){
+                    $role = $_SESSION['role'];
+                    if($role == "ADMIN" || $role == "SUPER_ADMIN"){ ?>
+                    <a href="admin.php">
+                        <li <?php if($nav_selected == "ADMIN"){ echo 'class="current-page"'; } ?>>
                         <img src="images/ui/admin.png">
                         <br/>Admin</li>
-                </a>
+                    </a>
+                <?php
+                    }
+                }
+                ?>
 
                 <a href="about.php">
                     <li <?php if($nav_selected == "ABOUT"){ echo 'class="current-page"'; } ?>>
@@ -95,9 +112,30 @@ require_once __DIR__ . '/bootstrap.php';
 	?>
                 
             </div>
+            
         <br />
     </div>
 </div>
+<?php
+if(isset($_SESSION['logged_in'])){
+    $firstName = $_SESSION['first_name'];
+    $lastName = $_SESSION['last_name'];
+    $email = $_SESSION['email'];
+    ?>
+    <div class="name">
+        <div style="font-size:40px; font-weight: bold; color: darkgoldenrod">Welcome </div>
+        <div>
+            <?php 
+                echo "<div style='font-weight: bold; display: inline-block;'>".$firstName." "; 
+                echo $lastName;
+                echo "</div><br>";
+                echo "<div style='font-weight: bold; display: inline-block;'>Email: </div> ".$email;
+            ?> 
+        </div>
+    </div>
+<?php
+    }
+?>
 <table id="main">
     <tbody>
     <tr>

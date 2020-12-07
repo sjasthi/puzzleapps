@@ -22,8 +22,16 @@ error_reporting(0);
 		padding: 20px 20px 20px 20px;
 		transition: transform .2s;
 		}
+		.image2 {
+		padding: 20px 20px 20px 20px;
+		transition: transform .2s;
+		border: 3px solid darkgoldenrod;
+		}
 
 		.image:hover {
+		transform: scale(1.2)
+		}
+		.image2:hover {
 		transform: scale(1.2)
 		}
 
@@ -43,6 +51,7 @@ error_reporting(0);
 		padding: 10px;
 		border: 1px solid darkgoldenrod; */
 		text-align: center;
+		width: 10%;
 		}
 
 		#silc {
@@ -184,7 +193,7 @@ error_reporting(0);
 	if(isset($_SESSION['logged_in'])){
 		$role = $_SESSION['role'];
 
-		if($role == "ADMIN" || $role == "SUPER_ADMIN"){
+		if($role == "ADMIN" || $role == "SUPER_ADMIN"){	//ADMIN
 			echo "<table id = 'table_2'>";
 			echo "<tr>";
 	
@@ -210,7 +219,7 @@ error_reporting(0);
                     ?>
                     
                     <td id= "box"> 
-                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="<?php echo $location ?>" target="_blank"><img class="image2" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
@@ -223,48 +232,65 @@ error_reporting(0);
         echo "</tr>";
     }
 	echo "</table>";
-		}else{
+		}else{	//USER
 
 		echo "<table id = 'table_2'>";
 		echo "<tr>";
-		$range = count($appID);
+		
+		//$range = count($appID);
 		//echo $range;
-		for ($a = 0; $a < $range; $a) {
+
+		if($numApp <= $manyItems){
+			$appRange = $numApp;
+			}else{
+			$appRange = $manyItems;
+			}
+		$c = 0;
+		for ($a = 0; $a < $appRange; $a) {
 			for ($b = 0; $b < $columns; $b++) {
-				if ($a >= $range) {
+				if ($a >= $appRange) {
 					break;
 				} else {
 
-						if($range > 0){
-						$userAppID = $appID[$a]['app_id']-1;
+						
+						$userAppID = $appID[$c]['app_id']-1;
+						$randIndex = $a;
 
-						$topic = $topics[$userAppID]['name'];
-						$pic = $pics[$userAppID]['icon'];
-						$location = $path[$userAppID]['path'];
-						$note = $notes[$userAppID]['notes'];
-						unset($topics[$randIndex]);
+						$topic = $topics[$randIndex]['name'];
+						$pic = $pics[$randIndex]['icon'];
+						$location = $path[$randIndex]['path'];
+						$note = $notes[$randIndex]['notes'];
+
+
+						if($userAppID == $a){
+							$location = $path[$randIndex]['path'];
+							$imageMod = "image2";
+							$c++;
+						}else{
+							$location = "apps_error.php";
+							$imageMod = "image";
+						}
 						?>
                     
                     <td id= "box"> 
-                    <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="<?php echo $location ?>" target="_blank"><img class="<?php echo $imageMod; ?>" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
+					
                     </td>
     
 				<?php
 
-				
+					unset($topics[$randIndex]);
 					$a++;
-						}
+						
 				}
 			}
 			echo "</tr>";
 		}
 		echo "</table>";
 
-		if($range == 0){
-			echo "You have 0 apps";
-		}
+		
 	}
 	}
 	else{
@@ -277,7 +303,7 @@ error_reporting(0);
 		$appRange = $manyItems;
 	}
 
-    for ($a = 0; $a < $appRange; $a) {
+    for ($a = 0; $a < $appRange; $a) {	//VISITOR
         for ($b = 0; $b < $columns; $b++) {
             if ($a >= $appRange) {
                 break;
@@ -293,7 +319,7 @@ error_reporting(0);
                     ?>
                     
                     <td id= "box"> 
-                    <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="Images/index_images/ImageNotFound.png"></img></a>
+                    <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
 					<div><b>Description: </b><?php echo $note ?></div>
                     </td>
