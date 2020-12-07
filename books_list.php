@@ -19,6 +19,7 @@ $GLOBALS['bookTableResults'] = mysqli_query($db, $query);
 
         <div id="tableView">
             <button><a class="btn btn-sm" href="books_create.php">Create A New Book</a></button>
+            <button><a class="btn btn-sm" href="books_import.php">Bulk Management</a></button>
             <table id="booksTable" style="width:100%">
                 <div>
                     <thead>

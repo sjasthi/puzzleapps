@@ -41,6 +41,8 @@ if($result->num_rows > 0) {
             $appName = $appRow["name"];
         }
 
+
+
         echo '<div class="right-content">';
         echo '<div class="container">';
 
