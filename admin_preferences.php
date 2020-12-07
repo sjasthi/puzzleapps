@@ -195,7 +195,7 @@ $bookWidth = $book4[0]['preference_value'];
 							<td><input required type="int" name="puzzle_rows" maxlength="2" size="10" title="Enter a number" value="<?php echo $puzzleRows; ?>"></td>
 						</tr>
 						<tr>
-							<td style="width:200px">Number of Puzzles to show:</td>
+							<td style="width:215px">Number of Puzzles to show:</td>
 							<td><input disabled type="int" maxlength="2" size="10" value="<?php echo $puzzleShow; ?>" title="Current value"></td> 
 							<td><input required type="int" name="puzzle_show" maxlength="3" size="10" title="Enter a number" value="<?php echo $puzzleShow; ?>"></td>
 						</tr>

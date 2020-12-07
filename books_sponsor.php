@@ -13,11 +13,16 @@ error_reporting(0);
 if(isset($_SESSION['logged_in'])){
     //$pass = $db->escape_string($_GET['password']);
     //$email = $db->escape_string($_GET['email']);
+
     $userID = $_SESSION['userID'];
-$sql = "INSERT INTO users_books (user_id, book_id)
-                    VALUES ('$userID','1')";
+    $bookID = $_SESSION['bookID'];
+    $sql = "INSERT INTO users_books (user_id, book_id)
+                    VALUES ('$userID','$bookID')";
 $result = $db->query($sql);
 echo "$userID";
+echo "<br>$bookID";
+//unset($_SESSION['bookID']);
+
 header("location: books.php");
 
 //echo hello;

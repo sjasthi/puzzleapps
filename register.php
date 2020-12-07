@@ -84,12 +84,14 @@ else { // User exists
                     $ID[] = $row;
                 }
             }
+            $bookID = $_SESSION['bookID'];
             $userID = $ID[0]['id'];
             $sql = "INSERT INTO users_books (user_id, book_id)
-                    VALUES ('$userID','1')";
+                    VALUES ('$userID','$bookID')";
             $result = $db->query($sql);
-            echo $userID;
+            //echo $userID;
             //unset($_SESSION['bookSponsor']);
+            unset($_SESSION['bookID']);
             header("location: books.php");
         }else{
          header("location: index.php");
