@@ -165,7 +165,6 @@ if ($a >= $puzzleRange) {
         <td id= 'box'> 
         <img class='image' height='$puzzle_height' width='$puzzle_width' src = 'images/puzzles/$pic' onerror=this.src='images/index_images/ImageNotFound.png'></img>
         <div id = 'title'><b>$topic</b></div>
-        <div><b>Description: </b>$note</div>
         </td>";
 
         

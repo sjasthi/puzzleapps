@@ -86,7 +86,7 @@ error_reporting(0);
 
 	<body onload="window.open(url, '_blank');">
 	
-		<h1 id="title2">What do you like to play today?</h1>
+		<h1 id="title2">What do you like to create today?</h1>
 
 			<?php
 
@@ -94,7 +94,7 @@ error_reporting(0);
 	$sql2 = "SELECT `name` FROM `apps`";
     $sql3 = "SELECT `icon` FROM `apps`";
 	$sql4 = "SELECT `path` FROM `apps`";
-	$sql5 = "SELECT `notes` FROM `apps`";
+	$sql5 = "SELECT `description` FROM `apps`";
 	$sql6 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'apps_to_show'";
 	$sql7 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'app_height'";
 	$sql8 = "SELECT `preference_value` FROM `preferences` WHERE `preference_name`= 'app_width'";
@@ -135,7 +135,7 @@ error_reporting(0);
 	}
 	if (mysqli_num_rows($results5) > 0) {
         while ($row = mysqli_fetch_assoc($results5)) {
-            $notes[] = $row;
+            $description[] = $row;
         }
     }
     if (mysqli_num_rows($results6) > 0) {
@@ -214,7 +214,7 @@ error_reporting(0);
 					$topic = $topics[$randIndex]['name'];
 					$pic = $pics[$randIndex]['icon'];
 					$location = $path[$randIndex]['path'];
-					$note = $notes[$randIndex]['notes'];
+					$desc = $description[$randIndex]['description'];
 					unset($topics[$randIndex]);
                     ?>
                     
@@ -222,7 +222,7 @@ error_reporting(0);
 
                     <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
-					<div><b>Description: </b><?php echo $note ?></div>
+					<div id="description"><b> <?php echo $desc ?> </b></div>
                     </td>
     
 				<?php
@@ -278,7 +278,7 @@ error_reporting(0);
                     <a href="<?php echo $location ?>" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 
 					<div id = "title"><b><?php echo $topic ?></b></div>
-					<div><b>Description: </b><?php echo $note ?></div>
+					<div id = "description"> <b> <?php echo $desc ?> </b></div>
 					
                     </td>
     
@@ -319,7 +319,7 @@ error_reporting(0);
                     <td id= "box"> 
                     <a href="apps_error.php" target="_blank"><img class="image" height="<?php echo $app_height ?>" width="<?php echo $app_width ?>" src = "images/apps/thumbnails/<?php echo $pic ?>" onerror=this.src="images/index_images/ImageNotFound.png"></img></a>
 					<div id = "title"><b><?php echo $topic ?></b></div>
-					<div><b>Description: </b><?php echo $note ?></div>
+					<div><b></b><?php echo $note ?></div>
                     </td>
     
 				<?php
